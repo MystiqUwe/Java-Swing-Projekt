@@ -5,6 +5,11 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,6 +18,8 @@ import javax.swing.JTextField;
 
 public class Ablesebogen extends JFrame{
 
+	private AbleseList liste;
+	
 	private JPanel panel;
 	
 	private JTextField kundenNummer;
@@ -32,7 +39,9 @@ public class Ablesebogen extends JFrame{
 				exit();
 			}
 		});
-
+		
+		liste=new AbleseList();
+		
 		final Container con = getContentPane();
 		con.setLayout(new BorderLayout());
 		panel = new JPanel(new GridLayout(7,2));
@@ -63,6 +72,27 @@ public class Ablesebogen extends JFrame{
 		panel.add(kommentar);
 		
 		this.setVisible(true);
+	}
+	
+	public void save() {
+		try {
+		String kn=kundenNummer.getText();
+		String zA=zaelerArt.getText();
+		int zN=Integer.parseInt(zaelernummer.getText());
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.GERMAN);
+		Date date=formatter.parse(datum.getText());
+		boolean neuE=false;// neuEingebaut.getText();		
+		int zStand=Integer.parseInt(zaelerstand.getText());
+		String kom=kommentar.getText();
+		AbleseEntry entry=new AbleseEntry(kn,zA,zN,date,neuE,zStand,kom);
+		liste.add(entry);
+		} catch (Exception ex){
+			
+		}
+	}
+	
+	public void export() {
+		
 	}
 	
 	public void exit() {

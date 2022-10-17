@@ -5,30 +5,54 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+<<<<<<< HEAD
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Locale;
 
+
+>>>>>>> 8e21c16 (#010 - User Story 10: DatePicker implementiert + zwei Felder auf ComboBoxen umgebaut mit Default werten)
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import net.sourceforge.jdatepicker.JDatePicker;
+import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
+import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
+import net.sourceforge.jdatepicker.impl.UtilDateModel;
+
 public class Ablesebogen extends JFrame{
 
+<<<<<<< HEAD
 	private AbleseList liste;
+
+>>>>>>> 8e21c16 (#010 - User Story 10: DatePicker implementiert + zwei Felder auf ComboBoxen umgebaut mit Default werten)
 	
 	private JPanel panel;
+	private JPanel buttonPanel;
 	
 	private JTextField kundenNummer;
-	private JTextField zaelerArt;
 	private JTextField zaelernummer;
 	private JTextField datum;
-	private JTextField neuEingebaut;
 	private JTextField zaelerstand;
 	private JTextField kommentar;
+	
+	private JButton saveButton;
+	private JButton exportButton;
+	
+	private JComboBox neuEingebaut;
+	private JComboBox zaelerArt;
+	
+	private JDatePickerImpl datePicker;
+	
+	private String DEFAULT_EINGEBAUT[] = {"Ja", "Nein"};
+	private String DEFAULT_ZAELERART[] = {"Gas", "Strom", "Heizug", "Wasser"};
 	
 	public Ablesebogen() {
 		super("Ablesebogen");
@@ -45,16 +69,36 @@ public class Ablesebogen extends JFrame{
 		final Container con = getContentPane();
 		con.setLayout(new BorderLayout());
 		panel = new JPanel(new GridLayout(7,2));
-
+		buttonPanel = new JPanel();
 		con.add(panel);
 		
+		UtilDateModel model = new UtilDateModel();
+		JDatePanelImpl datePanel = new JDatePanelImpl(model);
+		
 		kundenNummer=new JTextField();
-		zaelerArt=new JTextField();
+		zaelerArt=new JComboBox(DEFAULT_ZAELERART);
 		zaelernummer=new JTextField();
-		datum=new JTextField();
-		neuEingebaut=new JTextField();
+		datePicker = new JDatePickerImpl(datePanel);
+		neuEingebaut=new JComboBox(DEFAULT_EINGEBAUT);
 		zaelerstand=new JTextField();
 		kommentar=new JTextField();
+		
+		saveButton=new JButton("Speichern");
+		exportButton=new JButton("Exportieren");
+		
+		buttonPanel.add(saveButton);
+		buttonPanel.add(exportButton);
+		
+		con.add(buttonPanel, BorderLayout.SOUTH);
+		
+		saveButton.addActionListener(e -> {	
+		//	save();
+		});
+		
+		exportButton.addActionListener(e -> {	
+		//	export();
+		});
+		
 		
 		panel.add(new JLabel("Kundennummer"));
 		panel.add(kundenNummer);
@@ -63,7 +107,7 @@ public class Ablesebogen extends JFrame{
 		panel.add(new JLabel("Zählernummer"));
 		panel.add(zaelernummer);
 		panel.add(new JLabel("Datum"));
-		panel.add(datum);
+		panel.add(datePicker);
 		panel.add(new JLabel("neu eingebaut"));
 		panel.add(neuEingebaut);
 		panel.add(new JLabel("Zählerstand"));
@@ -71,6 +115,7 @@ public class Ablesebogen extends JFrame{
 		panel.add(new JLabel("Kommentar"));
 		panel.add(kommentar);
 		
+
 		this.setVisible(true);
 	}
 	
@@ -98,6 +143,7 @@ public class Ablesebogen extends JFrame{
 	public void exit() {
 		System.exit(0);
 	}
+		
 	
 	public static void main(String[] args) {
 		new Ablesebogen();

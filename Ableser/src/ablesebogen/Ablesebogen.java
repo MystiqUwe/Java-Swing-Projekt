@@ -9,25 +9,17 @@ import java.awt.LayoutManager;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
-import java.util.Locale;
 
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import net.sourceforge.jdatepicker.JDatePicker;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -45,7 +37,6 @@ public class Ablesebogen extends JFrame{
 	
 	private JTextField kundenNummer;
 	private JTextField zaelernummer;
-	private JTextField datum;
 	private JTextField zaelerstand;
 	private JTextField kommentar;
 	
@@ -55,7 +46,7 @@ public class Ablesebogen extends JFrame{
 	AbleseOutList outList;
 
 	//private JComboBox neuEingebaut;
-	private JComboBox zaelerArt;
+	private JComboBox<String> zaelerArt;
 	
 	private JCheckBox neuEingebaut;
 	
@@ -95,7 +86,7 @@ public class Ablesebogen extends JFrame{
 		JDatePanelImpl datePanel = new JDatePanelImpl(model);
 		
 		kundenNummer=new JTextField();
-		zaelerArt=new JComboBox(DEFAULT_ZAELERART);
+		zaelerArt=new JComboBox<String>(DEFAULT_ZAELERART);
 		zaelernummer=new JTextField();
 		datePicker = new JDatePickerImpl(datePanel);
 		//neuEingebaut=new JComboBox(DEFAULT_EINGEBAUT);

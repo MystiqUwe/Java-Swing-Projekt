@@ -25,6 +25,10 @@ public class AbleseList {
 	public void clear() {
 		liste.clear();
 	}
+	
+	public ArrayList<AbleseEntry> getItems() {
+		return liste;
+	}
 
 	public AbleseEntry get(int index) {
 		return liste.get(index);

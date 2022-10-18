@@ -3,6 +3,7 @@ package ablesebogen;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
@@ -18,6 +19,11 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+
 import javax.swing.JTextField;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
@@ -43,7 +49,7 @@ public class Ablesebogen extends JFrame{
 	private JButton saveButton;
 	private JButton exportButton;
 	
-	AbleseOutList outList;
+	JTable outList;
 
 	//private JComboBox neuEingebaut;
 	private JComboBox<String> zaelerArt;
@@ -126,11 +132,13 @@ public class Ablesebogen extends JFrame{
 			export();
 		});
 		toOutButton.addActionListener(e -> {
-			outList.showList(liste);
+			//outList.showList(liste);
+			
 			((CardLayout) con.getLayout()).show(con,"out");
 		});
 				
 		//out Layout Base Layout
+
 		outLayout=new JPanel(new BorderLayout());
 		con.add(outLayout,"out");
 		
@@ -141,9 +149,12 @@ public class Ablesebogen extends JFrame{
 		toInButton.addActionListener(e -> {
 			((CardLayout) con.getLayout()).show(con,"in");			
 		});
-		
-		outList=new AbleseOutList();
-		outLayout.add(outList);
+		AbleseTableModel tableModel = new AbleseTableModel(liste);
+		outList=new JTable(tableModel);
+		outList.setAutoCreateRowSorter(true);
+	      JScrollPane scrollPane = new JScrollPane(outList);
+	      scrollPane.setPreferredSize(new Dimension(380,280));
+		outLayout.add(scrollPane);
 		
 		
 		this.setVisible(true);

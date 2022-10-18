@@ -17,7 +17,7 @@ public class AbleseList {
 	@Getter
 	@Setter
 	private ArrayList<AbleseEntry> liste = new ArrayList<AbleseEntry>();
-
+	
 	public boolean add(AbleseEntry e) {
 		return liste.add(e);
 	}
@@ -26,10 +26,6 @@ public class AbleseList {
 		liste.clear();
 	}
 	
-	public ArrayList<AbleseEntry> getItems() {
-		return liste;
-	}
-
 	public AbleseEntry get(int index) {
 		return liste.get(index);
 	}

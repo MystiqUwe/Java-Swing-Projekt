@@ -8,7 +8,7 @@ public class AbleseTableModel extends AbstractTableModel {
 	 private String[] columnNames = {"Kundennummer","Zählerart","Zählernummer", "Datum", "neu eingebaut", "Zählerstand", "Kommentar"};
 	   private ArrayList<AbleseEntry> myList;
 	   public AbleseTableModel(AbleseList liste) {
-	      myList = liste.getItems();
+	      myList = liste.getListe();
 	   }
 	@Override
 	   public int getRowCount() {

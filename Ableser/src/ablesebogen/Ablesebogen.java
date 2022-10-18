@@ -1,12 +1,14 @@
 package ablesebogen;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
@@ -20,6 +22,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import net.sourceforge.jdatepicker.JDatePicker;
@@ -32,6 +35,8 @@ public class Ablesebogen extends JFrame{
 
 	private AbleseList liste;
 
+	private JPanel inLayout;
+	private JPanel outLayout;
 
 	private JPanel panel;
 	private JPanel buttonPanel;
@@ -45,6 +50,8 @@ public class Ablesebogen extends JFrame{
 	private JButton saveButton;
 	private JButton exportButton;
 	
+	AbleseOutList outList;
+
 	//private JComboBox neuEingebaut;
 	private JComboBox zaelerArt;
 	
@@ -67,11 +74,19 @@ public class Ablesebogen extends JFrame{
 		
 		liste=AbleseList.importJson();
 		
+		//Root Container
 		final Container con = getContentPane();
-		con.setLayout(new BorderLayout());
+		con.setLayout(new CardLayout());
+	
+		//in Layout Base Layout
+		inLayout= new JPanel(new BorderLayout());
+		con.add(inLayout,"in");
+
+		//in Layout Komponenten
 		panel = new JPanel(new GridLayout(7,2));
+		inLayout.add(panel, BorderLayout.CENTER);
 		buttonPanel = new JPanel();
-		con.add(panel);
+		inLayout.add(buttonPanel, BorderLayout.SOUTH);
 		
 		UtilDateModel model = new UtilDateModel();
 		model.setSelected(true); //init DatePicker Value
@@ -85,24 +100,7 @@ public class Ablesebogen extends JFrame{
 		neuEingebaut=new JCheckBox();
 		zaelerstand=new JTextField();
 		kommentar=new JTextField();
-		
-		saveButton=new JButton("Speichern");
-		exportButton=new JButton("Exportieren");
-		
-		buttonPanel.add(saveButton);
-		buttonPanel.add(exportButton);
-		
-		con.add(buttonPanel, BorderLayout.SOUTH);
-		
-		saveButton.addActionListener(e -> {	
-			save();
-		});
-		
-		exportButton.addActionListener(e -> {	
-			export();
-		});
-		
-		
+				
 		panel.add(new JLabel("Kundennummer"));
 		panel.add(kundenNummer);
 		panel.add(new JLabel("Zählerart"));
@@ -118,7 +116,43 @@ public class Ablesebogen extends JFrame{
 		panel.add(new JLabel("Kommentar"));
 		panel.add(kommentar);
 		
-
+		//untere Leiste
+		saveButton=new JButton("Speichern");
+		exportButton=new JButton("Exportieren");
+		JButton toOutButton=new JButton("Liste Anzeigen");
+		
+		buttonPanel.add(saveButton);
+		buttonPanel.add(exportButton);
+		buttonPanel.add(toOutButton);
+		
+		saveButton.addActionListener(e -> {	
+			save();
+		});
+		
+		exportButton.addActionListener(e -> {	
+			export();
+		});
+		toOutButton.addActionListener(e -> {
+			outList.showList(liste);
+			((CardLayout) con.getLayout()).show(con,"out");
+		});
+				
+		//out Layout Base Layout
+		outLayout=new JPanel(new BorderLayout());
+		con.add(outLayout,"out");
+		
+		//out Layout Komponenten
+		JButton toInButton=new JButton("neuer Datensatz");
+		outLayout.add(toInButton,BorderLayout.SOUTH);
+		
+		toInButton.addActionListener(e -> {
+			((CardLayout) con.getLayout()).show(con,"in");			
+		});
+		
+		outList=new AbleseOutList();
+		outLayout.add(outList);
+		
+		
 		this.setVisible(true);
 	}
 	

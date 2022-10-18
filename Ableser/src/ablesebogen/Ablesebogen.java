@@ -168,12 +168,7 @@ public class Ablesebogen extends JFrame{
 		try {
 			zN=Integer.parseInt(zaelernummer.getText());
 		}catch (NumberFormatException ec) {
-			JFrame Alert_Frame = new JFrame("Alert Window");
-			String Allert_Message = "Zaehlernummer nicht Nummerisch";
-			Create_Popup(Alert_Frame, Allert_Message);
-	        Alert_Frame.setSize(400, 100);
-	        Alert_Frame.setLocationRelativeTo(null);
-	        Alert_Frame.setVisible(true);
+			create_Popup("Zaehlernummer nicht Nummerisch");
 	        return;
 		}
 		Date selectedDate = (Date) datePicker.getModel().getValue();
@@ -182,12 +177,7 @@ public class Ablesebogen extends JFrame{
 		try {
 			zStand=Integer.parseInt(zaelerstand.getText());
 		}catch (NumberFormatException ec2) {
-			JFrame Alert_Frame = new JFrame("Alert Window");
-			String Allert_Message = "Zaehlerstand nicht Nummerisch";
-			Create_Popup(Alert_Frame, Allert_Message);
-	        Alert_Frame.setSize(400, 100);
-	        Alert_Frame.setLocationRelativeTo(null);
-	        Alert_Frame.setVisible(true);
+			create_Popup("Zaehlerstand nicht Nummerisch");
 	        return;
 		}
 		String kom=kommentar.getText();
@@ -196,14 +186,18 @@ public class Ablesebogen extends JFrame{
 		
 		
 		}
-		private static void Create_Popup(final JFrame Alert_Frame, String Alert_Massage){
+		private static void create_Popup(String Alert_Massage){
 	        JPanel Alert_Panel = new JPanel();
+			JFrame Alert_Frame = new JFrame("Alert Window");
 	        LayoutManager Alert_Layout = new FlowLayout();
 	        Alert_Panel.setLayout(Alert_Layout);
 	        JLabel Alert_Label = new JLabel(Alert_Massage);
 
 	        Alert_Panel.add(Alert_Label);
 	        Alert_Frame.getContentPane().add(Alert_Panel, BorderLayout.CENTER);
+	        Alert_Frame.setSize(400, 100);
+	        Alert_Frame.setLocationRelativeTo(null);
+	        Alert_Frame.setVisible(true);
 	}
 	public void export() {
 		liste.exportJson();

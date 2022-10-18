@@ -159,21 +159,12 @@ public class Ablesebogen extends JFrame{
 	} 
 	
 	public void save() {
-		try {
+		
 		String kn=kundenNummer.getText();
 		String zA=zaelerArt.getSelectedItem().toString();
-		int zN=Integer.parseInt(zaelernummer.getText());
-		
-		Date selectedDate = (Date) datePicker.getModel().getValue();
-		boolean neuE=neuEingebaut.isSelected();// neuEingebaut.getText();		
-		int zStand=Integer.parseInt(zaelerstand.getText());
-		String kom=kommentar.getText();
-		AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
-		liste.add(entry);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} try {
-			int zN=Integer.parseInt(zaelernummer.getText());
+		int zN=0;
+		try {
+			zN=Integer.parseInt(zaelernummer.getText());
 		}catch (NumberFormatException ec) {
 			JFrame Alert_Frame = new JFrame("Alert Window");
 			String Allert_Message = "Zaehlernummer nicht Nummerisch";
@@ -181,8 +172,13 @@ public class Ablesebogen extends JFrame{
 	        Alert_Frame.setSize(400, 100);
 	        Alert_Frame.setLocationRelativeTo(null);
 	        Alert_Frame.setVisible(true);
-		}try {
-			int zStand=Integer.parseInt(zaelerstand.getText());
+	        return;
+		}
+		Date selectedDate = (Date) datePicker.getModel().getValue();
+		boolean neuE=neuEingebaut.isSelected();// neuEingebaut.getText();
+		int zStand=0;
+		try {
+			zStand=Integer.parseInt(zaelerstand.getText());
 		}catch (NumberFormatException ec2) {
 			JFrame Alert_Frame = new JFrame("Alert Window");
 			String Allert_Message = "Zaehlerstand nicht Nummerisch";
@@ -190,8 +186,13 @@ public class Ablesebogen extends JFrame{
 	        Alert_Frame.setSize(400, 100);
 	        Alert_Frame.setLocationRelativeTo(null);
 	        Alert_Frame.setVisible(true);
-
+	        return;
 		}
+		String kom=kommentar.getText();
+		AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
+		liste.add(entry);
+		
+		
 		}
 		private static void Create_Popup(final JFrame Alert_Frame, String Alert_Massage){
 	        JPanel Alert_Panel = new JPanel();

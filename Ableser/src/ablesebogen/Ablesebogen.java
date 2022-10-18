@@ -95,7 +95,7 @@ public class Ablesebogen extends JFrame{
 		con.add(buttonPanel, BorderLayout.SOUTH);
 		
 		saveButton.addActionListener(e -> {	
-		//	save();
+			save();
 		});
 		
 		exportButton.addActionListener(e -> {	
@@ -127,19 +127,15 @@ public class Ablesebogen extends JFrame{
 		String kn=kundenNummer.getText();
 		String zA=zaelerArt.getSelectedItem().toString();
 		int zN=Integer.parseInt(zaelernummer.getText());
-		/*
-		 * 		 Date selectedDate = (Date) datePicker.getModel().getValue();
-		         String formattedDate = selectedDate.toLocaleString().split(",")[0];
-		 	 * */
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.GERMAN);
-		Date date=formatter.parse(datum.getText());
+		
+		Date selectedDate = (Date) datePicker.getModel().getValue();
 		boolean neuE=neuEingebaut.isSelected();// neuEingebaut.getText();		
 		int zStand=Integer.parseInt(zaelerstand.getText());
 		String kom=kommentar.getText();
-		AbleseEntry entry=new AbleseEntry(kn,zA,zN,date,neuE,zStand,kom);
+		AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
 		liste.add(entry);
 		} catch (Exception ex){
-			
+			ex.printStackTrace();
 		}
 	}
 	

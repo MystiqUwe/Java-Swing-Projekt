@@ -65,7 +65,7 @@ public class Ablesebogen extends JFrame{
 			}
 		});
 		
-		liste=new AbleseList();
+		liste=AbleseList.importJson();
 		
 		final Container con = getContentPane();
 		con.setLayout(new BorderLayout());
@@ -99,7 +99,7 @@ public class Ablesebogen extends JFrame{
 		});
 		
 		exportButton.addActionListener(e -> {	
-		//	export();
+			export();
 		});
 		
 		
@@ -140,10 +140,11 @@ public class Ablesebogen extends JFrame{
 	}
 	
 	public void export() {
-
+		liste.exportJson();
 	}
 	
 	public void exit() {
+		export();
 		System.exit(0);
 	}
 		

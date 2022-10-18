@@ -5,7 +5,7 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-<<<<<<< HEAD
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -13,10 +13,10 @@ import java.util.Date;
 import java.util.Locale;
 
 
->>>>>>> 8e21c16 (#010 - User Story 10: DatePicker implementiert + zwei Felder auf ComboBoxen umgebaut mit Default werten)
-
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,11 +29,10 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 public class Ablesebogen extends JFrame{
 
-<<<<<<< HEAD
+
 	private AbleseList liste;
 
->>>>>>> 8e21c16 (#010 - User Story 10: DatePicker implementiert + zwei Felder auf ComboBoxen umgebaut mit Default werten)
-	
+
 	private JPanel panel;
 	private JPanel buttonPanel;
 	
@@ -46,12 +45,14 @@ public class Ablesebogen extends JFrame{
 	private JButton saveButton;
 	private JButton exportButton;
 	
-	private JComboBox neuEingebaut;
+	//private JComboBox neuEingebaut;
 	private JComboBox zaelerArt;
+	
+	private JCheckBox neuEingebaut;
 	
 	private JDatePickerImpl datePicker;
 	
-	private String DEFAULT_EINGEBAUT[] = {"Ja", "Nein"};
+	//private String DEFAULT_EINGEBAUT[] = {"Ja", "Nein"};
 	private String DEFAULT_ZAELERART[] = {"Gas", "Strom", "Heizug", "Wasser"};
 	
 	public Ablesebogen() {
@@ -73,13 +74,15 @@ public class Ablesebogen extends JFrame{
 		con.add(panel);
 		
 		UtilDateModel model = new UtilDateModel();
+		model.setSelected(true); //init DatePicker Value
 		JDatePanelImpl datePanel = new JDatePanelImpl(model);
 		
 		kundenNummer=new JTextField();
 		zaelerArt=new JComboBox(DEFAULT_ZAELERART);
 		zaelernummer=new JTextField();
 		datePicker = new JDatePickerImpl(datePanel);
-		neuEingebaut=new JComboBox(DEFAULT_EINGEBAUT);
+		//neuEingebaut=new JComboBox(DEFAULT_EINGEBAUT);
+		neuEingebaut=new JCheckBox();
 		zaelerstand=new JTextField();
 		kommentar=new JTextField();
 		
@@ -122,11 +125,15 @@ public class Ablesebogen extends JFrame{
 	public void save() {
 		try {
 		String kn=kundenNummer.getText();
-		String zA=zaelerArt.getText();
+		String zA=zaelerArt.getSelectedItem().toString();
 		int zN=Integer.parseInt(zaelernummer.getText());
+		/*
+		 * 		 Date selectedDate = (Date) datePicker.getModel().getValue();
+		         String formattedDate = selectedDate.toLocaleString().split(",")[0];
+		 	 * */
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.GERMAN);
 		Date date=formatter.parse(datum.getText());
-		boolean neuE=false;// neuEingebaut.getText();		
+		boolean neuE=neuEingebaut.isSelected();// neuEingebaut.getText();		
 		int zStand=Integer.parseInt(zaelerstand.getText());
 		String kom=kommentar.getText();
 		AbleseEntry entry=new AbleseEntry(kn,zA,zN,date,neuE,zStand,kom);
@@ -137,7 +144,7 @@ public class Ablesebogen extends JFrame{
 	}
 	
 	public void export() {
-		
+
 	}
 	
 	public void exit() {

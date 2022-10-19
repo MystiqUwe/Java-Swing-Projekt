@@ -75,7 +75,7 @@ public class Ablesebogen extends JFrame{
 	private String DEFAULT_ZAELERART[] = {"Gas", "Strom", "Heizung", "Wasser"};
 
 	public Ablesebogen() {
-		super("Ablesebogen");
+		super("neuer Datensatz");
 		this.setSize(500, 250);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -152,8 +152,10 @@ public class Ablesebogen extends JFrame{
 			export();
 		});
 		toOutButton.addActionListener(e -> {
-			tableModel.fireTableDataChanged();
 			if(liste.size() < 1 ) {  create_Popup("Liste konnte nicht Angezeigt werden"); return;}
+
+			tableModel.fireTableDataChanged();
+			this.setTitle("Übersichtsliste");
 			((CardLayout) con.getLayout()).show(con,"out");
 		});
 		deleteButton.addActionListener(e -> {
@@ -171,6 +173,7 @@ public class Ablesebogen extends JFrame{
 		outLayout.add(toInButton,BorderLayout.SOUTH);
 		
 		toInButton.addActionListener(e -> {
+			this.setTitle("neuer Datensatz");
 			((CardLayout) con.getLayout()).show(con,"in");
 		});
 		
@@ -280,6 +283,8 @@ public class Ablesebogen extends JFrame{
 	}
 	
 	public void clear() {
+		this.setTitle("neuer Datensatz");
+
 		Date zDate = new Date();
 		kundenNummer.setText("");
 		zaelerArt.setSelectedIndex(0);
@@ -293,6 +298,8 @@ public class Ablesebogen extends JFrame{
 	}
 	
 	public void loadWithValue(AbleseEntry entry) {
+		this.setTitle(entry.getKundenNummer()+" bearbeiten");
+
 		kundenNummer.setText(entry.getKundenNummer());
 		//zaelerArt.setSelectedItem(entry.getZaelerArt());
 		zaelernummer.setText(Integer.toString(entry.getZaelernummer()));

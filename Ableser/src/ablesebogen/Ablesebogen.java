@@ -76,7 +76,7 @@ public class Ablesebogen extends JFrame{
 
 	public Ablesebogen() {
 		super("Ablesebogen");
-		this.setSize(400, 300);
+		this.setSize(500, 250);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
@@ -158,6 +158,7 @@ public class Ablesebogen extends JFrame{
 		deleteButton.addActionListener(e -> {
 			liste.remove(curEntry);
 			tableModel.fireTableDataChanged();
+			clear();
 		});
 				
 		//out Layout Base Layout

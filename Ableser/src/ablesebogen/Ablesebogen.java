@@ -40,7 +40,7 @@ public class Ablesebogen extends JFrame{
 
 	private AbleseList liste;
 	private AbleseEntry curEntry;
-
+	
 	private JPanel inLayout;
 	private JPanel outLayout;
 
@@ -56,7 +56,8 @@ public class Ablesebogen extends JFrame{
 	private JButton exportButton;
 	private JButton deleteButton;
 	
-	JTable outList;
+	private AbleseTableModel tableModel;
+	private JTable outList;
 	
 	private UtilDateModel model;
 
@@ -68,9 +69,11 @@ public class Ablesebogen extends JFrame{
 	private JDatePickerImpl datePicker;
 	
 	//private String DEFAULT_EINGEBAUT[] = {"Ja", "Nein"};
+
 	HashMap<String, Integer> DEFAULT_WERTE = new HashMap<String, Integer>();
-	private String DEFAULT_ZAELERART[] = {"Gas", "Strom", "Heizug", "Wasser"};
-	
+
+	private String DEFAULT_ZAELERART[] = {"Gas", "Strom", "Heizung", "Wasser"};
+
 	public Ablesebogen() {
 		super("Ablesebogen");
 		this.setSize(400, 300);
@@ -149,12 +152,12 @@ public class Ablesebogen extends JFrame{
 			export();
 		});
 		toOutButton.addActionListener(e -> {
-			//outList.showList(liste);
 			if(liste.size() < 1 ) {  create_Popup("Liste konnte nicht Angezeigt werden"); return;}
 			((CardLayout) con.getLayout()).show(con,"out");
 		});
 		deleteButton.addActionListener(e -> {
 			liste.remove(curEntry);
+			tableModel.fireTableDataChanged();
 		});
 				
 		//out Layout Base Layout
@@ -169,19 +172,20 @@ public class Ablesebogen extends JFrame{
 		toInButton.addActionListener(e -> {
 			((CardLayout) con.getLayout()).show(con,"in");
 		});
-		AbleseTableModel tableModel = new AbleseTableModel(liste);
+		
+		tableModel = new AbleseTableModel(liste);
 		outList=new JTable(tableModel);
 		outList.setAutoCreateRowSorter(true);
-	      JScrollPane scrollPane = new JScrollPane(outList);
-	      scrollPane.setPreferredSize(new Dimension(380,280));
+	    JScrollPane scrollPane = new JScrollPane(outList);
+	    scrollPane.setPreferredSize(new Dimension(380,280));
 		outLayout.add(scrollPane);
-		
+
 		outList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount()!=2) {
 					return; //nur Doppelklick führt zum editieren
-				}				
+				}
 				loadWithValue(liste.get(outList.getSelectedRow()));
 				((CardLayout) con.getLayout()).show(con,"in");				
 			}
@@ -214,7 +218,8 @@ public class Ablesebogen extends JFrame{
 		String kom=kommentar.getText();
 		if (curEntry==null) {
 			AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
-			liste.add(entry);	
+			liste.add(entry);
+			tableModel.fireTableDataChanged();
 		} else {
 			curEntry.setKundenNummer(kn);
 			curEntry.setZaelerArt(zA);
@@ -288,7 +293,6 @@ public class Ablesebogen extends JFrame{
 	}
 	
 	public void loadWithValue(AbleseEntry entry) {
-		entry.
 		kundenNummer.setText(entry.getKundenNummer());
 		//zaelerArt.setSelectedItem(entry.getZaelerArt());
 		zaelernummer.setText(Integer.toString(entry.getZaelernummer()));

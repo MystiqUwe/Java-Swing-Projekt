@@ -29,6 +29,7 @@ public class AbleseTableModel extends AbstractTableModel {
 	   public String getColumnName(int col) {
 		      return columnNames[col];
 		   }
+	@SuppressWarnings("deprecation")
 	@Override
 	   public Object getValueAt(int row, int col) {
 	      Object temp = null;
@@ -42,7 +43,7 @@ public class AbleseTableModel extends AbstractTableModel {
 	         temp = myList.get(row).getZaelernummer();
 	      }
 	      else if (col == 3) {
-		         temp = myList.get(row).getDatum();
+		         temp = myList.get(row).getDatum().toLocaleString();
 		      }
 	      else if (col == 4) {
 		         temp = myList.get(row).getNeuEingebaut();

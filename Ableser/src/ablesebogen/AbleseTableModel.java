@@ -25,6 +25,10 @@ public class AbleseTableModel extends AbstractTableModel {
 	   public int getColumnCount() {
 	      return columnNames.length;
 	   }
+	
+	   public String getColumnName(int col) {
+		      return columnNames[col];
+		   }
 	@Override
 	   public Object getValueAt(int row, int col) {
 	      Object temp = null;

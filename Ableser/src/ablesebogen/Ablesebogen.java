@@ -14,6 +14,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 
@@ -62,6 +63,7 @@ public class Ablesebogen extends JFrame{
 	private JDatePickerImpl datePicker;
 	
 	//private String DEFAULT_EINGEBAUT[] = {"Ja", "Nein"};
+	HashMap<String, Integer> DEFAULT_WERTE = new HashMap<String, Integer>();
 	private String DEFAULT_ZAELERART[] = {"Gas", "Strom", "Heizug", "Wasser"};
 	
 	public Ablesebogen() {
@@ -75,6 +77,10 @@ public class Ablesebogen extends JFrame{
 		});
 		
 		liste=AbleseList.importJson();
+		DEFAULT_WERTE.put("Gas", 100000);
+		DEFAULT_WERTE.put("Strom", 200000);
+		DEFAULT_WERTE.put("Wasser", 300000);
+		DEFAULT_WERTE.put("Heizung", 400000);
 		
 		//Root Container
 		final Container con = getContentPane();
@@ -188,6 +194,7 @@ public class Ablesebogen extends JFrame{
 	        Alert_Frame.setVisible(true);
 	        return;
 		}
+		Plausicheck(zA, zStand);
 		String kom=kommentar.getText();
 		AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
 		liste.add(entry);
@@ -203,6 +210,32 @@ public class Ablesebogen extends JFrame{
 	        Alert_Panel.add(Alert_Label);
 	        Alert_Frame.getContentPane().add(Alert_Panel, BorderLayout.CENTER);
 	}
+		public void Plausicheck(String zA, int zStand) {
+			if(zStand > DEFAULT_WERTE.get(zA)) {
+				JFrame Alert_Frame = new JFrame("Alert Window");
+				JPanel Alert_Panel = new JPanel();
+				String Allert_Message = "Zählerstand ungewöhlich trotzdem Speichern?";
+		        JLabel Alert_Label = new JLabel(Allert_Message);
+				JButton Button_Ja = new JButton("Ja");
+				JButton Button_Nein = new JButton("Nein");
+				Create_Popup(Alert_Frame, Allert_Message);
+		        Alert_Frame.setSize(400, 100);
+		        Alert_Frame.setLocationRelativeTo(null);
+		        Alert_Frame.setVisible(true);
+		        Alert_Panel.add(Alert_Label);
+		        Alert_Panel.add(Button_Nein);
+		        Alert_Panel.add(Button_Ja);
+		        Alert_Frame.getContentPane().add(Alert_Panel, BorderLayout.EAST);
+		        Button_Nein.addActionListener(e -> {
+		        	Alert_Frame.dispose();
+		        	return;
+		        });
+		        Button_Ja.addActionListener(e -> {
+		        	Alert_Frame.dispose();
+		        });
+			}
+		 }
+	
 	public void export() {
 		liste.exportJson();
 	}

@@ -2,6 +2,7 @@ package ablesebogen;
 
 import javax.swing.JTextArea;
 
+@Deprecated
 public class AbleseOutList extends JTextArea{
 
 	public AbleseOutList() {

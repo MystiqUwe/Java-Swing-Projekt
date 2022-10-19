@@ -2,14 +2,31 @@ package ablesebogen;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.Container;
+
+import java.awt.Dimension;
+import java.awt.GridLayout;
+
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Date;
 import java.util.HashMap;
+
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -18,7 +35,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
+import net.sourceforge.jdatepicker.JDateComponent;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -45,7 +64,12 @@ public class Ablesebogen extends JFrame{
 	private JButton saveButton;
 	private JButton exportButton;
 	private JButton deleteButton;
-		
+
+	private AbleseTableModel tableModel;
+	private JTable outList;
+	
+	private JDatePanelImpl datePanel;
+
 	private UtilDateModel model;
 
 	//private JComboBox neuEingebaut;
@@ -82,6 +106,8 @@ public class Ablesebogen extends JFrame{
 		//Root Container
 		final Container con = getContentPane();
 		con.setLayout(new CardLayout());
+		
+		
 	
 		//in Layout Base Layout
 		inLayout= new JPanel(new BorderLayout());
@@ -95,8 +121,8 @@ public class Ablesebogen extends JFrame{
 		
 		model = new UtilDateModel();
 		model.setSelected(true); //init DatePicker Value
-		JDatePanelImpl datePanel = new JDatePanelImpl(model);
-		
+		datePanel = new JDatePanelImpl(model);
+
 		kundenNummer=new JTextField();
 		zaelerArt=new JComboBox<String>(DEFAULT_ZAELERART);
 		zaelernummer=new JTextField();
@@ -105,7 +131,7 @@ public class Ablesebogen extends JFrame{
 		neuEingebaut=new JCheckBox();
 		zaelerstand=new JTextField();
 		kommentar=new JTextField();
-				
+		
 		panel.add(new JLabel("Kundennummer"));
 		panel.add(kundenNummer);
 		panel.add(new JLabel("Zählerart"));
@@ -167,7 +193,7 @@ public class Ablesebogen extends JFrame{
 		
 		filterOutLayout= new AbleseOutPanel(this, newList);
 		con.add(filterOutLayout,"filter");
-		
+
 		this.setVisible(true);
 	} 
 	
@@ -191,7 +217,7 @@ public class Ablesebogen extends JFrame{
 			create_Popup("Zaehlerstand nicht Nummerisch");
 	        return;
 		}
-		Plausicheck(zA, zStand);
+		if(!Plausicheck(zA, zStand)) return;
 		String kom=kommentar.getText();
 		if (curEntry==null) {
 			AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
@@ -211,34 +237,17 @@ public class Ablesebogen extends JFrame{
 		}
 		clear();
 	}
-	private static void create_PopupWithButton(String Alert_Massage){
-        JPanel Alert_Panel = new JPanel();
-		JFrame Alert_Frame = new JFrame("Alert Window");
-        LayoutManager Alert_Layout = new FlowLayout();
-        Alert_Panel.setLayout(Alert_Layout);
-        JLabel Alert_Label = new JLabel(Alert_Massage);
-		JButton Button_Ja = new JButton("Ja");
-		JButton Button_Nein = new JButton("Nein");
-        Alert_Panel.add(Alert_Label);
-        Alert_Frame.getContentPane().add(Alert_Panel, BorderLayout.CENTER);
-        Alert_Frame.setSize(400, 100);
-        Alert_Frame.setLocationRelativeTo(null);
-        Alert_Frame.setVisible(true);Alert_Panel.add(Button_Nein);
-        Alert_Panel.add(Button_Ja);
-        Alert_Frame.getContentPane().add(Alert_Panel, BorderLayout.EAST);
-        Button_Nein.addActionListener(e -> {
-        	Alert_Frame.dispose();
-        	return;
-        });
-        Button_Ja.addActionListener(e -> {
-        	Alert_Frame.dispose();
-        });
-}
-		public void Plausicheck(String zA, int zStand) {
+
+		public boolean Plausicheck(String zA, int zStand) {
+			boolean result = true;
 			if(zStand > DEFAULT_WERTE.get(zA)) {
 				
-				create_PopupWithButton("Werte ungewöhnlich trotzdem Speichern?");
+				JFrame zFrame = new JFrame();
+				JPanel zPanel = new JPanel();
+				ConfirmDialog dialog = new ConfirmDialog(zFrame);
+				result = dialog.showConfirmDialog(zPanel, "Werte ungewöhnlich trotzdem Speichern? ");	        	
 			}
+			return result;
 		 }
 	
 	private static void create_Popup(String Alert_Massage){
@@ -254,6 +263,8 @@ public class Ablesebogen extends JFrame{
         Alert_Frame.setLocationRelativeTo(null);
         Alert_Frame.setVisible(true);
 	}
+	
+		
 
 	public void export() {
 		liste.exportJson();

@@ -2,42 +2,30 @@ package ablesebogen;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Component;
+import java.awt.Color;
 import java.awt.Container;
-
-import java.awt.Dimension;
-import java.awt.GridLayout;
-
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Date;
 import java.util.HashMap;
-
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 
-import net.sourceforge.jdatepicker.JDateComponent;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -107,7 +95,7 @@ public class Ablesebogen extends JFrame{
 		final Container con = getContentPane();
 		con.setLayout(new CardLayout());
 		
-		
+		drawMenu();
 	
 		//in Layout Base Layout
 		inLayout= new JPanel(new BorderLayout());
@@ -131,6 +119,14 @@ public class Ablesebogen extends JFrame{
 		neuEingebaut=new JCheckBox();
 		zaelerstand=new JTextField();
 		kommentar=new JTextField();
+		
+		JButton button = new JButton();
+		button.setBounds(50, 5, 50, 25);
+		button.setBackground(Color.black);
+		JTextField textField = new JTextField();
+		textField.setBounds(20, 60, 100, 35);
+		textField.setBackground(Color.white);
+		textField.add(button);
 		
 		panel.add(new JLabel("Kundennummer"));
 		panel.add(kundenNummer);
@@ -159,7 +155,7 @@ public class Ablesebogen extends JFrame{
 		buttonPanel.add(deleteButton);
 		buttonPanel.add(toOutButton);
 		buttonPanel.add(toFilterOutButton);
-		buttonPanel.add(exportButton);
+		//buttonPanel.add(exportButton);
 		saveButton.addActionListener(e -> {	
 			save();
 		});
@@ -297,6 +293,39 @@ public class Ablesebogen extends JFrame{
 		kommentar.setText(entry.getKommentar());
 		
 		curEntry=entry;
+	}
+	
+	public void drawMenu() {
+		JMenuBar mb=new JMenuBar();  
+		 JMenu  menu=new JMenu("Exportieren");  
+    
+
+		 JMenuItem subMenuJSON=new JMenuItem("JSON"); 
+		 JMenuItem subMenuXML=new JMenuItem("XML");
+		 JMenuItem subMenuCSV=new JMenuItem("CSV");
+		 
+		 subMenuJSON.addActionListener(new ActionListener() {
+		      public void actionPerformed(ActionEvent ev) {
+		          liste.exportJson();
+		        }
+		      });
+		 subMenuXML.addActionListener(new ActionListener() {
+		      public void actionPerformed(ActionEvent ev) {
+		         // liste.exportXML();
+		        }
+		      });
+		 subMenuCSV.addActionListener(new ActionListener() {
+		      public void actionPerformed(ActionEvent ev) {
+		          //liste.exportCSV();
+		        }
+		      });
+		 menu.add(subMenuJSON);
+		 menu.add(subMenuXML);
+		 menu.add(subMenuCSV);
+        
+		
+        mb.add(menu);
+        this.setJMenuBar(mb);
 	}
 	
 	public void exit() {

@@ -143,7 +143,7 @@ public class Ablesebogen extends JFrame{
 		});
 		toOutButton.addActionListener(e -> {
 			//outList.showList(liste);
-			
+			if(liste.size() < 1 ) {  create_Popup("Liste konnte nicht Angezeigt werden"); return;}
 			((CardLayout) con.getLayout()).show(con,"out");
 		});
 		deleteButton.addActionListener(e -> {

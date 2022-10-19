@@ -7,6 +7,9 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -34,6 +37,7 @@ public class Ablesebogen extends JFrame{
 
 
 	private AbleseList liste;
+	private AbleseEntry curEntry;
 
 	private JPanel inLayout;
 	private JPanel outLayout;
@@ -48,6 +52,7 @@ public class Ablesebogen extends JFrame{
 	
 	private JButton saveButton;
 	private JButton exportButton;
+	private JButton deleteButton;
 	
 	JTable outList;
 	
@@ -65,7 +70,7 @@ public class Ablesebogen extends JFrame{
 	
 	public Ablesebogen() {
 		super("Ablesebogen");
-		this.setSize(400, 250);
+		this.setSize(400, 300);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
@@ -74,6 +79,7 @@ public class Ablesebogen extends JFrame{
 		});
 		
 		liste=AbleseList.importJson();
+		curEntry=null;
 		
 		//Root Container
 		final Container con = getContentPane();
@@ -121,8 +127,10 @@ public class Ablesebogen extends JFrame{
 		saveButton=new JButton("Speichern");
 		exportButton=new JButton("Exportieren");
 		JButton toOutButton=new JButton("Liste Anzeigen");
+		deleteButton=new JButton("Löschen");
 		
 		buttonPanel.add(saveButton);
+		buttonPanel.add(deleteButton);
 		buttonPanel.add(exportButton);
 		buttonPanel.add(toOutButton);
 		
@@ -138,6 +146,9 @@ public class Ablesebogen extends JFrame{
 			
 			((CardLayout) con.getLayout()).show(con,"out");
 		});
+		deleteButton.addActionListener(e -> {
+			liste.remove(curEntry);
+		});
 				
 		//out Layout Base Layout
 
@@ -149,7 +160,7 @@ public class Ablesebogen extends JFrame{
 		outLayout.add(toInButton,BorderLayout.SOUTH);
 		
 		toInButton.addActionListener(e -> {
-			((CardLayout) con.getLayout()).show(con,"in");			
+			((CardLayout) con.getLayout()).show(con,"in");
 		});
 		AbleseTableModel tableModel = new AbleseTableModel(liste);
 		outList=new JTable(tableModel);
@@ -158,6 +169,16 @@ public class Ablesebogen extends JFrame{
 	      scrollPane.setPreferredSize(new Dimension(380,280));
 		outLayout.add(scrollPane);
 		
+		outList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount()!=2) {
+					return; //nur Doppelklick führt zum editieren
+				}				
+				loadWithValue(liste.get(outList.getSelectedRow()));
+				((CardLayout) con.getLayout()).show(con,"in");				
+			}
+		});
 		
 		this.setVisible(true);
 	} 
@@ -183,26 +204,35 @@ public class Ablesebogen extends JFrame{
 	        return;
 		}
 		String kom=kommentar.getText();
-		AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
-		liste.add(entry);
-		clear();
-		
+		if (curEntry==null) {
+			AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
+			liste.add(entry);	
+		} else {
+			curEntry.setKundenNummer(kn);
+			curEntry.setZaelerArt(zA);
+			curEntry.setZaelernummer(zN);
+			curEntry.setDatum(selectedDate);
+			curEntry.setNeuEingebaut(neuE);
+			curEntry.setZaelerstand(zStand);
+			curEntry.setKommentar(kom);
 		}
-	
-	private static void create_Popup(String Alert_Massage){
-	        JPanel Alert_Panel = new JPanel();
-			JFrame Alert_Frame = new JFrame("Alert Window");
-	        LayoutManager Alert_Layout = new FlowLayout();
-	        Alert_Panel.setLayout(Alert_Layout);
-	        JLabel Alert_Label = new JLabel(Alert_Massage);
-
-	        Alert_Panel.add(Alert_Label);
-	        Alert_Frame.getContentPane().add(Alert_Panel, BorderLayout.CENTER);
-	        Alert_Frame.setSize(400, 100);
-	        Alert_Frame.setLocationRelativeTo(null);
-	        Alert_Frame.setVisible(true);
+		clear();
 	}
 	
+	private static void create_Popup(String Alert_Massage){
+        JPanel Alert_Panel = new JPanel();
+		JFrame Alert_Frame = new JFrame("Alert Window");
+        LayoutManager Alert_Layout = new FlowLayout();
+        Alert_Panel.setLayout(Alert_Layout);
+        JLabel Alert_Label = new JLabel(Alert_Massage);
+
+        Alert_Panel.add(Alert_Label);
+        Alert_Frame.getContentPane().add(Alert_Panel, BorderLayout.CENTER);
+        Alert_Frame.setSize(400, 100);
+        Alert_Frame.setLocationRelativeTo(null);
+        Alert_Frame.setVisible(true);
+	}
+
 	public void export() {
 		liste.exportJson();
 	}
@@ -217,16 +247,19 @@ public class Ablesebogen extends JFrame{
 		zaelerstand.setText("");;
 		kommentar.setText("");
 		
+		curEntry=null;
 	}
 	
 	public void loadWithValue(AbleseEntry entry) {
 		kundenNummer.setText(entry.getKundenNummer());
-		zaelerArt.setSelectedItem(entry.getZaelerArt());
+		//zaelerArt.setSelectedItem(entry.getZaelerArt());
 		zaelernummer.setText(Integer.toString(entry.getZaelernummer()));
 		model.setValue(entry.getDatum()); 
 		neuEingebaut.setSelected(entry.getNeuEingebaut());
 		zaelerstand.setText(Integer.toString(entry.getZaelerstand()));
 		kommentar.setText(entry.getKommentar());
+		
+		curEntry=entry;
 	}
 	
 	public void exit() {

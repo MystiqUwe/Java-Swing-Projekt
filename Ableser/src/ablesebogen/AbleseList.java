@@ -30,6 +30,14 @@ public class AbleseList {
 		return liste.get(index);
 	}
 
+	public AbleseEntry remove(AbleseEntry entry) {
+		int index=liste.indexOf(entry);
+		if (index<0) {
+			return null;
+		}
+		return remove(index);
+	}
+	
 	public AbleseEntry remove(int index) {
 		return liste.remove(index);
 	}

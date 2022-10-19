@@ -29,5 +29,10 @@ public class AbleseEntry {
 		this.kommentar = kommentar;
 	}
 	
+
+	public boolean getNeuEingebaut() {
+		return neuEingebaut;
+	}
+
 	
 }

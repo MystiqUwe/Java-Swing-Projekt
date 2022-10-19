@@ -3,16 +3,13 @@ package ablesebogen;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -21,14 +18,16 @@ import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
+
 import javax.swing.JTextField;
 
-import net.sourceforge.jdatepicker.JDatePicker;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -46,17 +45,18 @@ public class Ablesebogen extends JFrame{
 	
 	private JTextField kundenNummer;
 	private JTextField zaelernummer;
-	private JTextField datum;
 	private JTextField zaelerstand;
 	private JTextField kommentar;
 	
 	private JButton saveButton;
 	private JButton exportButton;
 	
-	AbleseOutList outList;
+	JTable outList;
+	
+	private UtilDateModel model;
 
 	//private JComboBox neuEingebaut;
-	private JComboBox zaelerArt;
+	private JComboBox<String> zaelerArt;
 	
 	private JCheckBox neuEingebaut;
 	
@@ -96,12 +96,12 @@ public class Ablesebogen extends JFrame{
 		buttonPanel = new JPanel();
 		inLayout.add(buttonPanel, BorderLayout.SOUTH);
 		
-		UtilDateModel model = new UtilDateModel();
+		model = new UtilDateModel();
 		model.setSelected(true); //init DatePicker Value
 		JDatePanelImpl datePanel = new JDatePanelImpl(model);
 		
 		kundenNummer=new JTextField();
-		zaelerArt=new JComboBox(DEFAULT_ZAELERART);
+		zaelerArt=new JComboBox<String>(DEFAULT_ZAELERART);
 		zaelernummer=new JTextField();
 		datePicker = new JDatePickerImpl(datePanel);
 		//neuEingebaut=new JComboBox(DEFAULT_EINGEBAUT);
@@ -141,11 +141,13 @@ public class Ablesebogen extends JFrame{
 			export();
 		});
 		toOutButton.addActionListener(e -> {
-			outList.showList(liste);
+			//outList.showList(liste);
+			
 			((CardLayout) con.getLayout()).show(con,"out");
 		});
 				
 		//out Layout Base Layout
+
 		outLayout=new JPanel(new BorderLayout());
 		con.add(outLayout,"out");
 		
@@ -156,9 +158,12 @@ public class Ablesebogen extends JFrame{
 		toInButton.addActionListener(e -> {
 			((CardLayout) con.getLayout()).show(con,"in");			
 		});
-		
-		outList=new AbleseOutList();
-		outLayout.add(outList);
+		AbleseTableModel tableModel = new AbleseTableModel(liste);
+		outList=new JTable(tableModel);
+		outList.setAutoCreateRowSorter(true);
+	      JScrollPane scrollPane = new JScrollPane(outList);
+	      scrollPane.setPreferredSize(new Dimension(380,280));
+		outLayout.add(scrollPane);
 		
 		
 		this.setVisible(true);
@@ -172,12 +177,7 @@ public class Ablesebogen extends JFrame{
 		try {
 			zN=Integer.parseInt(zaelernummer.getText());
 		}catch (NumberFormatException ec) {
-			JFrame Alert_Frame = new JFrame("Alert Window");
-			String Allert_Message = "Zaehlernummer nicht Nummerisch";
-			Create_Popup(Alert_Frame, Allert_Message);
-	        Alert_Frame.setSize(400, 100);
-	        Alert_Frame.setLocationRelativeTo(null);
-	        Alert_Frame.setVisible(true);
+			create_Popup("Zaehlernummer nicht Nummerisch");
 	        return;
 		}
 		Date selectedDate = (Date) datePicker.getModel().getValue();
@@ -186,58 +186,85 @@ public class Ablesebogen extends JFrame{
 		try {
 			zStand=Integer.parseInt(zaelerstand.getText());
 		}catch (NumberFormatException ec2) {
-			JFrame Alert_Frame = new JFrame("Alert Window");
-			String Allert_Message = "Zaehlerstand nicht Nummerisch";
-			Create_Popup(Alert_Frame, Allert_Message);
-	        Alert_Frame.setSize(400, 100);
-	        Alert_Frame.setLocationRelativeTo(null);
-	        Alert_Frame.setVisible(true);
+			create_Popup("Zaehlerstand nicht Nummerisch");
 	        return;
 		}
 		Plausicheck(zA, zStand);
 		String kom=kommentar.getText();
 		AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
 		liste.add(entry);
-		
+		clear();
 		
 		}
-		private static void Create_Popup(final JFrame Alert_Frame, String Alert_Massage){
+	
+	private static void create_Popup(String Alert_Massage){
 	        JPanel Alert_Panel = new JPanel();
+			JFrame Alert_Frame = new JFrame("Alert Window");
 	        LayoutManager Alert_Layout = new FlowLayout();
 	        Alert_Panel.setLayout(Alert_Layout);
 	        JLabel Alert_Label = new JLabel(Alert_Massage);
 
 	        Alert_Panel.add(Alert_Label);
 	        Alert_Frame.getContentPane().add(Alert_Panel, BorderLayout.CENTER);
+	        Alert_Frame.setSize(400, 100);
+	        Alert_Frame.setLocationRelativeTo(null);
+	        Alert_Frame.setVisible(true);
 	}
+	private static void create_PopupWithButton(String Alert_Massage){
+        JPanel Alert_Panel = new JPanel();
+		JFrame Alert_Frame = new JFrame("Alert Window");
+        LayoutManager Alert_Layout = new FlowLayout();
+        Alert_Panel.setLayout(Alert_Layout);
+        JLabel Alert_Label = new JLabel(Alert_Massage);
+		JButton Button_Ja = new JButton("Ja");
+		JButton Button_Nein = new JButton("Nein");
+        Alert_Panel.add(Alert_Label);
+        Alert_Frame.getContentPane().add(Alert_Panel, BorderLayout.CENTER);
+        Alert_Frame.setSize(400, 100);
+        Alert_Frame.setLocationRelativeTo(null);
+        Alert_Frame.setVisible(true);Alert_Panel.add(Button_Nein);
+        Alert_Panel.add(Button_Ja);
+        Alert_Frame.getContentPane().add(Alert_Panel, BorderLayout.EAST);
+        Button_Nein.addActionListener(e -> {
+        	Alert_Frame.dispose();
+        	return;
+        });
+        Button_Ja.addActionListener(e -> {
+        	Alert_Frame.dispose();
+        });
+}
 		public void Plausicheck(String zA, int zStand) {
 			if(zStand > DEFAULT_WERTE.get(zA)) {
-				JFrame Alert_Frame = new JFrame("Alert Window");
-				JPanel Alert_Panel = new JPanel();
-				String Allert_Message = "Zählerstand ungewöhlich trotzdem Speichern?";
-		        JLabel Alert_Label = new JLabel(Allert_Message);
-				JButton Button_Ja = new JButton("Ja");
-				JButton Button_Nein = new JButton("Nein");
-				Create_Popup(Alert_Frame, Allert_Message);
-		        Alert_Frame.setSize(400, 100);
-		        Alert_Frame.setLocationRelativeTo(null);
-		        Alert_Frame.setVisible(true);
-		        Alert_Panel.add(Alert_Label);
-		        Alert_Panel.add(Button_Nein);
-		        Alert_Panel.add(Button_Ja);
-		        Alert_Frame.getContentPane().add(Alert_Panel, BorderLayout.EAST);
-		        Button_Nein.addActionListener(e -> {
-		        	Alert_Frame.dispose();
-		        	return;
-		        });
-		        Button_Ja.addActionListener(e -> {
-		        	Alert_Frame.dispose();
-		        });
+				
+				create_PopupWithButton("Werte ungewöhnlich trotzdem Speichern?");
 			}
 		 }
 	
 	public void export() {
 		liste.exportJson();
+	}
+	
+	public void clear() {
+		Date zDate = new Date();
+		kundenNummer.setText("");
+		zaelerArt.setSelectedIndex(0);
+		zaelernummer.setText("");
+		model.setValue(zDate); 
+		neuEingebaut.setSelected(false);
+		zaelerstand.setText("");;
+		kommentar.setText("");
+		
+	}
+	
+	public void loadWithValue(AbleseEntry entry) {
+		entry.
+		kundenNummer.setText(entry.getKundenNummer());
+		zaelerArt.setSelectedItem(entry.getZaelerArt());
+		zaelernummer.setText(Integer.toString(entry.getZaelernummer()));
+		model.setValue(entry.getDatum()); 
+		neuEingebaut.setSelected(entry.getNeuEingebaut());
+		zaelerstand.setText(Integer.toString(entry.getZaelerstand()));
+		kommentar.setText(entry.getKommentar());
 	}
 	
 	public void exit() {

@@ -29,9 +29,13 @@ public class AbleseList {
 	public AbleseEntry get(int index) {
 		return liste.get(index);
 	}
-
+	
+	public int indexOf(AbleseEntry entry) {
+		return liste.indexOf(entry);
+	}
+	
 	public AbleseEntry remove(AbleseEntry entry) {
-		int index=liste.indexOf(entry);
+		int index=indexOf(entry);
 		if (index<0) {
 			return null;
 		}

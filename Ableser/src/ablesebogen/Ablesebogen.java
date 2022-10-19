@@ -3,20 +3,13 @@ package ablesebogen;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.LayoutManager;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
-
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -24,11 +17,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-
 import javax.swing.JTextField;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
@@ -39,10 +27,12 @@ public class Ablesebogen extends JFrame{
 
 
 	private AbleseList liste;
+	private AbleseList newList;
 	private AbleseEntry curEntry;
 	
 	private JPanel inLayout;
-	private JPanel outLayout;
+	private AbleseOutPanel outLayout;
+	private AbleseOutPanel filterOutLayout;
 
 	private JPanel panel;
 	private JPanel buttonPanel;
@@ -55,10 +45,7 @@ public class Ablesebogen extends JFrame{
 	private JButton saveButton;
 	private JButton exportButton;
 	private JButton deleteButton;
-	
-	private AbleseTableModel tableModel;
-	private JTable outList;
-	
+		
 	private UtilDateModel model;
 
 	//private JComboBox neuEingebaut;
@@ -76,7 +63,7 @@ public class Ablesebogen extends JFrame{
 
 	public Ablesebogen() {
 		super("neuer Datensatz");
-		this.setSize(500, 250);
+		this.setSize(600, 250);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
@@ -85,6 +72,7 @@ public class Ablesebogen extends JFrame{
 		});
 		
 		liste=AbleseList.importJson();
+		newList=new AbleseList();
 		DEFAULT_WERTE.put("Gas", 100000);
 		DEFAULT_WERTE.put("Strom", 200000);
 		DEFAULT_WERTE.put("Wasser", 300000);
@@ -138,12 +126,14 @@ public class Ablesebogen extends JFrame{
 		exportButton=new JButton("Exportieren");
 		JButton toOutButton=new JButton("Liste Anzeigen");
 		deleteButton=new JButton("Löschen");
+		JButton toFilterOutButton=new JButton("Für diesen Kunden");
+
 		
 		buttonPanel.add(saveButton);
 		buttonPanel.add(deleteButton);
-		buttonPanel.add(exportButton);
 		buttonPanel.add(toOutButton);
-		
+		buttonPanel.add(toFilterOutButton);
+		buttonPanel.add(exportButton);
 		saveButton.addActionListener(e -> {	
 			save();
 		});
@@ -154,46 +144,29 @@ public class Ablesebogen extends JFrame{
 		toOutButton.addActionListener(e -> {
 			if(liste.size() < 1 ) {  create_Popup("Liste konnte nicht Angezeigt werden"); return;}
 
-			tableModel.fireTableDataChanged();
+			outLayout.updateTable();
 			this.setTitle("Übersichtsliste");
 			((CardLayout) con.getLayout()).show(con,"out");
 		});
 		deleteButton.addActionListener(e -> {
 			liste.remove(curEntry);
+			newList.remove(curEntry);
 			clear();
 		});
-				
-		//out Layout Base Layout
+		toFilterOutButton.addActionListener(e -> {
+			if(newList.size() < 1 ) {  create_Popup("Liste konnte nicht Angezeigt werden"); return;}
 
-		outLayout=new JPanel(new BorderLayout());
+			filterOutLayout.updateTable(kundenNummer.getText());
+			this.setTitle("Daten für "+kundenNummer.getText());
+			((CardLayout) con.getLayout()).show(con,"filter");
+			
+		});
+				
+		outLayout=new AbleseOutPanel(this, liste);
 		con.add(outLayout,"out");
 		
-		//out Layout Komponenten
-		JButton toInButton=new JButton("neuer Datensatz");
-		outLayout.add(toInButton,BorderLayout.SOUTH);
-		
-		toInButton.addActionListener(e -> {
-			this.setTitle("neuer Datensatz");
-			((CardLayout) con.getLayout()).show(con,"in");
-		});
-		
-		tableModel = new AbleseTableModel(liste);
-		outList=new JTable(tableModel);
-		outList.setAutoCreateRowSorter(true);
-	    JScrollPane scrollPane = new JScrollPane(outList);
-	    scrollPane.setPreferredSize(new Dimension(380,280));
-		outLayout.add(scrollPane);
-
-		outList.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount()!=2) {
-					return; //nur Doppelklick führt zum editieren
-				}
-				loadWithValue(liste.get(outList.getSelectedRow()));
-				((CardLayout) con.getLayout()).show(con,"in");				
-			}
-		});
+		filterOutLayout= new AbleseOutPanel(this, newList);
+		con.add(filterOutLayout,"filter");
 		
 		this.setVisible(true);
 	} 
@@ -223,6 +196,7 @@ public class Ablesebogen extends JFrame{
 		if (curEntry==null) {
 			AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
 			liste.add(entry);
+			newList.add(entry);
 		} else {
 			curEntry.setKundenNummer(kn);
 			curEntry.setZaelerArt(zA);
@@ -231,6 +205,9 @@ public class Ablesebogen extends JFrame{
 			curEntry.setNeuEingebaut(neuE);
 			curEntry.setZaelerstand(zStand);
 			curEntry.setKommentar(kom);
+			if (newList.indexOf(curEntry)<0) {
+				newList.add(curEntry);				
+			}
 		}
 		clear();
 	}

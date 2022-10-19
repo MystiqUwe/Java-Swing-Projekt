@@ -50,6 +50,8 @@ public class Ablesebogen extends JFrame{
 	private JButton exportButton;
 	
 	JTable outList;
+	
+	private UtilDateModel model;
 
 	//private JComboBox neuEingebaut;
 	private JComboBox<String> zaelerArt;
@@ -87,7 +89,7 @@ public class Ablesebogen extends JFrame{
 		buttonPanel = new JPanel();
 		inLayout.add(buttonPanel, BorderLayout.SOUTH);
 		
-		UtilDateModel model = new UtilDateModel();
+		model = new UtilDateModel();
 		model.setSelected(true); //init DatePicker Value
 		JDatePanelImpl datePanel = new JDatePanelImpl(model);
 		
@@ -183,10 +185,11 @@ public class Ablesebogen extends JFrame{
 		String kom=kommentar.getText();
 		AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
 		liste.add(entry);
-		
+		clear();
 		
 		}
-		private static void create_Popup(String Alert_Massage){
+	
+	private static void create_Popup(String Alert_Massage){
 	        JPanel Alert_Panel = new JPanel();
 			JFrame Alert_Frame = new JFrame("Alert Window");
 	        LayoutManager Alert_Layout = new FlowLayout();
@@ -199,8 +202,31 @@ public class Ablesebogen extends JFrame{
 	        Alert_Frame.setLocationRelativeTo(null);
 	        Alert_Frame.setVisible(true);
 	}
+	
 	public void export() {
 		liste.exportJson();
+	}
+	
+	public void clear() {
+		Date zDate = new Date();
+		kundenNummer.setText("");
+		zaelerArt.setSelectedIndex(0);
+		zaelernummer.setText("");
+		model.setValue(zDate); 
+		neuEingebaut.setSelected(false);
+		zaelerstand.setText("");;
+		kommentar.setText("");
+		
+	}
+	
+	public void loadWithValue(AbleseEntry entry) {
+		kundenNummer.setText(entry.getKundenNummer());
+		zaelerArt.setSelectedItem(entry.getZaelerArt());
+		zaelernummer.setText(Integer.toString(entry.getZaelernummer()));
+		model.setValue(entry.getDatum()); 
+		neuEingebaut.setSelected(entry.getNeuEingebaut());
+		zaelerstand.setText(Integer.toString(entry.getZaelerstand()));
+		kommentar.setText(entry.getKommentar());
 	}
 	
 	public void exit() {

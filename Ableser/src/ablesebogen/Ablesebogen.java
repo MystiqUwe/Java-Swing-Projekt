@@ -152,12 +152,12 @@ public class Ablesebogen extends JFrame{
 			export();
 		});
 		toOutButton.addActionListener(e -> {
+			tableModel.fireTableDataChanged();
 			if(liste.size() < 1 ) {  create_Popup("Liste konnte nicht Angezeigt werden"); return;}
 			((CardLayout) con.getLayout()).show(con,"out");
 		});
 		deleteButton.addActionListener(e -> {
 			liste.remove(curEntry);
-			tableModel.fireTableDataChanged();
 			clear();
 		});
 				
@@ -220,7 +220,6 @@ public class Ablesebogen extends JFrame{
 		if (curEntry==null) {
 			AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
 			liste.add(entry);
-			tableModel.fireTableDataChanged();
 		} else {
 			curEntry.setKundenNummer(kn);
 			curEntry.setZaelerArt(zA);

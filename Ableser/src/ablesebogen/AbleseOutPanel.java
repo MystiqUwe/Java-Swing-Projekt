@@ -17,6 +17,15 @@ import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.table.TableRowSorter;
 
+/*Eine Übersichtsliste von AbleseEntrys "outLayout"
+ * -Ein Button in der Fußleiste um einen neuen Datensatz anzulegen
+ * -Doppelklick auf einen Datensatz um ihn zu bearbeiten
+ * 
+ *  Wenn keine Datensätze vorhanden sind kann die Liste nicht geöffnet werden
+ *  
+ *  openTable() öffnet die Liste, optional mit einem Filterparameter, dann werden nur die Daten
+ *  angezeigt bei denen die Kundennummer mit diesem Filter beginnt
+*/
 public class AbleseOutPanel extends JPanel {
 
 	public Ablesebogen baseFrame;
@@ -24,10 +33,13 @@ public class AbleseOutPanel extends JPanel {
 	private AbleseTableModel tableModel;
 	private RowSorter<AbleseTableModel> sorter;
 	private JTable outList;
+	
+	private String card;
 
-	public AbleseOutPanel(Ablesebogen bFrame, AbleseList liste) {
+	public AbleseOutPanel(Ablesebogen bFrame, AbleseList liste, String card) {
 		super(new BorderLayout());
 		baseFrame=bFrame;
+		this.card=card;
 		//out Layout Base Layout
 		
 		//out Layout Komponenten
@@ -63,11 +75,14 @@ public class AbleseOutPanel extends JPanel {
 
 	}
 	
-	public void updateTable() {
+	public void openTable() {
 		tableModel.fireTableDataChanged();
+		((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),card);				
 	}
 	
-	public void updateTable(String filter) {
+	/*öffnet die Liste, optional mit einem Filterparameter, dann werden nur die Daten
+	 *  angezeigt bei denen die Kundennummer mit diesem Filter beginnt*/
+	public void openTable(String filter) {
 		RowFilter<AbleseTableModel, Object> rf = null;
 		tableModel.fireTableDataChanged();
 	    try {
@@ -82,6 +97,7 @@ public class AbleseOutPanel extends JPanel {
 		sortList.add( new RowSorter.SortKey(3, SortOrder.ASCENDING) );
 		sorter.setSortKeys(sortList);
 	    ((DefaultRowSorter<AbleseTableModel, Integer>) sorter).setRowFilter(rf);
+		((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),card);				
 	    
 	}
 }

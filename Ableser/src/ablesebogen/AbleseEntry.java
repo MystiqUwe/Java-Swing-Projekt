@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/* Datenklasse, repräsentiert einen einzelnen Dateneintrag*/
 @Getter
 @Setter
 @NoArgsConstructor

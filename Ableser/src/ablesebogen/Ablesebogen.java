@@ -23,7 +23,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
@@ -32,11 +31,12 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 public class Ablesebogen extends JFrame{
 
-
-	private AbleseList liste;
-	private AbleseList newList;
-	private AbleseEntry curEntry;
+	//Datenspeicher
+	private AbleseList liste; //Liste von allen Daten
+	private AbleseList newList; //Neue Daten, in dieser Session hinzugefügt
+	private AbleseEntry curEntry; //Der aktuell zu editierender Datensatz, null falls nicht vorhanden
 	
+	//UI Panels
 	private JPanel inLayout;
 	private AbleseOutPanel outLayout;
 	private AbleseOutPanel filterOutLayout;
@@ -44,33 +44,19 @@ public class Ablesebogen extends JFrame{
 	private JPanel panel;
 	private JPanel buttonPanel;
 	
+	//Eingabefelder
 	private JTextField kundenNummer;
 	private JTextField zaelernummer;
 	private JTextField zaelerstand;
 	private JTextField kommentar;
-	
-	private JButton saveButton;
-	private JButton exportButton;
-	private JButton deleteButton;
-
-	private AbleseTableModel tableModel;
-	private JTable outList;
-	
-	private JDatePanelImpl datePanel;
-
-	private UtilDateModel model;
-
-	//private JComboBox neuEingebaut;
-	private JComboBox<String> zaelerArt;
-	
+	private JComboBox<String> zaelerArt;	
 	private JCheckBox neuEingebaut;
-	
 	private JDatePickerImpl datePicker;
+	private JDatePanelImpl datePanel;
+	private UtilDateModel model;
 	
-	//private String DEFAULT_EINGEBAUT[] = {"Ja", "Nein"};
-
+	//Für den Plausibilitätscheck
 	HashMap<String, Integer> DEFAULT_WERTE = new HashMap<String, Integer>();
-
 	private String DEFAULT_ZAELERART[] = {"Gas", "Strom", "Heizung", "Wasser"};
 
 	public Ablesebogen() {
@@ -83,6 +69,7 @@ public class Ablesebogen extends JFrame{
 			}
 		});
 		
+		//Startwerte
 		liste=AbleseList.importJson();
 		newList=new AbleseList();
 		DEFAULT_WERTE.put("Gas", 100000);
@@ -144,10 +131,9 @@ public class Ablesebogen extends JFrame{
 		panel.add(kommentar);
 		
 		//untere Leiste
-		saveButton=new JButton("Speichern");
-		exportButton=new JButton("Exportieren");
+		JButton saveButton=new JButton("Speichern");
 		JButton toOutButton=new JButton("Liste Anzeigen");
-		deleteButton=new JButton("Löschen");
+		JButton deleteButton=new JButton("Löschen");
 		JButton toFilterOutButton=new JButton("Für diesen Kunden");
 
 		
@@ -160,15 +146,11 @@ public class Ablesebogen extends JFrame{
 			save();
 		});
 		
-		exportButton.addActionListener(e -> {	
-			export();
-		});
 		toOutButton.addActionListener(e -> {
 			if(liste.size() < 1 ) {  create_Popup("Liste konnte nicht Angezeigt werden"); return;}
 
-			outLayout.updateTable();
+			outLayout.openTable();
 			this.setTitle("Übersichtsliste");
-			((CardLayout) con.getLayout()).show(con,"out");
 		});
 		deleteButton.addActionListener(e -> {
 			liste.remove(curEntry);
@@ -178,21 +160,20 @@ public class Ablesebogen extends JFrame{
 		toFilterOutButton.addActionListener(e -> {
 			if(newList.size() < 1 ) {  create_Popup("Liste konnte nicht Angezeigt werden"); return;}
 
-			filterOutLayout.updateTable(kundenNummer.getText());
-			this.setTitle("Daten für "+kundenNummer.getText());
-			((CardLayout) con.getLayout()).show(con,"filter");
-			
+			filterOutLayout.openTable(kundenNummer.getText());
+			this.setTitle("Daten für "+kundenNummer.getText());			
 		});
 				
-		outLayout=new AbleseOutPanel(this, liste);
+		outLayout=new AbleseOutPanel(this, liste, "out");
 		con.add(outLayout,"out");
 		
-		filterOutLayout= new AbleseOutPanel(this, newList);
+		filterOutLayout= new AbleseOutPanel(this, newList,"filter");
 		con.add(filterOutLayout,"filter");
 
 		this.setVisible(true);
 	} 
 	
+	//Speichert den Datensatz aus dem in Layout, entweder als neuer Datensatz, oder als Update falls vorhanden
 	public void save() {
 		
 		String kn=kundenNummer.getText();
@@ -213,8 +194,11 @@ public class Ablesebogen extends JFrame{
 			create_Popup("Zaehlerstand nicht Nummerisch");
 	        return;
 		}
-		if(!Plausicheck(zA, zStand)) return;
 		String kom=kommentar.getText();
+		
+		//#009 Plausibilitätsprüfung
+		if(!Plausicheck(zA, zStand)) return;
+
 		if (curEntry==null) {
 			AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
 			liste.add(entry);
@@ -234,18 +218,20 @@ public class Ablesebogen extends JFrame{
 		clear();
 	}
 
-		public boolean Plausicheck(String zA, int zStand) {
-			boolean result = true;
-			if(zStand > DEFAULT_WERTE.get(zA)) {
-				
-				JFrame zFrame = new JFrame();
-				JPanel zPanel = new JPanel();
-				ConfirmDialog dialog = new ConfirmDialog(zFrame);
-				result = dialog.showConfirmDialog(zPanel, "Werte ungewöhnlich trotzdem Speichern? ");	        	
-			}
-			return result;
-		 }
-	
+	//Plausibilitatsprüfung für #009, simpler check ob der eingegebene Wert größer als ein vordefinierter Wert ist
+	public boolean Plausicheck(String zA, int zStand) {
+		boolean result = true;
+		if(zStand > DEFAULT_WERTE.get(zA)) {
+			
+			JFrame zFrame = new JFrame();
+			JPanel zPanel = new JPanel();
+			ConfirmDialog dialog = new ConfirmDialog(zFrame);
+			result = dialog.showConfirmDialog(zPanel, "Werte ungewöhnlich trotzdem Speichern? ");	        	
+		}
+		return result;
+	 }
+
+	//Hilfsfunktion, erstellt ein Popup Fenster
 	private static void create_Popup(String Alert_Massage){
         JPanel Alert_Panel = new JPanel();
 		JFrame Alert_Frame = new JFrame("Alert Window");
@@ -265,13 +251,14 @@ public class Ablesebogen extends JFrame{
 	public void export() {
 		liste.exportJson();
 	}
-	
+
+	//Löscht die Daten aus den Eingabefeldern, nach dem speichern als Vorbereitung auf den nächsten Datensatz
 	public void clear() {
 		this.setTitle("neuer Datensatz");
 
 		Date zDate = new Date();
-		kundenNummer.setText("");
-		zaelerArt.setSelectedIndex(0);
+		//kundenNummer.setText("");
+		//zaelerArt.setSelectedIndex(0);
 		zaelernummer.setText("");
 		model.setValue(zDate); 
 		neuEingebaut.setSelected(false);
@@ -281,6 +268,7 @@ public class Ablesebogen extends JFrame{
 		curEntry=null;
 	}
 	
+	//Öffnet einen Datensatz zum editieren
 	public void loadWithValue(AbleseEntry entry) {
 		this.setTitle(entry.getKundenNummer()+" bearbeiten");
 
@@ -295,7 +283,8 @@ public class Ablesebogen extends JFrame{
 		curEntry=entry;
 	}
 	
-	public void drawMenu() {
+	//Hilfsfunktion für die Menüleiste
+	private void drawMenu() {
 		JMenuBar mb=new JMenuBar();  
 		 JMenu  menu=new JMenu("Exportieren");  
     
@@ -311,12 +300,12 @@ public class Ablesebogen extends JFrame{
 		      });
 		 subMenuXML.addActionListener(new ActionListener() {
 		      public void actionPerformed(ActionEvent ev) {
-		         // liste.exportXML();
+		          liste.exportXML();
 		        }
 		      });
 		 subMenuCSV.addActionListener(new ActionListener() {
 		      public void actionPerformed(ActionEvent ev) {
-		          //liste.exportCSV();
+		          liste.exportCSV();
 		        }
 		      });
 		 menu.add(subMenuJSON);

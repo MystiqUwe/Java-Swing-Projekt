@@ -1,5 +1,7 @@
 package ablesebogen;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
@@ -29,7 +31,6 @@ public class AbleseTableModel extends AbstractTableModel {
 	   public String getColumnName(int col) {
 		      return columnNames[col];
 		   }
-	@SuppressWarnings("deprecation")
 	@Override
 	   public Object getValueAt(int row, int col) {
 	      Object temp = null;
@@ -43,7 +44,8 @@ public class AbleseTableModel extends AbstractTableModel {
 	         temp = myList.get(row).getZaelernummer();
 	      }
 	      else if (col == 3) {
-		         temp = myList.get(row).getDatum().toLocaleString();
+	    	  DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+		         temp = df.format(myList.get(row).getDatum());
 		      }
 	      else if (col == 4) {
 		         temp = myList.get(row).getNeuEingebaut();

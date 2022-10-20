@@ -1,18 +1,28 @@
 package ablesebogen;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import lombok.Getter;
 import lombok.Setter;
 
+//Wrapper für die verwendete Liste, außerdem verantwortlich für den Export/Import
 public class AbleseList {
 
 	private static ObjectMapper obMap=new ObjectMapper();
 	private static final String FILE = "target/Ablesewerte.json";
+	private static final String XMLFILE = "target/Ablesewerte.xml";
+	private static final String CSVFILE = "target/Ablesewerte.csv";
 
 	@Getter
 	@Setter
@@ -64,6 +74,8 @@ public class AbleseList {
 		final File f = new File(FILE);
 		if (f.exists()) {
 			try {
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				obMap.setDateFormat(df);
 
 				AbleseList list= obMap.readValue(new File(FILE), AbleseList.class);
 				
@@ -81,6 +93,8 @@ public class AbleseList {
 	public void exportJson() {
 		try {
 
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			obMap.setDateFormat(df);
 			obMap.writerWithDefaultPrettyPrinter().writeValue(new File(FILE), this);			
 			
 			System.out.format("Datei %s erzeugt\n", FILE);
@@ -90,5 +104,45 @@ public class AbleseList {
 		}
 	}
 
+	public void exportXML() {
+		try {
+			XmlMapper xmlMapper = new XmlMapper();
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			xmlMapper.setDateFormat(df);
 
+			xmlMapper.writerWithDefaultPrettyPrinter().writeValue(new File(XMLFILE),this);
+			System.out.format("Datei %s erzeugt\n", XMLFILE);
+		} catch (final Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	public void exportCSV() {
+		try {
+			final BufferedWriter out = new BufferedWriter(new FileWriter(CSVFILE, StandardCharsets.UTF_8));
+		    for (final AbleseEntry entry : liste) {
+		    	out.write(entry.getKundenNummer());
+		    	out.write(";");
+		    	out.write(entry.getZaelerArt());
+		    	out.write(";");
+		    	out.write(""+entry.getZaelernummer());
+		    	out.write(";");
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		    	out.write(df.format(entry.getDatum()));
+		    	out.write(";");
+		    	out.write(""+entry.getNeuEingebaut());
+		    	out.write(";");
+		    	out.write(""+entry.getZaelerstand());
+		    	out.write(";");
+		    	out.write(entry.getKommentar());
+		    	out.write("\n");
+		    }
+		    out.close();
+		    System.out.format("Datei %s erzeugt\n", CSVFILE);
+		} catch (final IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		   }
+	}
 }

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.Getter;
 import lombok.Setter;
 
-//Wrapper für die verwendete Liste, außerdem verantwortlich für den Export/Import
+//Wrapper für die verwendete Liste, außerdem verantwortlich für den Export/Import mit den Methoden "export<Dateiformat>()
 public class AbleseList {
 
 	private static ObjectMapper obMap=new ObjectMapper();
@@ -110,7 +110,7 @@ public class AbleseList {
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			xmlMapper.setDateFormat(df);
 
-			xmlMapper.writerWithDefaultPrettyPrinter().writeValue(new File(XMLFILE),this);
+			xmlMapper.writerWithDefaultPrettyPrinter().writeValue(new File(XMLFILE),liste);
 			System.out.format("Datei %s erzeugt\n", XMLFILE);
 		} catch (final Exception e) {
 			e.printStackTrace();

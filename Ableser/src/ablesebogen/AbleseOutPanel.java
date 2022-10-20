@@ -36,6 +36,10 @@ public class AbleseOutPanel extends JPanel {
 	
 	private String card;
 
+	/* bFrame: Basisframe in dem das Panel einfefügt wird, ein CardLayout
+	 * liste: Die anzuzeigende Liste
+	 * card: Der Name der CardLayout Card die dieses Objekt repräsentieren soll
+	 */
 	public AbleseOutPanel(Ablesebogen bFrame, AbleseList liste, String card) {
 		super(new BorderLayout());
 		baseFrame=bFrame;
@@ -75,12 +79,13 @@ public class AbleseOutPanel extends JPanel {
 
 	}
 	
+	/* öffnet die Liste*/
 	public void openTable() {
 		tableModel.fireTableDataChanged();
 		((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),card);				
 	}
 	
-	/*öffnet die Liste, optional mit einem Filterparameter, dann werden nur die Daten
+	/*öffnet die Liste, mit einem Filterparameter, es werden nur die Daten
 	 *  angezeigt bei denen die Kundennummer mit diesem Filter beginnt*/
 	public void openTable(String filter) {
 		RowFilter<AbleseTableModel, Object> rf = null;

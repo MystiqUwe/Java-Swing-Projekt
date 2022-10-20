@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
+/* Hilfsklasse für die Ausgabeliste, */
 public class AbleseTableModel extends AbstractTableModel {
 	 private String[] columnNames = {"Kundennummer","Zählerart","Zählernummer", "Datum", "neu eingebaut", "Zählerstand", "Kommentar"};
 	   private ArrayList<AbleseEntry> myList;

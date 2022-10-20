@@ -30,7 +30,7 @@ public class AbleseEntry {
 		this.kommentar = kommentar;
 	}
 	
-
+	//lombak erstellt diesen Getter nicht
 	public boolean getNeuEingebaut() {
 		return neuEingebaut;
 	}

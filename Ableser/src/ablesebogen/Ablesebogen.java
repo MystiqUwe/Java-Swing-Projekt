@@ -10,6 +10,8 @@ import java.awt.LayoutManager;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Date;
@@ -69,7 +71,7 @@ public class Ablesebogen extends JFrame{
 		super("neuer Datensatz");
 		//Für unser eigenes Icon
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("swarm.png")));
-		this.setSize(600, 250);
+		this.setSize(650, 275);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
@@ -110,6 +112,8 @@ public class Ablesebogen extends JFrame{
 		zaelerArt=new JComboBox<String>(DEFAULT_ZAELERART);
 		zaelernummer=new JTextField();
 		datePicker = new JDatePickerImpl(datePanel);
+		datePicker.setTextEditable(true);
+		
 		//neuEingebaut=new JComboBox(DEFAULT_EINGEBAUT);
 		neuEingebaut=new JCheckBox();
 		zaelerstand=new JTextField();
@@ -178,34 +182,109 @@ public class Ablesebogen extends JFrame{
 		filterOutLayout= new AbleseOutPanel(this, newList,"filter");
 		con.add(filterOutLayout,"filter");
 
+		//Enter zur Navigation
+		kundenNummer.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+					zaelerArt.requestFocus();
+				}
+			}
+		});
+		zaelerArt.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+					zaelernummer.requestFocus();
+				}
+			}
+		});
+		zaelernummer.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+					datePicker.getJFormattedTextField().requestFocus();
+				}
+			}
+		});
+		datePicker.getJFormattedTextField().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+					neuEingebaut.requestFocus();
+				}
+			}
+		});
+		neuEingebaut.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+					zaelerstand.requestFocus();
+				}
+			}
+		});
+		zaelerstand.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+					kommentar.requestFocus();
+				}
+			}
+		});
+		kommentar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+					if (save()) {
+						kundenNummer.requestFocus();
+					}
+				}
+			}
+		});
+		
+		
+		
 		this.setVisible(true);
 	} 
 	
 	//Speichert den Datensatz aus dem in Layout, entweder als neuer Datensatz, oder als Update falls vorhanden
-	public void save() {
+	public boolean save() {
 		
 		String kn=kundenNummer.getText();
+		if (kn.length()==0) {
+			JOptionPane.showMessageDialog(dialogFrame, "Kundennummer darf nicht leer sein", "", JOptionPane.ERROR_MESSAGE);
+			kundenNummer.requestFocus();
+			return false;
+		}
+		
 		String zA=zaelerArt.getSelectedItem().toString();
+		
 		int zN=0;
 		try {
 			zN=Integer.parseInt(zaelernummer.getText());
 		}catch (NumberFormatException ec) {
 			JOptionPane.showMessageDialog(dialogFrame, "Zaehlernummer nicht Nummerisch", "", JOptionPane.ERROR_MESSAGE);
-	        return;
+			zaelernummer.requestFocus();
+	        return false;
 		}
+		
 		Date selectedDate = (Date) datePicker.getModel().getValue();
+		
 		boolean neuE=neuEingebaut.isSelected();// neuEingebaut.getText();
+		
 		int zStand=0;
 		try {
 			zStand=Integer.parseInt(zaelerstand.getText());
 		}catch (NumberFormatException ec2) {
 			JOptionPane.showMessageDialog(dialogFrame, "Zählerstand nicht Nummerisch", "", JOptionPane.ERROR_MESSAGE);
-	        return;
+			zaelerstand.requestFocus();
+	        return false;
 		}
+		
 		String kom=kommentar.getText();
 		
 		//#009 Plausibilitätsprüfung
-		if(Plausicheck(zA, zStand) == 1) return;
+		if(Plausicheck(zA, zStand) == 1) return false;
 
 		if (curEntry==null) {
 			AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
@@ -224,6 +303,7 @@ public class Ablesebogen extends JFrame{
 			}
 		}
 		clear();
+		return true;
 	}
 
 	//Plausibilitatsprüfung für #009, simpler check ob der eingegebene Wert größer als ein vordefinierter Wert ist

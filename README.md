@@ -1,7 +1,7 @@
 # Java-Swing-Projekt
 Java Projekt für AP 3FA091(Gruppe G).
 
-#AbleseBogen
+# AbleseBogen
 
 Das Programm ermöglicht eine Einfache und Digitale Eingabe von Daten in den Ablesebogen.
 Die Vorteile einer Digitalen Variante des Ablesebogen`s füllt eine ganze Liste:

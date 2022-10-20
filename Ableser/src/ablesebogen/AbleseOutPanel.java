@@ -3,6 +3,7 @@ package ablesebogen;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -47,14 +48,26 @@ public class AbleseOutPanel extends JPanel {
 		//out Layout Base Layout
 		
 		//out Layout Komponenten
-		JButton toInButton=new JButton("neuer Datensatz");
-		this.add(toInButton,BorderLayout.SOUTH);
 		
+		//Button Leiste
+		JPanel buttonPanel=new JPanel(new GridLayout(1,2));
+		this.add(buttonPanel,BorderLayout.SOUTH);
+		
+		JButton toInButton=new JButton("neuer Datensatz");
+		JButton editButton=new JButton("bearbeiten");
+
+		buttonPanel.add(toInButton);
+		buttonPanel.add(editButton);
+
 		toInButton.addActionListener(e -> {
 			baseFrame.setTitle("neuer Datensatz");
+			baseFrame.clear();
 			((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"in");
 		});
 		
+		editButton.addActionListener(e-> edit());
+		
+		//Tabelle
 		tableModel = new AbleseTableModel(liste);
 		outList=new JTable(tableModel);
 		outList.setAutoCreateRowSorter(true);
@@ -72,11 +85,18 @@ public class AbleseOutPanel extends JPanel {
 				if (e.getClickCount()!=2) {
 					return; //nur Doppelklick führt zum editieren
 				}
-				baseFrame.loadWithValue(liste.get(outList.getSelectedRow()));
-				((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"in");				
+				edit();
 			}
 		});
 
+	}
+	
+	private void edit() {
+		int row =outList.getSelectedRow();
+		if (row<0) return;
+		baseFrame.loadWithValue(tableModel.getMyList().get(outList.convertRowIndexToModel(row)));
+		((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"in");				
+		
 	}
 	
 	/* öffnet die Liste*/

@@ -1,16 +1,18 @@
 package ablesebogen;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
+
+import lombok.Getter;
 
 /* Hilfsklasse für die Ausgabeliste, */
 public class AbleseTableModel extends AbstractTableModel {
 
 	private String[] columnNames = { "Kundennummer", "Zählerart", "Zählernummer", "Datum", "neu eingebaut",
 			"Zählerstand", "Kommentar" };
+	@Getter
 	private ArrayList<AbleseEntry> myList;
 
 	public AbleseTableModel(AbleseList liste) {

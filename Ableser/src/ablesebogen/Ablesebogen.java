@@ -344,11 +344,6 @@ public class Ablesebogen extends JFrame{
 		return result;
 	 }	
 		
-
-	public void export() {
-		liste.exportJson();
-	}
-
 	//Löscht die Daten aus den Eingabefeldern, nach dem speichern als Vorbereitung auf den nächsten Datensatz
 	public void clear() {
 		this.setTitle("neuer Datensatz");

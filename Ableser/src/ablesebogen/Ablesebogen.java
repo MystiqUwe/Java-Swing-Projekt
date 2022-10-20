@@ -271,8 +271,13 @@ public class Ablesebogen extends JFrame{
 		int zN = 0;
 		try {
 			zN = Integer.parseInt(zaelernummer.getText());
+			if (zN<0) {
+				JOptionPane.showMessageDialog(dialogFrame, "Zählernummer darf nicht negativ sein", "", JOptionPane.ERROR_MESSAGE);
+				zaelernummer.requestFocus();
+				return false;				
+			}
 		} catch (NumberFormatException ec) {
-			JOptionPane.showMessageDialog(dialogFrame, "Zaehlernummer nicht Nummerisch", "", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(dialogFrame, "Zählernummer nicht Nummerisch", "", JOptionPane.ERROR_MESSAGE);
 			zaelernummer.requestFocus();
 			return false;
 		}
@@ -284,6 +289,11 @@ public class Ablesebogen extends JFrame{
 		int zStand = 0;
 		try {
 			zStand = Integer.parseInt(zaelerstand.getText());
+			if (zStand<0) {
+				JOptionPane.showMessageDialog(dialogFrame, "Zählerstand darf nicht negativ sein", "", JOptionPane.ERROR_MESSAGE);
+				zaelerstand.requestFocus();
+				return false;				
+			}
 		} catch (NumberFormatException ec2) {
 			JOptionPane.showMessageDialog(dialogFrame, "Zählerstand nicht Nummerisch", "", JOptionPane.ERROR_MESSAGE);
 			zaelerstand.requestFocus();

@@ -110,7 +110,7 @@ public class AbleseList {
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			xmlMapper.setDateFormat(df);
 
-			xmlMapper.writerWithDefaultPrettyPrinter().writeValue(new File(XMLFILE),liste);
+			xmlMapper.writerWithDefaultPrettyPrinter().writeValue(new File(XMLFILE),this);
 			System.out.format("Datei %s erzeugt\n", XMLFILE);
 		} catch (final Exception e) {
 			e.printStackTrace();

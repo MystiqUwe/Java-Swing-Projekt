@@ -77,6 +77,14 @@ public class AbleseOutPanel extends JPanel {
 			}
 		});
 
+		outList.getColumnModel().getColumn(0).setPreferredWidth(80);
+		outList.getColumnModel().getColumn(1).setPreferredWidth(40);
+		outList.getColumnModel().getColumn(2).setPreferredWidth(70);
+		outList.getColumnModel().getColumn(3).setPreferredWidth(60);
+		outList.getColumnModel().getColumn(4).setPreferredWidth(30);
+		outList.getColumnModel().getColumn(5).setPreferredWidth(50);
+		//outList.getColumnModel().getColumn(6).setMinWidth(100);
+
 	}
 	
 	/* öffnet die Liste*/

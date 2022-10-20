@@ -420,7 +420,7 @@ public class Ablesebogen extends JFrame{
 	}
 	
 	public void exit() {
-		export();
+		liste.exportJson();
 		System.exit(0);
 	}
 		

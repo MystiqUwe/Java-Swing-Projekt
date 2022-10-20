@@ -357,9 +357,10 @@ public class Ablesebogen extends JFrame{
 	
 	
 	/** 
+	 * Öffnet einen Datensatz zum editieren
+	 * 
 	 * @param entry
 	 */
-	//Öffnet einen Datensatz zum editieren
 	public void loadWithValue(AbleseEntry entry) {
 		this.setTitle(entry.getKundenNummer()+" bearbeiten");
 

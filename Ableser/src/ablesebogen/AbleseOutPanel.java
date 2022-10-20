@@ -77,14 +77,6 @@ public class AbleseOutPanel extends JPanel {
 			}
 		});
 
-		outList.getColumnModel().getColumn(0).setPreferredWidth(80);
-		outList.getColumnModel().getColumn(1).setPreferredWidth(40);
-		outList.getColumnModel().getColumn(2).setPreferredWidth(70);
-		outList.getColumnModel().getColumn(3).setPreferredWidth(60);
-		outList.getColumnModel().getColumn(4).setPreferredWidth(30);
-		outList.getColumnModel().getColumn(5).setPreferredWidth(50);
-		//outList.getColumnModel().getColumn(6).setMinWidth(100);
-
 	}
 	
 	/* öffnet die Liste*/
@@ -95,10 +87,11 @@ public class AbleseOutPanel extends JPanel {
 	
 	
 	/** 
+	 * Öffnet die Liste, mit einem Filterparameter, es werden nur die Daten
+	 * angezeigt bei denen die Kundennummer mit diesem Filter beginnt
+	 * 
 	 * @param filter
 	 */
-	/*öffnet die Liste, mit einem Filterparameter, es werden nur die Daten
-	 *  angezeigt bei denen die Kundennummer mit diesem Filter beginnt*/
 	public void openTable(String filter) {
 		RowFilter<AbleseTableModel, Object> rf = null;
 		tableModel.fireTableDataChanged();

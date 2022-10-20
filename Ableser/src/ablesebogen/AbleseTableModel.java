@@ -1,7 +1,6 @@
 package ablesebogen;
 
 import java.sql.Date;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -19,33 +18,11 @@ public class AbleseTableModel extends AbstractTableModel {
 		
 	}
 
-	@Override
-	public int getRowCount() {
-		int size;
-		if (myList == null) {
-			size = 0;
-		} else {
-			size = myList.size();
-		}
-		return size;
-	}
 
 	@Override
 	public int getColumnCount() {
 		return columnNames.length;
 	}
-
-	@Override
-	public String getColumnName(int col) {
-		return columnNames[col];
-	}
-
-
-	 private String[] columnNames = {"Kundennummer","Zählerart","Zählernummer", "Datum", "neu eingebaut", "Zählerstand", "Kommentar"};
-	   private ArrayList<AbleseEntry> myList;
-	   public AbleseTableModel(AbleseList liste) {
-	      myList = liste.getListe();
-	   }
 	
 	/** 
 	 * @return int

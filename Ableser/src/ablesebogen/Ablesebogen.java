@@ -7,6 +7,7 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -61,6 +62,8 @@ public class Ablesebogen extends JFrame{
 
 	public Ablesebogen() {
 		super("neuer Datensatz");
+		//Für unser eigenes Icon
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("swarm.png")));
 		this.setSize(600, 250);
 		addWindowListener(new WindowAdapter() {
 			@Override

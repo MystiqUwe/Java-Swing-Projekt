@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -55,6 +56,10 @@ public class Ablesebogen extends JFrame{
 	private JDatePickerImpl datePicker;
 	private JDatePanelImpl datePanel;
 	private UtilDateModel model;
+	
+	private JOptionPane optionPane;
+	private JFrame dialogFrame = new JFrame();
+
 	
 	//Für den Plausibilitätscheck
 	HashMap<String, Integer> DEFAULT_WERTE = new HashMap<String, Integer>();
@@ -150,7 +155,7 @@ public class Ablesebogen extends JFrame{
 		});
 		
 		toOutButton.addActionListener(e -> {
-			if(liste.size() < 1 ) {  create_Popup("Liste konnte nicht Angezeigt werden"); return;}
+			if(liste.size() < 1 ) {  JOptionPane.showMessageDialog(dialogFrame, "Liste konnte nicht Angezeigt werden", "", JOptionPane.ERROR_MESSAGE); return;}
 
 			outLayout.openTable();
 			this.setTitle("Übersichtsliste");
@@ -161,7 +166,7 @@ public class Ablesebogen extends JFrame{
 			clear();
 		});
 		toFilterOutButton.addActionListener(e -> {
-			if(newList.size() < 1 ) {  create_Popup("Liste konnte nicht Angezeigt werden"); return;}
+			if(newList.size() < 1 ) {  JOptionPane.showMessageDialog(dialogFrame, "Liste konnte nicht Angezeigt werden", "", JOptionPane.ERROR_MESSAGE); return;}
 
 			filterOutLayout.openTable(kundenNummer.getText());
 			this.setTitle("Daten für "+kundenNummer.getText());			
@@ -185,7 +190,7 @@ public class Ablesebogen extends JFrame{
 		try {
 			zN=Integer.parseInt(zaelernummer.getText());
 		}catch (NumberFormatException ec) {
-			create_Popup("Zaehlernummer nicht Nummerisch");
+			JOptionPane.showMessageDialog(dialogFrame, "Zaehlernummer nicht Nummerisch", "", JOptionPane.ERROR_MESSAGE);
 	        return;
 		}
 		Date selectedDate = (Date) datePicker.getModel().getValue();
@@ -194,13 +199,13 @@ public class Ablesebogen extends JFrame{
 		try {
 			zStand=Integer.parseInt(zaelerstand.getText());
 		}catch (NumberFormatException ec2) {
-			create_Popup("Zaehlerstand nicht Nummerisch");
+			JOptionPane.showMessageDialog(dialogFrame, "Zählerstand nicht Nummerisch", "", JOptionPane.ERROR_MESSAGE);
 	        return;
 		}
 		String kom=kommentar.getText();
 		
 		//#009 Plausibilitätsprüfung
-		if(!Plausicheck(zA, zStand)) return;
+		if(Plausicheck(zA, zStand) == 1) return;
 
 		if (curEntry==null) {
 			AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
@@ -222,33 +227,13 @@ public class Ablesebogen extends JFrame{
 	}
 
 	//Plausibilitatsprüfung für #009, simpler check ob der eingegebene Wert größer als ein vordefinierter Wert ist
-	public boolean Plausicheck(String zA, int zStand) {
-		boolean result = true;
-		if(zStand > DEFAULT_WERTE.get(zA)) {
-			
-			JFrame zFrame = new JFrame();
-			JPanel zPanel = new JPanel();
-			ConfirmDialog dialog = new ConfirmDialog(zFrame);
-			result = dialog.showConfirmDialog(zPanel, "Werte ungewöhnlich trotzdem Speichern? ");	        	
+	public int Plausicheck(String zA, int zStand) {
+		int result = 0;
+		if(zStand > DEFAULT_WERTE.get(zA)) {			   
+			result = JOptionPane.showConfirmDialog(dialogFrame, "Werte ungewöhnlich trotzdem Speichern?", "",  JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 		}
 		return result;
-	 }
-
-	//Hilfsfunktion, erstellt ein Popup Fenster
-	private static void create_Popup(String Alert_Massage){
-        JPanel Alert_Panel = new JPanel();
-		JFrame Alert_Frame = new JFrame("Alert Window");
-        LayoutManager Alert_Layout = new FlowLayout();
-        Alert_Panel.setLayout(Alert_Layout);
-        JLabel Alert_Label = new JLabel(Alert_Massage);
-
-        Alert_Panel.add(Alert_Label);
-        Alert_Frame.getContentPane().add(Alert_Panel, BorderLayout.CENTER);
-        Alert_Frame.setSize(400, 100);
-        Alert_Frame.setLocationRelativeTo(null);
-        Alert_Frame.setVisible(true);
-	}
-	
+	 }	
 		
 
 	public void export() {

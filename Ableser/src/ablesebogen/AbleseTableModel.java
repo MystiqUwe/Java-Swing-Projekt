@@ -9,6 +9,7 @@ import javax.swing.table.AbstractTableModel;
 
 /* Hilfsklasse für die Ausgabeliste, */
 public class AbleseTableModel extends AbstractTableModel {
+
 	private String[] columnNames = { "Kundennummer", "Zählerart", "Zählernummer", "Datum", "neu eingebaut",
 			"Zählerstand", "Kommentar" };
 	private ArrayList<AbleseEntry> myList;
@@ -39,6 +40,31 @@ public class AbleseTableModel extends AbstractTableModel {
 		return columnNames[col];
 	}
 
+
+	 private String[] columnNames = {"Kundennummer","Zählerart","Zählernummer", "Datum", "neu eingebaut", "Zählerstand", "Kommentar"};
+	   private ArrayList<AbleseEntry> myList;
+	   public AbleseTableModel(AbleseList liste) {
+	      myList = liste.getListe();
+	   }
+	
+	/** 
+	 * @return int
+	 */
+	@Override
+	   public int getRowCount() {
+	      int size;
+	      if (myList == null) {
+	         size = 0;
+	      }
+	      else {
+	         size = myList.size();
+	      }
+	      return size;
+	   }
+	
+	/** 
+	 * @return int
+	 */
 	@Override
 	public Object getValueAt(int row, int col) {
 		Object temp = null;
@@ -60,6 +86,20 @@ public class AbleseTableModel extends AbstractTableModel {
 		return temp;
 	}
 	
+
+	   /** 
+		* @param col
+		* @return String
+		*/
+	   public String getColumnName(int col) {
+		      return columnNames[col];
+		   }
+	
+	/** 
+	 * @param row
+	 * @param col
+	 * @return Object
+	 */
 	@Override
 	public Class getColumnClass(int column) {
 		switch (column) {

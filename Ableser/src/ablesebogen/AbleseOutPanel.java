@@ -93,6 +93,10 @@ public class AbleseOutPanel extends JPanel {
 		((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),card);				
 	}
 	
+	
+	/** 
+	 * @param filter
+	 */
 	/*öffnet die Liste, mit einem Filterparameter, es werden nur die Daten
 	 *  angezeigt bei denen die Kundennummer mit diesem Filter beginnt*/
 	public void openTable(String filter) {

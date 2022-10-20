@@ -28,6 +28,11 @@ public class AbleseList {
 	@Setter
 	private ArrayList<AbleseEntry> liste = new ArrayList<AbleseEntry>();
 	
+	
+	/** 
+	 * @param e
+	 * @return boolean
+	 */
 	public boolean add(AbleseEntry e) {
 		return liste.add(e);
 	}
@@ -36,14 +41,29 @@ public class AbleseList {
 		liste.clear();
 	}
 	
+	
+	/** 
+	 * @param index
+	 * @return AbleseEntry
+	 */
 	public AbleseEntry get(int index) {
 		return liste.get(index);
 	}
 	
+	
+	/** 
+	 * @param entry
+	 * @return int
+	 */
 	public int indexOf(AbleseEntry entry) {
 		return liste.indexOf(entry);
 	}
 	
+	
+	/** 
+	 * @param entry
+	 * @return AbleseEntry
+	 */
 	public AbleseEntry remove(AbleseEntry entry) {
 		int index=indexOf(entry);
 		if (index<0) {
@@ -52,24 +72,45 @@ public class AbleseList {
 		return remove(index);
 	}
 	
+	
+	/** 
+	 * @param index
+	 * @return AbleseEntry
+	 */
 	public AbleseEntry remove(int index) {
 		return liste.remove(index);
 	}
 
+	
+	/** 
+	 * @return int
+	 */
 	public int size() {
 		return liste.size();
 	}
 
+	
+	/** 
+	 * @return Stream<AbleseEntry>
+	 */
 	public Stream<AbleseEntry> stream() {
 		return liste.stream();
 	}
 
+	
+	/** 
+	 * @return String
+	 */
 	@Override
 	public String toString() {
 		final StringBuilder buf = new StringBuilder();
 		liste.stream().forEach(en -> buf.append(en.toString()));
 		return buf.toString();
 	}
+	
+	/** 
+	 * @return AbleseList
+	 */
 	public static AbleseList importJson() {
 		final File f = new File(FILE);
 		if (f.exists()) {

@@ -1,6 +1,7 @@
 package ablesebogen;
 
 import java.util.Date;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,7 +31,12 @@ public class AbleseEntry {
 		this.kommentar = kommentar;
 	}
 	
-	//lombak erstellt diesen Getter nicht
+	
+	/** 
+	 * lombak erstellt diesen Getter nicht
+	 * 
+	 * @return boolean
+	 */
 	public boolean getNeuEingebaut() {
 		return neuEingebaut;
 	}

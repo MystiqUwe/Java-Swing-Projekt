@@ -6,15 +6,15 @@ Java Projekt für AP 3FA091(Gruppe G).
 Das Programm ermöglicht eine Einfache und Digitale Eingabe von Daten in den Ablesebogen.
 Die Vorteile einer Digitalen Variante des Ablesebogen`s füllt eine ganze Liste:
 
-•    Reduktion des Arbeitsaufwands bei Ablesern und Buchhaltung
-•    automatische Plausibilitätsprüfung der Eingaben
-•    Überblick über Energieverbrauch auch online
-•    Kostenvorteile für Kunden
-•    Gewinnsteigerung des Unternehmens
-•    später komplette Automatisierung der Ablesung mit Echtzeitdaten möglich
-•    vereinfachte Energieberatung, da Daten zentral gesammelt
-•    Energieeinsparung durch automatische Steuerung
-•    Vernetzung mit Smart Home-Geräten
+-    Reduktion des Arbeitsaufwands bei Ablesern und Buchhaltung
+-    automatische Plausibilitätsprüfung der Eingaben
+-    Überblick über Energieverbrauch auch online
+-    Kostenvorteile für Kunden
+-    Gewinnsteigerung des Unternehmens
+-    später komplette Automatisierung der Ablesung mit Echtzeitdaten möglich
+-    vereinfachte Energieberatung, da Daten zentral gesammelt
+-    Energieeinsparung durch automatische Steuerung
+-    Vernetzung mit Smart Home-Geräten
 
 # Overview
 
@@ -39,7 +39,7 @@ Das "Backend" besteht ebenso aus Java.
 # Inside the software
 
 Zum laden des normalen Ablesebogen`s haben wir eine Klasse "Ablesebogen", welche zu gleich die "Main Methode" enthält.
-Der Ablesebogen ist "Panel" als "BorderLayout" was innerhalb ein "GridLayout", "Menubar" und ein "Panel" mit buttons besitzt.
+Der Ablesebogen ist "Panel" als "BorderLayout" was innerhalb ein "GridLayout", "Menubar" und ein "Panel" mit buttons besitzt. Sobald er eine valide Ablesebogen.JSON/CSV/XML findet versucht er diese durch die load() Methode zu laden.
 
 Zum erstellen eines Ablesebogen`s Element haben wir die Klasse "AbleseEntry" und "AbleseList". AbleseEntry erstellt ein Objekt aus den werten des Ablesebogen. Die AbleseList benutzt als Datenstruktur eine "LinkedList" umso schnell und einfach Elemente zu speichern / löschen.
 

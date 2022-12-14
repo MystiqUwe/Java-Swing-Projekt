@@ -1,5 +1,7 @@
 package server;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,11 +11,16 @@ import lombok.Setter;
 @Setter
 public class Kunde {
 
-	private String id;
+	private UUID id;
 	private String name;
 	private String vorname;
 	
 	public Kunde(String name, String vorname) {
-		//TODO
+		super();
+		id=UUID.randomUUID();
+		this.name = name;
+		this.vorname = vorname;
 	}
+	
+	
 }

@@ -38,8 +38,28 @@ public class Database {
 		return null;
 	}
 	
+	public Kunde updateKunde(Kunde kunde) {
+		Kunde k = this.getKunde(kunde.getId());
+		if(k == null) return null;
+		
+		int index = kundenListe.indexOf(k);
+		kundenListe.set(index, kunde);
+		return k;
+	}
+
+	public Kunde removeKunde(UUID id) {
+		Kunde k = this.getKunde(id);
+		if(k == null) return null;
+		
+		Kunde tempKunde = k;
+		kundenListe.remove(k);
+		return tempKunde;
+	}
 	
-	
+	public ArrayList<Kunde> getAllKunden(){
+		return kundenListe;
+	}
+		
 	public void addAblesung(Ablesung a) {
 		ablesungListe.add(a);
 	}

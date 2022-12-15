@@ -72,6 +72,13 @@
 			<artifactId>jaxb-runtime</artifactId>
 			<version>${jaxb.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+
 	</dependencies>
 
 </project>

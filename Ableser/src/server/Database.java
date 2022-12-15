@@ -44,6 +44,30 @@ public class Database {
 		ablesungListe.add(a);
 	}
 	
+	public Ablesung getAblesung(UUID id) {
+		for (Ablesung a:ablesungListe) {
+			if (a.getId().equals(id)) {
+				return a;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Aktualisiert eine Ablesung mit neuen Werten
+	 * @param abNeu Die neue Ablesung - basierend auf der angegebenen id wird das alte Element gesucht
+	 * @return false falls das Update fehlgeschlagen ist
+	 */
+	public boolean updateAblesung(Ablesung abNeu) {
+		Ablesung abAlt=getAblesung(abNeu.getId());
+		if (abAlt==null) {
+			return false;
+		}
+		ablesungListe.remove(abAlt);
+		ablesungListe.add(abNeu);
+		return true;
+	}
+	
 	
 	public void init() {
 		ablesungListe.forEach(e -> e.updateKunde());

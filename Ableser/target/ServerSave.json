@@ -1,52 +1,52 @@
 {
   "kundenListe" : [ {
-    "id" : "1f1fbde6-1134-4958-b7da-3b74ef9fc81c",
+    "id" : "e57f5056-64f2-4d09-91d5-e675698f91e0",
     "name" : "Heinz",
     "vorname" : "Müller"
   }, {
-    "id" : "3d15eef8-629c-4179-b386-35dce67c4518",
+    "id" : "42cdfea7-bf8d-4dff-a1e2-0fbb20134a9f",
     "name" : "Max",
     "vorname" : "Meier"
   } ],
   "ablesungListe" : [ {
-    "id" : "494f4b4c-7163-4cf7-bc43-ba9ea96f332d",
+    "id" : "34759d9b-78e0-41a0-b9a3-af6d37c1546e",
     "zaehlernummer" : "a",
     "datum" : null,
     "kommentar" : "",
     "neuEingebaut" : false,
     "zaehlerstand" : 123,
-    "kundenId" : "3d15eef8-629c-4179-b386-35dce67c4518"
+    "kundenId" : "42cdfea7-bf8d-4dff-a1e2-0fbb20134a9f"
   }, {
-    "id" : "f56591f9-76b6-4d8d-a184-a1dfd7c13729",
+    "id" : "534a74cb-3f5b-4027-ae88-f776e58f875b",
     "zaehlernummer" : "b",
     "datum" : null,
     "kommentar" : "",
     "neuEingebaut" : false,
     "zaehlerstand" : 1234,
-    "kundenId" : "1f1fbde6-1134-4958-b7da-3b74ef9fc81c"
+    "kundenId" : "e57f5056-64f2-4d09-91d5-e675698f91e0"
   }, {
-    "id" : "6c8bd6b9-afb0-476e-a363-ab6803b773e9",
+    "id" : "54c7d3e7-6566-443b-8a90-7b79fcb7f411",
     "zaehlernummer" : "c",
     "datum" : null,
     "kommentar" : "",
     "neuEingebaut" : false,
     "zaehlerstand" : 1235,
-    "kundenId" : "3d15eef8-629c-4179-b386-35dce67c4518"
+    "kundenId" : "42cdfea7-bf8d-4dff-a1e2-0fbb20134a9f"
   }, {
-    "id" : "fc9205e0-c3ba-4c88-b945-a1bd8c03f523",
+    "id" : "d8f78b54-3ef8-49e5-8101-d414bd38d55b",
     "zaehlernummer" : "d",
     "datum" : null,
     "kommentar" : "",
     "neuEingebaut" : false,
     "zaehlerstand" : 1236,
-    "kundenId" : "1f1fbde6-1134-4958-b7da-3b74ef9fc81c"
+    "kundenId" : "e57f5056-64f2-4d09-91d5-e675698f91e0"
   }, {
-    "id" : "6924c491-2062-41e8-aaf4-59483798b3de",
+    "id" : "b500b3e6-6ef8-47df-863d-5a35f3bb001b",
     "zaehlernummer" : "e",
     "datum" : null,
     "kommentar" : "",
     "neuEingebaut" : false,
     "zaehlerstand" : 1237,
-    "kundenId" : "3d15eef8-629c-4179-b386-35dce67c4518"
+    "kundenId" : "42cdfea7-bf8d-4dff-a1e2-0fbb20134a9f"
   } ]
 }

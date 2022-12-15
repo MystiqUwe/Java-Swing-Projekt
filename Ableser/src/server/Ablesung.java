@@ -1,18 +1,19 @@
 package server;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
+@JsonTypeName(value = "ablesung")
 public class Ablesung {
 
 	private UUID id;
@@ -26,10 +27,12 @@ public class Ablesung {
 	
 	private UUID kundenId;
 	
+	public Ablesung() {
+		this.id=UUID.randomUUID();
+	}
 	public Ablesung(String zaehlernummer, LocalDate datum, Kunde kunde, String kommentar, boolean neuEingebaut,
 			Integer zaehlerstand) {
-		super();
-		this.id=UUID.randomUUID();
+		this();
 		this.zaehlernummer = zaehlernummer;
 		this.datum = datum;
 		this.kunde = kunde;
@@ -37,7 +40,7 @@ public class Ablesung {
 		this.neuEingebaut = neuEingebaut;
 		this.zaehlerstand = zaehlerstand;
 	}
-
+	
 	public UUID getKundenId() {
 		if (kunde!=null) {
 			return kunde.getId();
@@ -47,15 +50,25 @@ public class Ablesung {
 	}
 	
 	public void setKundenId(UUID kundenId) {
+		setKundenId(kundenId,Server.isServerReady());
+	}
+		
+	public void setKundenId(UUID kundenId, boolean updateKunde) {
 		this.kundenId=kundenId;
 		
-		if(Server.isServerReady()) { 		
+		if( updateKunde) { 		
 			this.kunde=Server.getServerData().getKunde(kundenId);
 		}
 	}
 	
 	public void updateKunde() {
-		this.setKundenId(this.getKundenId());
+		this.setKundenId(this.getKundenId(),true);
+	}
+	@Override
+	public String toString() {
+		return "Ablesung [id=" + id + ", zaehlernummer=" + zaehlernummer + ", datum=" + datum + ", kunde=" + kunde
+				+ ", kommentar=" + kommentar + ", neuEingebaut=" + neuEingebaut + ", zaehlerstand=" + zaehlerstand
+				+ ", kundenId=" + kundenId + "]";
 	}
 	
 	

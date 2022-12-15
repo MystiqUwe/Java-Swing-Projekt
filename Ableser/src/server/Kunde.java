@@ -30,6 +30,11 @@ public class Kunde {
 		this.name = name;
 		this.vorname = vorname;
 	}
+
+	@Override
+	public String toString() {
+		return "Kunde [id=" + id + ", name=" + name + ", vorname=" + vorname + "]";
+	}
 	
 	
 }

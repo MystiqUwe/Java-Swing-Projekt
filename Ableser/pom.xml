@@ -10,7 +10,8 @@
 		<maven.compiler.target>17</maven.compiler.target>
 		<java.version>17</java.version>
 		<jersey.version>3.0.4</jersey.version>
-
+		<jaxb.version>3.0.2</jaxb.version>
+		<jackson.version>2.13.3</jackson.version>
 	</properties>
 
 	<dependencies>
@@ -25,26 +26,26 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>2.13.2</version>
+			<version>${jackson.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-			<version>2.13.2</version>
+			<version>${jackson.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.13.2</version>
+			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-xml</artifactId>
-			<version>2.11.1</version>
+			<version>${jackson.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>net.sourceforge.jdatepicker</groupId>
 			<artifactId>jdatepicker</artifactId>
@@ -57,19 +58,19 @@
 			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.glassfish.jersey.inject</groupId>
-		    <artifactId>jersey-hk2</artifactId>
-		    <version>${jersey.version}</version>
+			<groupId>org.glassfish.jersey.inject</groupId>
+			<artifactId>jersey-hk2</artifactId>
+			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.glassfish.jersey.core</groupId>
-		    <artifactId>jersey-client</artifactId>
-		    <version>${jersey.version}</version>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>
-    		<groupId>org.glassfish.jaxb</groupId>
-    		<artifactId>jaxb-runtime</artifactId>
-    		<version>2.3.3</version>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>${jaxb.version}</version>
 		</dependency>
 	</dependencies>
 

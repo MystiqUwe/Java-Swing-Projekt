@@ -32,7 +32,7 @@ public class Server {
 			return;
 		}
 		
-		final String pack = "server.ressource"; 
+		final String pack = "server.resource"; 
 		
 		System.out.println("Server starten unter: "+url); 
 		
@@ -117,7 +117,7 @@ public class Server {
 		serverData.addAblesung(new Ablesung("c", null, k2, "", false, 1235));
 		serverData.addAblesung(new Ablesung("d", null, k1, "", false, 1236));
 		serverData.addAblesung(new Ablesung("e", null, k2, "", false, 1237));/**/
-		stopServer(true);
+		//stopServer(true);
 	}
 	
 	

@@ -1,5 +1,6 @@
 package server;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -88,8 +89,44 @@ public class Database {
 		return true;
 	}
 	
+	public Ablesung deleteAblesung(UUID id) {
+		Ablesung abl=getAblesung(id);
+		if (abl!=null) {
+			ablesungListe.remove(abl);
+		}
+		return abl;
+	}
 	
 	public void init() {
 		ablesungListe.forEach(e -> e.updateKunde());
+	}
+
+	
+	public ArrayList<Ablesung> getAblesungList(UUID kundenId) {
+		return getAblesungList(kundenId,null,null);
+	}
+	public ArrayList<Ablesung> getAblesungList(UUID kundenId, LocalDate sDate, LocalDate eDate) {
+		ArrayList<Ablesung> ausgabe=new ArrayList<Ablesung>();
+		for (Ablesung a:ablesungListe) {
+			if (kundenId!=null) {
+				if (!a.getKundenId().equals(kundenId)) {
+					continue;
+				}
+			}
+			if (sDate!=null) {
+				if (sDate.isAfter(a.getDatum())) {
+					continue;
+				}
+			}
+			if (eDate!=null) {
+				if (eDate.isBefore(eDate)) {
+					continue;
+				}
+			}
+			
+			ausgabe.add(a);
+		}
+		
+		return ausgabe;
 	}
 }

@@ -1,5 +1,9 @@
 package server.resource;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import jakarta.ws.rs.Consumes;
@@ -51,7 +55,17 @@ public class AblesungRessource {
 		return Response.status(Response.Status.BAD_REQUEST).entity("Ungültige Ablesung").type(MediaType.TEXT_PLAIN).build();
 	}
 	
-	
+
+	@DELETE
+	@Path("{id}")
+	public Response deleteAblesungById(@PathParam("id") UUID id) {
+		Ablesung abl=Server.getServerData().deleteAblesung(id);
+		if (abl==null) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Ablesung nicht gefunden").type(MediaType.TEXT_PLAIN).build();
+		}
+		return Response.status(Response.Status.OK).entity(abl).build();		
+	}
+		
 	@GET
 	@Path("{id}")
 	public Response getAblesungById(@PathParam("id") UUID id) {
@@ -61,12 +75,30 @@ public class AblesungRessource {
 		}
 		return Response.status(Response.Status.OK).entity(abl).build();		
 	}
-	
-	
+
 	@GET
-	public Response getFiltered(@QueryParam("kunde") UUID kundenId, @QueryParam("beginn") String sDate,  @QueryParam("ende") String eDate) {
-		//TODO
-		return Response.status(Response.Status.OK).entity("NYI").build();
+	public Response getFiltered(@QueryParam("kunde") UUID kundenId, @QueryParam("beginn") String sDateString,  @QueryParam("ende") String eDateString) {
+		System.out.println(kundenId+ " von "+sDateString +" bis " + eDateString);
+		LocalDate sDate=null;
+		LocalDate eDate=null;
+		try {
+			if (sDateString!=null)  {
+				sDate= LocalDate.parse(sDateString);//,DateTimeFormatter.ISO_LOCAL_DATE);
+			} 
+			if (eDateString!=null) {
+				eDate= LocalDate.parse(eDateString);//,DateTimeFormatter.ISO_LOCAL_DATE);
+			}
+		} catch (DateTimeParseException e) {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Ungültiges Datum").type(MediaType.TEXT_PLAIN).build();
+			
+		}
+		
+		ArrayList<Ablesung> list=Server.getServerData().getAblesungList(kundenId,sDate,eDate);
+		if (list.size()>0) {
+			return Response.status(Response.Status.OK).entity(list).build();		
+		}
+		return Response.status(Response.Status.NOT_FOUND).entity("keine Ablesung gefunden").type(MediaType.TEXT_PLAIN).build();
+
 	}
 	
 	

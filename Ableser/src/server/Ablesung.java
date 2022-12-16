@@ -3,6 +3,7 @@ package server;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -18,12 +19,13 @@ public class Ablesung {
 
 	private UUID id;
 	private String zaehlernummer;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate datum;
 	@JsonIgnore
 	private Kunde kunde;
 	private String kommentar;
 	private boolean neuEingebaut;
-	private Integer zaehlerstand;
+	private Number zaehlerstand;
 	
 	private UUID kundenId;
 	

@@ -24,6 +24,10 @@ public class KundenRessource {
 
 	final Database database = Server.getServerData();
 
+    /** 
+     * @param kunde
+     * @return Response
+     */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -36,7 +40,11 @@ public class KundenRessource {
 		database.addKunde(kunde);
 		return Response.status(Response.Status.CREATED).entity(kunde).build();
 	}
-
+	
+    /** 
+     * @param kunde
+     * @return Response
+     */
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
@@ -54,7 +62,10 @@ public class KundenRessource {
 
 	}
 
-
+    /** 
+     * @param id
+     * @return Response
+     */
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
@@ -72,6 +83,9 @@ public class KundenRessource {
 
 	}
 
+    /** 
+     * @return Response
+     */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllKunden() {

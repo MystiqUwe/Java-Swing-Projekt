@@ -91,5 +91,15 @@ public class KundenRessource {
 	public Response getAllKunden() {
 		return Response.status(Response.Status.OK).entity(database.getAllKunden()).build();
 	}
+	
+    /** 
+     * @return Response
+     */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{id}")
+	public Response getKunde(@PathParam("id") UUID id) {
+		return Response.status(Response.Status.OK).entity(database.getKunde(id)).build();
+	}
 
 }

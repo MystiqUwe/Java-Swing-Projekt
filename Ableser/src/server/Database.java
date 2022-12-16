@@ -4,8 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+
 import lombok.Getter;
 
+@JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 public class Database {
 
 	@Getter
@@ -113,17 +117,18 @@ public class Database {
 					continue;
 				}
 			}
-			if (sDate!=null) {
-				if (sDate.isAfter(a.getDatum())) {
-					continue;
+			if (a.getDatum()!=null) {
+				if (sDate!=null) {
+					if (sDate.isAfter(a.getDatum())) {
+						continue;
+					}
+				}
+				if (eDate!=null) {
+					if (eDate.isBefore(eDate)) {
+						continue;
+					}
 				}
 			}
-			if (eDate!=null) {
-				if (eDate.isBefore(eDate)) {
-					continue;
-				}
-			}
-			
 			ausgabe.add(a);
 		}
 		

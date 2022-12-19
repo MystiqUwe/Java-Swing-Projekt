@@ -12,8 +12,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.UUID;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -27,9 +30,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import client.Service;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
+import server.Ablesung;
+import server.Database;
+import server.Kunde;
+import server.Server;
 
 public class Ablesebogen extends JFrame{
 
@@ -58,6 +66,11 @@ public class Ablesebogen extends JFrame{
 	private UtilDateModel model;
 	
 	private JFrame dialogFrame = new JFrame();
+	
+
+	private static Service service;
+	
+	private static String baseURL = "http://localhost:8081/rest";
 
 	
 	//Für den Plausibilitätscheck
@@ -311,6 +324,12 @@ public class Ablesebogen extends JFrame{
 			AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
 			liste.add(entry);
 			newList.add(entry);
+			/*Kunde k = new Kunde("Peter", "Maier");
+			Ablesung a = new Ablesung(String.valueOf(zN), convertToLocalDateViaInstant(selectedDate), k, kom, neuE, zStand);
+			a.setKundenId(UUID.fromString(String.valueOf("23eef2aa-67b8-4a4a-9777-e7ed8ba7b5d3")));
+			System.out.println(a);
+			System.out.println(service.post("hausverwaltung/ablesungen", a));*/
+			//service.get("");
 		} else {
 			curEntry.setKundenNummer(kn);
 			curEntry.setZaelerArt(zA);
@@ -325,6 +344,13 @@ public class Ablesebogen extends JFrame{
 		}
 		clear();
 		return true;
+	}
+	
+	
+	private LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
+	    return dateToConvert.toInstant()
+	      .atZone(ZoneId.systemDefault())
+	      .toLocalDate();
 	}
 
 	
@@ -426,5 +452,7 @@ public class Ablesebogen extends JFrame{
 	 */
 	public static void main(String[] args) {
 		new Ablesebogen();
+		Server.startServer(baseURL,true);
+		service = new Service(baseURL);
 	}
 }

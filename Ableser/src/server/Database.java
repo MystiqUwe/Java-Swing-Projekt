@@ -2,6 +2,8 @@ package server;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -52,7 +54,7 @@ public class Database {
 		return k;
 	}
 
-	public Kunde removeKunde(UUID id) {
+	public Map<Kunde, ArrayList<Ablesung>> removeKunde(UUID id) {
 		Kunde k = this.getKunde(id);
 		if(k == null) return null;
 		
@@ -63,7 +65,9 @@ public class Database {
 		for (Ablesung a:aList) {
 			a.setKundenId(null);
 		}
-		return tempKunde;
+		Map<Kunde, ArrayList<Ablesung>> map = new HashMap<Kunde, ArrayList<Ablesung>>();
+		map.put(k, aList);
+		return map;
 	}
 	
 	public ArrayList<Kunde> getAllKunden(){

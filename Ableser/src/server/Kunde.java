@@ -6,12 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 @JsonTypeName(value = "kunde")
 public class Kunde {
 
@@ -31,10 +33,17 @@ public class Kunde {
 		this.vorname = vorname;
 	}
 
-	@Override
-	public String toString() {
-		return "Kunde [id=" + id + ", name=" + name + ", vorname=" + vorname + "]";
+	public Kunde(String jsonString) {
+		String[] splitString=jsonString.split("=|:");
+		this.id=UUID.fromString(splitString[1]);
+		this.name=splitString[3];
+		this.vorname=splitString[5];
 	}
 	
+	@Override
+	public String toString() {
+		return "Kunde [id=" + id + ": name=" + name + ": vorname=" + vorname + ":]";
+	}
 	
+
 }

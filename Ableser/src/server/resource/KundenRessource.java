@@ -1,7 +1,7 @@
 package server.resource;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import jakarta.ws.rs.Consumes;
@@ -19,7 +19,7 @@ import server.Database;
 import server.Kunde;
 import server.Server;
 
-@Path("kunden")
+@Path("hausverwaltung/kunden")
 public class KundenRessource {
 
 	final Database database = Server.getServerData();
@@ -70,15 +70,11 @@ public class KundenRessource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
 	public Response deleteKunde(@PathParam("id") UUID id) {
-		ArrayList<Ablesung> ausgabe = database.getAblesungList(id);
-		Kunde k = database.removeKunde(id);
-		HashMap<Kunde, ArrayList<Ablesung>> map = new HashMap<Kunde, ArrayList<Ablesung>>();
-		map.put(k, ausgabe);
-//		map.put("ablesungen", ausgabe);
-		if (k == null) {
+		if (id == null) {
 			return Response.status(Response.Status.BAD_REQUEST).entity("Kunde konnte nicht gelöscht werden!")
 					.type(MediaType.TEXT_PLAIN).build();
 		}
+		Map<Kunde, ArrayList<Ablesung>> map= database.removeKunde(id);
 		return Response.status(Response.Status.OK).entity(map).build();
 
 	}

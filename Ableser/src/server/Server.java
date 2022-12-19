@@ -24,7 +24,6 @@ public class Server {
 	private static final String SERVERFILE = "target/ServerSave.json";
 	private static HttpServer server=null;
 	
-	private static boolean isTest=true; //********Workaround für die Tests*********//
 	
 	private static Database serverData;
 	@Getter
@@ -36,7 +35,6 @@ public class Server {
 			return;
 		}
 		
-		if (isTest) url+="/hausverwaltung"; //********Workaround für die Tests*********//
 		final String pack = "server.resource"; 
 		
 		System.out.println("Server starten unter: "+url); 
@@ -109,7 +107,6 @@ public class Server {
 	}
 	
 	public static void main(String[] args) {
-		isTest=false; //********Workaround für die Tests*********//
 		startServer("http://localhost:8081/rest",true);
 		
 		/*Kunde k1=new Kunde("Heinz", "Müller");

@@ -58,6 +58,11 @@ public class Database {
 		
 		Kunde tempKunde = k;
 		kundenListe.remove(k);
+		
+		ArrayList<Ablesung> aList=getAblesungList(id);
+		for (Ablesung a:aList) {
+			a.setKundenId(null);
+		}
 		return tempKunde;
 	}
 	

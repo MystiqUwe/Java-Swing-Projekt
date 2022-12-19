@@ -72,9 +72,9 @@ public class KundenRessource {
 	public Response deleteKunde(@PathParam("id") UUID id) {
 		ArrayList<Ablesung> ausgabe = database.getAblesungList(id);
 		Kunde k = database.removeKunde(id);
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("kunde", k);
-		map.put("ablesungen", ausgabe);
+		HashMap<Kunde, ArrayList<Ablesung>> map = new HashMap<Kunde, ArrayList<Ablesung>>();
+		map.put(k, ausgabe);
+//		map.put("ablesungen", ausgabe);
 		if (k == null) {
 			return Response.status(Response.Status.BAD_REQUEST).entity("Kunde konnte nicht gelöscht werden!")
 					.type(MediaType.TEXT_PLAIN).build();

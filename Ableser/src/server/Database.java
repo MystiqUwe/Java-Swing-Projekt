@@ -63,7 +63,7 @@ public class Database {
 		
 		ArrayList<Ablesung> aList=getAblesungList(id);
 		for (Ablesung a:aList) {
-			a.setKundenId(null);
+			a.removeKunde();
 		}
 		Map<Kunde, ArrayList<Ablesung>> map = new HashMap<Kunde, ArrayList<Ablesung>>();
 		map.put(k, aList);
@@ -78,13 +78,21 @@ public class Database {
 		ablesungListe.add(a);
 	}
 	
-	public Ablesung getAblesung(UUID id) {
-		for (Ablesung a:ablesungListe) {
-			if (a.getId().equals(id)) {
-				return a;
+	public int getAblesungIndex(UUID id) {
+		for (int i=0;i<ablesungListe.size();i++) {
+			if (ablesungListe.get(i).getId().equals(id)) {
+				return i;
 			}
 		}
-		return null;
+		return -1;
+	}
+	
+	public Ablesung getAblesung(UUID id) {
+		int pos=getAblesungIndex(id);
+		if (pos<0) {
+			return null;
+		}
+		return ablesungListe.get(pos);
 	}
 	
 	/**
@@ -93,11 +101,11 @@ public class Database {
 	 * @return false falls das Update fehlgeschlagen ist
 	 */
 	public boolean updateAblesung(Ablesung abNeu) {
-		Ablesung abAlt=getAblesung(abNeu.getId());
-		if (abAlt==null) {
+		int pos=getAblesungIndex(abNeu.getId());
+		if (pos<0) {
 			return false;
 		}
-		ablesungListe.remove(abAlt);
+		ablesungListe.remove(pos);
 		ablesungListe.add(abNeu);
 		return true;
 	}
@@ -106,6 +114,7 @@ public class Database {
 		Ablesung abl=getAblesung(id);
 		if (abl!=null) {
 			ablesungListe.remove(abl);
+			abl.removeKunde(); //***Für die Test nötig***
 		}
 		return abl;
 	}
@@ -133,7 +142,7 @@ public class Database {
 					}
 				}
 				if (eDate!=null) {
-					if (eDate.isBefore(eDate)) {
+					if (eDate.isBefore(a.getDatum())) {
 						continue;
 					}
 				}

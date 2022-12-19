@@ -7,13 +7,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
-@Getter
 @Setter
+@Getter
 @JsonTypeName(value = "ablesung")
 public class Ablesung {
 
@@ -22,6 +23,7 @@ public class Ablesung {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate datum;
 	@JsonIgnore
+	//@Setter(AccessLevel.NONE)
 	private Kunde kunde;
 	private String kommentar;
 	private boolean neuEingebaut;
@@ -43,6 +45,11 @@ public class Ablesung {
 		this.zaehlerstand = zaehlerstand;
 	}
 	
+	public void setKunde(Kunde k) {
+		this.kunde=k;
+		this.kundenId= (k==null?null:k.getId());
+	}
+	
 	public UUID getKundenId() {
 		if (kunde!=null) {
 			return kunde.getId();
@@ -51,6 +58,9 @@ public class Ablesung {
 		}
 	}
 	
+	public void removeKunde() {
+		this.setKunde(null);
+	}
 	public void setKundenId(UUID kundenId) {
 		setKundenId(kundenId,Server.isServerReady());
 	}
@@ -73,7 +83,42 @@ public class Ablesung {
 				+ ", kundenId=" + kundenId + "]";
 	}
 	
-	
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Ablesung)) {
+			return false;
+		}
+		Ablesung abl=(Ablesung) obj;
+		
+		if (!(getId().equals(abl.getId()))) {
+			return false;
+		}
+		if (!getZaehlernummer().equals(abl.getZaehlernummer())) {
+			return false;
+		}
+		if (!getDatum().equals(abl.getDatum())) {
+			return false;
+		}
+		if (getKunde()==null) {
+			if(abl.getKunde()!=null) {
+				return false;
+			}
+		} else {
+			if (!getKunde().equals(abl.getKunde())) {
+				return false;
+			}
+		}
+		if (!getKommentar().equals(abl.getKommentar())) {
+			return false;
+		}
+		if (!this.isNeuEingebaut()==abl.isNeuEingebaut()) {
+			return false;
+		}		
+		if (!getZaehlerstand().equals(abl.getZaehlerstand())) {
+			return false;
+		}
+
+		return true;
+	}
 	
 	
 }

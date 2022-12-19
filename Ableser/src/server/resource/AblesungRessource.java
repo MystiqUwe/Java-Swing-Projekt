@@ -58,7 +58,13 @@ public class AblesungRessource {
 
 	@DELETE
 	@Path("{id}")
-	public Response deleteAblesungById(@PathParam("id") UUID id) {
+	public Response deleteAblesungById(@PathParam("id") String param) {
+		UUID id;
+		try {
+			id=UUID.fromString(param);
+		} catch (IllegalArgumentException e) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Keine gültige UUID").type(MediaType.TEXT_PLAIN).build();
+		}
 		Ablesung abl=Server.getServerData().deleteAblesung(id);
 		if (abl==null) {
 			return Response.status(Response.Status.NOT_FOUND).entity("Ablesung nicht gefunden").type(MediaType.TEXT_PLAIN).build();
@@ -68,7 +74,13 @@ public class AblesungRessource {
 		
 	@GET
 	@Path("{id}")
-	public Response getAblesungById(@PathParam("id") UUID id) {
+	public Response getAblesungById(@PathParam("id") String param) {
+		UUID id;
+		try {
+			id=UUID.fromString(param);
+		} catch (IllegalArgumentException e) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Keine gültige UUID").type(MediaType.TEXT_PLAIN).build();
+		}
 		Ablesung abl=Server.getServerData().getAblesung(id);
 		if (abl==null) {
 			return Response.status(Response.Status.NOT_FOUND).entity("Ablesung nicht gefunden").type(MediaType.TEXT_PLAIN).build();
@@ -78,7 +90,7 @@ public class AblesungRessource {
 
 	@GET
 	public Response getFiltered(@QueryParam("kunde") UUID kundenId, @QueryParam("beginn") String sDateString,  @QueryParam("ende") String eDateString) {
-		System.out.println(kundenId+ " von "+sDateString +" bis " + eDateString);
+		//System.out.println("Filtered Ablesungen für "+kundenId+ " von "+sDateString +" bis " + eDateString);
 		LocalDate sDate=null;
 		LocalDate eDate=null;
 		try {

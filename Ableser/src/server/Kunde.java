@@ -1,19 +1,18 @@
 package server;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
 @JsonTypeName(value = "kunde")
 public class Kunde {
 
@@ -44,6 +43,22 @@ public class Kunde {
 	public String toString() {
 		return "Kunde [id=" + id + ": name=" + name + ": vorname=" + vorname + ":]";
 	}
+
+	@Override
+	public int hashCode() {
+		//System.out.println("Hash "+Objects.hash(id, name, vorname));
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Kunde)) {
+			return false;
+		}
+			
+		return this.id.equals(((Kunde) obj).getId());
+	}
 	
 
+	
 }

@@ -169,8 +169,7 @@ public class Ablesebogen extends JFrame{
 
 		toOutButton.addActionListener(e -> {
 			if (liste.size() < 1) {
-				JOptionPane.showMessageDialog(dialogFrame, "Liste konnte nicht Angezeigt werden", "",
-						JOptionPane.ERROR_MESSAGE);
+				fehlerMessage("Liste konnte nicht angezeigt werden");
 				return;
 			}
 
@@ -184,8 +183,7 @@ public class Ablesebogen extends JFrame{
 		});
 		toFilterOutButton.addActionListener(e -> {
 			if (newList.size() < 1) {
-				JOptionPane.showMessageDialog(dialogFrame, "Liste konnte nicht Angezeigt werden", "",
-						JOptionPane.ERROR_MESSAGE);
+				fehlerMessage("Liste konnte nicht Angezeigt werden");
 				return;
 			}
 
@@ -270,11 +268,9 @@ public class Ablesebogen extends JFrame{
 	 * @return boolean
 	 */
 	public boolean save() {
-
-		String kn = kundenNummer.getSelectedItem().toString();
+		String kn = kundenNummer .getSelectedItem().toString();
 		if (kn.length() == 0) {
-			JOptionPane.showMessageDialog(dialogFrame, "Kundennummer darf nicht leer sein", "",
-					JOptionPane.ERROR_MESSAGE);
+			fehlerMessage("Kundennummer zu lang");
 			kundenNummer.requestFocus();
 			return false;
 		}
@@ -285,12 +281,11 @@ public class Ablesebogen extends JFrame{
 		try {
 			zN = Integer.parseInt(zaelernummer.getText());
 			if (zN<0) {
-				JOptionPane.showMessageDialog(dialogFrame, "Zählernummer darf nicht negativ sein", "", JOptionPane.ERROR_MESSAGE);
-				zaelernummer.requestFocus();
+				fehlerMessage("Zählernummer darf nicht negativ sein");
 				return false;				
 			}
 		} catch (NumberFormatException ec) {
-			JOptionPane.showMessageDialog(dialogFrame, "Zählernummer nicht Nummerisch", "", JOptionPane.ERROR_MESSAGE);
+			fehlerMessage("Zählernummer ist nicht Nummerisch");
 			zaelernummer.requestFocus();
 			return false;
 		}
@@ -303,12 +298,12 @@ public class Ablesebogen extends JFrame{
 		try {
 			zStand = Integer.parseInt(zaelerstand.getText());
 			if (zStand<0) {
-				JOptionPane.showMessageDialog(dialogFrame, "Zählerstand darf nicht negativ sein", "", JOptionPane.ERROR_MESSAGE);
+				fehlerMessage("Zählerstand darf nicht Negativ sein");
 				zaelerstand.requestFocus();
 				return false;				
 			}
 		} catch (NumberFormatException ec2) {
-			JOptionPane.showMessageDialog(dialogFrame, "Zählerstand nicht Nummerisch", "", JOptionPane.ERROR_MESSAGE);
+			fehlerMessage("Zählerstand nicht Nummerisch");
 			zaelerstand.requestFocus();
 			return false;
 		}
@@ -438,6 +433,11 @@ public class Ablesebogen extends JFrame{
 		
         mb.add(menu);
         this.setJMenuBar(mb);
+
+	}
+	public void fehlerMessage(String Message) {
+		JOptionPane.showMessageDialog(dialogFrame, Message, "",
+				JOptionPane.ERROR_MESSAGE);
 	}
 	private void getKundenNrData() {
 		service.get("hausverwaltung/kunden");

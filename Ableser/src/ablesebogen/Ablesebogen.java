@@ -14,6 +14,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
@@ -21,6 +22,7 @@ import java.util.UUID;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -31,6 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import client.Service;
+import lombok.Getter;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -67,7 +70,7 @@ public class Ablesebogen extends JFrame{
 	
 	private JFrame dialogFrame = new JFrame();
 	
-
+	@Getter
 	private static Service service;
 	
 	private static String baseURL = "http://localhost:8081/rest";
@@ -198,65 +201,16 @@ public class Ablesebogen extends JFrame{
 		con.add(filterOutLayout, "filter");
 
 		// Enter zur Navigation
-		kundenNummer.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					zaelerArt.requestFocus();
-				}
-			}
-		});
-		zaelerArt.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					zaelernummer.requestFocus();
-				}
-			}
-		});
-		zaelernummer.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					datePicker.getJFormattedTextField().requestFocus();
-				}
-			}
-		});
-		datePicker.getJFormattedTextField().addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					neuEingebaut.requestFocus();
-				}
-			}
-		});
-		neuEingebaut.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					zaelerstand.requestFocus();
-				}
-			}
-		});
-		zaelerstand.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					kommentar.requestFocus();
-				}
-			}
-		});
-		kommentar.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					if (save()) {
-						kundenNummer.requestFocus();
-					}
-				}
-			}
-		});
-
+		ArrayList<JComponent> tabOrder=new ArrayList();
+		tabOrder.add(kundenNummer);
+		tabOrder.add(zaelerArt);
+		tabOrder.add(zaelernummer);
+		tabOrder.add(datePicker.getJFormattedTextField());
+		tabOrder.add(neuEingebaut);
+		tabOrder.add(zaelerstand);
+		tabOrder.add(kommentar);
+		Util.handleTabOrder(tabOrder, e-> {return save();});
+		
 		this.setVisible(true);
 	}
 

@@ -69,10 +69,10 @@ public class Ablesebogen extends JFrame {
 	private boolean kundenContext = false;
 
 	// UI Panels
-	private JPanel inLayout;
-	private AbleseOutPanel outLayout;
-	private AbleseOutPanel filterOutLayout;
-	private KundenInPanel kundeInLayout;
+	protected JPanel inLayout;
+	protected AbleseOutPanel outLayout;
+	protected AbleseOutPanel filterOutLayout;
+	protected KundenInPanel kundeInLayout;
 
 	private JPanel panel;
 	private JPanel buttonPanel;
@@ -398,18 +398,32 @@ public class Ablesebogen extends JFrame {
 	// Hilfsfunktion für die Menüleiste
 	private void drawMenu() {
 		JMenuBar mb = new JMenuBar();
-		//JMenu contextMenu = new JMenu("Bereiche");
+		
+		//Context Menu
+		JMenu contextMenu = new JMenu("Bereiche");
+
+		JMenuItem toAblesung=new JMenuItem("Ablesungen");
+		JMenuItem toKunden=new JMenuItem("Kunden");
+		
+		toAblesung.addActionListener(e-> {
+			((CardLayout) getContentPane().getLayout()).show(getContentPane(),"out");
+		});
+
+		toKunden.addActionListener(e-> {
+			((CardLayout) getContentPane().getLayout()).show(getContentPane(),"kundeIn"); //TODO
+		});
+		
+		contextMenu.add(toAblesung);
+		contextMenu.add(toKunden);
+		mb.add(contextMenu);
+		
 		JMenu menu = new JMenu("Exportieren");
 
-		JMenuItem switchContext = new JMenuItem("Kunden bearbeiten");
 		JMenuItem subMenuJSON = new JMenuItem("JSON");
 		JMenuItem subMenuXML = new JMenuItem("XML");
 		JMenuItem subMenuCSV = new JMenuItem("CSV");
 
-		switchContext.addActionListener(ev -> {
-
-		});
-
+		
 		subMenuJSON.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				liste.exportJson();
@@ -437,6 +451,7 @@ public class Ablesebogen extends JFrame {
 		menu.add(subMenuCSV);
 
 		mb.add(menu);
+				
 		this.setJMenuBar(mb);
 
 	}

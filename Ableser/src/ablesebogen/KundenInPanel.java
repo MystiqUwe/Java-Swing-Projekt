@@ -44,6 +44,7 @@ public class KundenInPanel extends JPanel{
 
 		// untere Leiste
 		JPanel buttonPanel=new JPanel(new GridLayout(1,3));
+		this.add(buttonPanel,BorderLayout.SOUTH);
 		JButton saveButton = new JButton("Speichern");
 		JButton toOutButton = new JButton("Liste Anzeigen");
 		JButton deleteButton = new JButton("Löschen");
@@ -78,7 +79,7 @@ public class KundenInPanel extends JPanel{
 			filterOutLayout.openTable(selectedItem.getVorname());
 			this.setTitle("Daten für " + selectedItem.getVorname());
 		});*/
-
+		
 
 		
 	}
@@ -93,6 +94,8 @@ public class KundenInPanel extends JPanel{
 		Response res=Ablesebogen.getService().get("kunden/"+k.getId());
 		
 		if (res.getStatus()!=200) {
+			baseFrame.fehlerMessage(res.readEntity(String.class));
+
 			//TODO Gelöscht - neu Hochladen?
 			toEdit=null;
 			save();

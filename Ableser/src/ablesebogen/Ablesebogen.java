@@ -425,7 +425,13 @@ public class Ablesebogen extends JFrame{
 		JOptionPane.showMessageDialog(dialogFrame, Message, "",
 				JOptionPane.ERROR_MESSAGE);
 	}
+	
 
+	/**
+	 * Request an den Server um eine Liste von Kunden objekten zu kriegen.
+	 * 
+	 * @return Array mit Kunden Objekte, oder null
+	 */
 	private Kunde[] getKundenNrData() {
 		Response response = service.get("hausverwaltung/kunden"); //Server Anfrage für Kunden Daten
 		List<Kunde> objects = new ArrayList<>();

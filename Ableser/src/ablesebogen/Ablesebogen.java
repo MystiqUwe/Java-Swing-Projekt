@@ -436,7 +436,7 @@ public class Ablesebogen extends JFrame{
 		Response response = service.get("hausverwaltung/kunden"); //Server Anfrage für Kunden Daten
 		List<Kunde> objects = new ArrayList<>();
 		System.out.println(response);
-		if(response.getStatus() >= 200 & response.getStatus() < 400) {
+		if(response.getStatus() >= 200 && response.getStatus() < 400) {
 			List<Kunde> serverObjects = response.readEntity(new GenericType<List<Kunde>>() {});
 			objects.addAll(serverObjects);
 			System.out.println(objects);

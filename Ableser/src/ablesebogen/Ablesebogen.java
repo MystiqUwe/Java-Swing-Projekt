@@ -3,6 +3,7 @@ package ablesebogen;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -17,23 +18,38 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
+
+import org.glassfish.jaxb.core.v2.model.core.TypeRef;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import client.Service;
 import lombok.Getter;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -58,7 +74,7 @@ public class Ablesebogen extends JFrame{
 	private JPanel buttonPanel;
 	
 	//Eingabefelder
-	private JComboBox kundenNummer;
+	private JComboBox<Kunde> kundenNummer;
 	private JTextField zaelernummer;
 	private JTextField zaelerstand;
 	private JTextField kommentar;
@@ -106,6 +122,8 @@ public class Ablesebogen extends JFrame{
 		con.setLayout(new CardLayout());
 
 		drawMenu();
+		Server.startServer(baseURL,true);
+		service = new Service(baseURL);
 
 		// in Layout Base Layout
 		inLayout = new JPanel(new BorderLayout());
@@ -121,7 +139,8 @@ public class Ablesebogen extends JFrame{
 		model.setSelected(true); // init DatePicker Value
 		datePanel = new JDatePanelImpl(model);
 
-		kundenNummer = new JComboBox();
+
+		kundenNummer =  new JComboBox<>(getKundenNrData()); // Holt die Auswahl für die ComboBox
 		zaelerArt = new JComboBox<String>(DEFAULT_ZAELERART);
 		zaelernummer = new JTextField();
 		datePicker = new JDatePickerImpl(datePanel);
@@ -189,9 +208,10 @@ public class Ablesebogen extends JFrame{
 				fehlerMessage("Liste konnte nicht Angezeigt werden");
 				return;
 			}
-
-			filterOutLayout.openTable(kundenNummer.getSelectedItem().toString());
-			this.setTitle("Daten für " + kundenNummer.getSelectedItem());
+			
+			Kunde selectedItem = (Kunde) kundenNummer.getSelectedItem();
+			filterOutLayout.openTable(selectedItem.getVorname());
+			this.setTitle("Daten für " + selectedItem.getVorname());
 		});
 
 		outLayout = new AbleseOutPanel(this, liste, "out");
@@ -199,6 +219,18 @@ public class Ablesebogen extends JFrame{
 
 		filterOutLayout = new AbleseOutPanel(this, newList, "filter");
 		con.add(filterOutLayout, "filter");
+		
+		// Rendert die List Items in einer ComboBox
+		kundenNummer.setRenderer(new ListCellRenderer<Kunde>() {
+		    @Override
+		    public Component getListCellRendererComponent(JList<? extends Kunde> list, Kunde value, int index, boolean isSelected, boolean cellHasFocus) {
+		        JLabel label = new JLabel(value.getName());
+		        if (isSelected) {
+		            label.setIcon(new ImageIcon(getClass().getResource("swarm.png")));
+		        }
+		        return label;
+		    }
+		});
 
 		// Enter zur Navigation
 		ArrayList<JComponent> tabOrder=new ArrayList();
@@ -222,7 +254,8 @@ public class Ablesebogen extends JFrame{
 	 * @return boolean
 	 */
 	public boolean save() {
-		String kn = kundenNummer .getSelectedItem().toString();
+		Kunde selectedItem = (Kunde) kundenNummer.getSelectedItem();
+		String kn = selectedItem.getId().toString();   //kundenNummer.getSelectedItem().toString();
 		if (kn.length() == 0) {
 			fehlerMessage("Kundennummer zu lang");
 			kundenNummer.requestFocus();
@@ -384,7 +417,6 @@ public class Ablesebogen extends JFrame{
 		 menu.add(subMenuXML);
 		 menu.add(subMenuCSV);
         
-		
         mb.add(menu);
         this.setJMenuBar(mb);
 
@@ -393,14 +425,27 @@ public class Ablesebogen extends JFrame{
 		JOptionPane.showMessageDialog(dialogFrame, Message, "",
 				JOptionPane.ERROR_MESSAGE);
 	}
-	private void getKundenNrData() {
-		service.get("hausverwaltung/kunden");
+
+	private Kunde[] getKundenNrData() {
+		Response response = service.get("hausverwaltung/kunden"); //Server Anfrage für Kunden Daten
+		List<Kunde> objects = new ArrayList<>();
+		System.out.println(response);
+		if(response.getStatus() >= 200 & response.getStatus() < 400) {
+			List<Kunde> serverObjects = response.readEntity(new GenericType<List<Kunde>>() {});
+			objects.addAll(serverObjects);
+			System.out.println(objects);
+			return objects.toArray(new Kunde[0]); //Liste von Objekten zu Array
+		}
+		return null;
 	}
+	
 	
 	public void exit() {
 		liste.exportJson();
 		System.exit(0);
 	}
+	
+   
 		
 	
 	
@@ -409,7 +454,5 @@ public class Ablesebogen extends JFrame{
 	 */
 	public static void main(String[] args) {
 		new Ablesebogen();
-		Server.startServer(baseURL,true);
-		service = new Service(baseURL);
 	}
 }

@@ -435,6 +435,8 @@ public class Ablesebogen extends JFrame{
 			objects.addAll(serverObjects);
 			System.out.println(objects);
 			return objects.toArray(new Kunde[0]); //Liste von Objekten zu Array
+		}else {
+			fehlerMessage(response.readEntity(String.class));
 		}
 		return null;
 	}

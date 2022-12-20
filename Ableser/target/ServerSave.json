@@ -1,84 +1,84 @@
 {
   "kundenListe" : [ {
-    "id" : "f0ed0a7c-f6d9-49e9-9271-95a499a74efd",
+    "id" : "ac1ff963-43a8-407a-863d-d934531a64dc",
     "name" : "A",
     "vorname" : "a"
   }, {
-    "id" : "c93e2de1-7062-4e0d-87bd-77895353ef51",
+    "id" : "fd92b2d6-0a77-4eb6-9b56-64e8567b7028",
     "name" : "B",
     "vorname" : "b"
   } ],
   "ablesungListe" : [ {
-    "id" : "90493eb9-e94d-4ace-bffd-107b1b0398ab",
+    "id" : "925a4357-05d7-4a9b-bdbf-ab7bed3eaeb9",
     "zaehlernummer" : "1",
     "datum" : "2021-01-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "c93e2de1-7062-4e0d-87bd-77895353ef51"
+    "kundenId" : "ac1ff963-43a8-407a-863d-d934531a64dc"
   }, {
-    "id" : "3909b827-cdf5-45b3-b482-7dce12629475",
+    "id" : "3370f2ff-2e94-40c9-a1d0-8aaef2c4a4a9",
     "zaehlernummer" : "1",
     "datum" : "2021-04-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "c93e2de1-7062-4e0d-87bd-77895353ef51"
+    "kundenId" : "ac1ff963-43a8-407a-863d-d934531a64dc"
   }, {
-    "id" : "f9ebb53d-5fee-4a2e-94c3-1a3e1a2c9f85",
+    "id" : "142e9e7e-7d35-4f4a-a76a-a8543172600b",
     "zaehlernummer" : "1",
     "datum" : "2021-08-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "c93e2de1-7062-4e0d-87bd-77895353ef51"
+    "kundenId" : "ac1ff963-43a8-407a-863d-d934531a64dc"
   }, {
-    "id" : "709b4c12-ebb6-4e82-bf2f-0b8eab3d5845",
+    "id" : "88ce99fb-a31e-4c4a-a353-e4bc3000d5c0",
     "zaehlernummer" : "1",
     "datum" : "2021-12-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "c93e2de1-7062-4e0d-87bd-77895353ef51"
+    "kundenId" : "ac1ff963-43a8-407a-863d-d934531a64dc"
   }, {
-    "id" : "f9695859-dbe2-4ff8-8aea-e5fbc6f0ca14",
-    "zaehlernummer" : "1",
-    "datum" : "2021-01-01",
-    "kommentar" : "test",
-    "neuEingebaut" : false,
-    "zaehlerstand" : 0,
-    "kundenId" : "f0ed0a7c-f6d9-49e9-9271-95a499a74efd"
-  }, {
-    "id" : "c59bc94b-fe71-49a7-a00a-df1d596f38e3",
-    "zaehlernummer" : "1",
-    "datum" : "2021-04-01",
-    "kommentar" : "test",
-    "neuEingebaut" : false,
-    "zaehlerstand" : 0,
-    "kundenId" : "f0ed0a7c-f6d9-49e9-9271-95a499a74efd"
-  }, {
-    "id" : "d172e27f-60a7-4159-a497-1687ce139f1c",
-    "zaehlernummer" : "1",
-    "datum" : "2021-08-01",
-    "kommentar" : "test",
-    "neuEingebaut" : false,
-    "zaehlerstand" : 0,
-    "kundenId" : "f0ed0a7c-f6d9-49e9-9271-95a499a74efd"
-  }, {
-    "id" : "39fa3d5e-0d54-45a3-9c08-6bbcfe9c3509",
-    "zaehlernummer" : "1",
-    "datum" : "2021-12-01",
-    "kommentar" : "test",
-    "neuEingebaut" : false,
-    "zaehlerstand" : 0,
-    "kundenId" : "f0ed0a7c-f6d9-49e9-9271-95a499a74efd"
-  }, {
-    "id" : "24b53204-79eb-4fcd-b496-20d52d05978b",
+    "id" : "99e66539-1de0-4f51-a7d2-ed7fb942e00b",
     "zaehlernummer" : "1",
     "datum" : "2018-08-01",
     "kommentar" : "ablesungen",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "f0ed0a7c-f6d9-49e9-9271-95a499a74efd"
+    "kundenId" : "ac1ff963-43a8-407a-863d-d934531a64dc"
+  }, {
+    "id" : "5aaa811c-a5b6-43ff-b098-183f090dcc76",
+    "zaehlernummer" : "1",
+    "datum" : "2021-01-01",
+    "kommentar" : "test",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 0,
+    "kundenId" : "fd92b2d6-0a77-4eb6-9b56-64e8567b7028"
+  }, {
+    "id" : "a2398909-abb8-4292-aca3-6edb5e6662f2",
+    "zaehlernummer" : "1",
+    "datum" : "2021-04-01",
+    "kommentar" : "test",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 0,
+    "kundenId" : "fd92b2d6-0a77-4eb6-9b56-64e8567b7028"
+  }, {
+    "id" : "28bd77c9-e61e-447a-9def-f206e33e01cf",
+    "zaehlernummer" : "1",
+    "datum" : "2021-08-01",
+    "kommentar" : "test",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 0,
+    "kundenId" : "fd92b2d6-0a77-4eb6-9b56-64e8567b7028"
+  }, {
+    "id" : "31cac1ee-d63c-4f88-81be-abcb7b82900d",
+    "zaehlernummer" : "1",
+    "datum" : "2021-12-01",
+    "kommentar" : "test",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 0,
+    "kundenId" : "fd92b2d6-0a77-4eb6-9b56-64e8567b7028"
   } ]
 }

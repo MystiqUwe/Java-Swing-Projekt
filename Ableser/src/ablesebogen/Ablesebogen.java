@@ -61,14 +61,18 @@ import server.Server;
 public class Ablesebogen extends JFrame{
 
 	//Datenspeicher
+	@Getter
+	private ArrayList<Kunde> kundenListe;
 	private AbleseList liste; //Liste von allen Daten
 	private AbleseList newList; //Neue Daten, in dieser Session hinzugefügt
 	private AbleseEntry curEntry; //Der aktuell zu editierender Datensatz, null falls nicht vorhanden
+	private boolean kundenContext=false;
 	
 	//UI Panels
 	private JPanel inLayout;
 	private AbleseOutPanel outLayout;
 	private AbleseOutPanel filterOutLayout;
+	private KundenInPanel kundeInLayout;
 
 	private JPanel panel;
 	private JPanel buttonPanel;
@@ -232,6 +236,9 @@ public class Ablesebogen extends JFrame{
 		    }
 		});
 
+		kundeInLayout=new KundenInPanel(this); 
+		con.add(kundeInLayout,"kundeIn");
+		
 		// Enter zur Navigation
 		ArrayList<JComponent> tabOrder=new ArrayList();
 		tabOrder.add(kundenNummer);
@@ -393,14 +400,25 @@ public class Ablesebogen extends JFrame{
 		JMenuBar mb=new JMenuBar();  
 		 JMenu  menu=new JMenu("Exportieren");  
     
-
+		 JMenuItem switchContext=new JMenuItem("Kunden bearbeiten");
 		 JMenuItem subMenuJSON=new JMenuItem("JSON"); 
 		 JMenuItem subMenuXML=new JMenuItem("XML");
 		 JMenuItem subMenuCSV=new JMenuItem("CSV");
 		 
+		 switchContext.addActionListener(ev -> {
+			 
+		 });
+		 
 		 subMenuJSON.addActionListener(new ActionListener() {
 		      public void actionPerformed(ActionEvent ev) {
 		          liste.exportJson();
+		          kundenContext=!kundenContext;
+		          
+		          if (kundenContext) {
+		        	  
+		          } else {
+		        	  
+		          }
 		        }
 		      });
 		 subMenuXML.addActionListener(new ActionListener() {
@@ -462,5 +480,6 @@ public class Ablesebogen extends JFrame{
 	 */
 	public static void main(String[] args) {
 		new Ablesebogen();
-	}
+	}	
 }
+

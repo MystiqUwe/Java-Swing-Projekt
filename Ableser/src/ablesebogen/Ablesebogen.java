@@ -55,7 +55,7 @@ public class Ablesebogen extends JFrame{
 	private JPanel buttonPanel;
 	
 	//Eingabefelder
-	private JTextField kundenNummer;
+	private JComboBox kundenNummer;
 	private JTextField zaelernummer;
 	private JTextField zaelerstand;
 	private JTextField kommentar;
@@ -118,7 +118,7 @@ public class Ablesebogen extends JFrame{
 		model.setSelected(true); // init DatePicker Value
 		datePanel = new JDatePanelImpl(model);
 
-		kundenNummer = new JTextField();
+		kundenNummer = new JComboBox();
 		zaelerArt = new JComboBox<String>(DEFAULT_ZAELERART);
 		zaelernummer = new JTextField();
 		datePicker = new JDatePickerImpl(datePanel);
@@ -189,8 +189,8 @@ public class Ablesebogen extends JFrame{
 				return;
 			}
 
-			filterOutLayout.openTable(kundenNummer.getText());
-			this.setTitle("Daten für " + kundenNummer.getText());
+			filterOutLayout.openTable(kundenNummer.getSelectedItem().toString());
+			this.setTitle("Daten für " + kundenNummer.getSelectedItem());
 		});
 
 		outLayout = new AbleseOutPanel(this, liste, "out");
@@ -271,7 +271,7 @@ public class Ablesebogen extends JFrame{
 	 */
 	public boolean save() {
 
-		String kn = kundenNummer.getText();
+		String kn = kundenNummer.getSelectedItem().toString();
 		if (kn.length() == 0) {
 			JOptionPane.showMessageDialog(dialogFrame, "Kundennummer darf nicht leer sein", "",
 					JOptionPane.ERROR_MESSAGE);
@@ -395,7 +395,7 @@ public class Ablesebogen extends JFrame{
 	public void loadWithValue(AbleseEntry entry) {
 		this.setTitle(entry.getKundenNummer()+" bearbeiten");
 
-		kundenNummer.setText(entry.getKundenNummer());
+		kundenNummer.setSelectedItem(entry.getKundenNummer());
 		//zaelerArt.setSelectedItem(entry.getZaelerArt());
 		zaelernummer.setText(Integer.toString(entry.getZaelernummer()));
 		model.setValue(entry.getDatum()); 
@@ -438,6 +438,9 @@ public class Ablesebogen extends JFrame{
 		
         mb.add(menu);
         this.setJMenuBar(mb);
+	}
+	private void getKundenNrData() {
+		service.get("hausverwaltung/kunden");
 	}
 	
 	public void exit() {

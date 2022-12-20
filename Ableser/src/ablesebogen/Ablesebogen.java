@@ -71,6 +71,7 @@ public class Ablesebogen extends JFrame {
 	// UI Panels
 	protected JPanel inLayout;
 	protected AbleseOutPanel outLayout;
+	protected KundeOutPanel outLayoutKunde;
 	protected AbleseOutPanel filterOutLayout;
 	protected KundenInPanel kundeInLayout;
 
@@ -119,6 +120,7 @@ public class Ablesebogen extends JFrame {
 		DEFAULT_WERTE.put("Wasser", 300000);
 		DEFAULT_WERTE.put("Heizung", 400000);
 		curEntry = null;
+		
 
 		// Root Container
 		final Container con = getContentPane();
@@ -246,6 +248,10 @@ public class Ablesebogen extends JFrame {
 		tabOrder.add(datePicker.getJFormattedTextField());
 		tabOrder.add(neuEingebaut);
 		tabOrder.add(zaelerstand);
+		
+		outLayoutKunde = new KundeOutPanel(this, kundenListe, "kundeOut");
+		con.add(outLayoutKunde, "kundeOut");
+		
 		tabOrder.add(kommentar);
 		Util.handleTabOrder(tabOrder, e -> {
 			return save();
@@ -410,7 +416,7 @@ public class Ablesebogen extends JFrame {
 		});
 
 		toKunden.addActionListener(e-> {
-			((CardLayout) getContentPane().getLayout()).show(getContentPane(),"kundeIn"); //TODO
+			((CardLayout) getContentPane().getLayout()).show(getContentPane(),"kundeOut"); //TODO
 		});
 		
 		contextMenu.add(toAblesung);
@@ -492,4 +498,5 @@ public class Ablesebogen extends JFrame {
 	public static void main(String[] args) {
 		new Ablesebogen();
 	}
+
 }

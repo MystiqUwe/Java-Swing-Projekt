@@ -58,17 +58,17 @@ import server.Database;
 import server.Kunde;
 import server.Server;
 
-public class Ablesebogen extends JFrame{
+public class Ablesebogen extends JFrame {
 
-	//Datenspeicher
+	// Datenspeicher
 	@Getter
 	private ArrayList<Kunde> kundenListe;
-	private AbleseList liste; //Liste von allen Daten
-	private AbleseList newList; //Neue Daten, in dieser Session hinzugefügt
-	private AbleseEntry curEntry; //Der aktuell zu editierender Datensatz, null falls nicht vorhanden
-	private boolean kundenContext=false;
-	
-	//UI Panels
+	private AbleseList liste; // Liste von allen Daten
+	private AbleseList newList; // Neue Daten, in dieser Session hinzugefügt
+	private AbleseEntry curEntry; // Der aktuell zu editierender Datensatz, null falls nicht vorhanden
+	private boolean kundenContext = false;
+
+	// UI Panels
 	private JPanel inLayout;
 	private AbleseOutPanel outLayout;
 	private AbleseOutPanel filterOutLayout;
@@ -76,27 +76,26 @@ public class Ablesebogen extends JFrame{
 
 	private JPanel panel;
 	private JPanel buttonPanel;
-	
-	//Eingabefelder
+
+	// Eingabefelder
 	private JComboBox<Kunde> kundenNummer;
 	private JTextField zaelernummer;
 	private JTextField zaelerstand;
 	private JTextField kommentar;
-	private JComboBox<String> zaelerArt;	
+	private JComboBox<String> zaelerArt;
 	private JCheckBox neuEingebaut;
 	private JDatePickerImpl datePicker;
 	private JDatePanelImpl datePanel;
 	private UtilDateModel model;
-	
+
 	private JFrame dialogFrame = new JFrame();
-	
+
 	@Getter
 	private static Service service;
-	
+
 	private static String baseURL = "http://localhost:8081/rest";
 
-	
-	//Für den Plausibilitätscheck
+	// Für den Plausibilitätscheck
 	HashMap<String, Integer> DEFAULT_WERTE = new HashMap<String, Integer>();
 	private final String[] DEFAULT_ZAELERART = { "Gas", "Strom", "Heizung", "Wasser" };
 
@@ -126,7 +125,7 @@ public class Ablesebogen extends JFrame{
 		con.setLayout(new CardLayout());
 
 		drawMenu();
-		Server.startServer(baseURL,true);
+		Server.startServer(baseURL, true);
 		service = new Service(baseURL);
 
 		// in Layout Base Layout
@@ -143,8 +142,7 @@ public class Ablesebogen extends JFrame{
 		model.setSelected(true); // init DatePicker Value
 		datePanel = new JDatePanelImpl(model);
 
-
-		kundenNummer =  new JComboBox<>(getKundenNrData()); // Holt die Auswahl für die ComboBox
+		kundenNummer = new JComboBox<>(getKundenNrData()); // Holt die Auswahl für die ComboBox
 		zaelerArt = new JComboBox<String>(DEFAULT_ZAELERART);
 		zaelernummer = new JTextField();
 		datePicker = new JDatePickerImpl(datePanel);
@@ -212,7 +210,7 @@ public class Ablesebogen extends JFrame{
 				fehlerMessage("Liste konnte nicht Angezeigt werden");
 				return;
 			}
-			
+
 			Kunde selectedItem = (Kunde) kundenNummer.getSelectedItem();
 			filterOutLayout.openTable(selectedItem.getVorname());
 			this.setTitle("Daten für " + selectedItem.getVorname());
@@ -223,24 +221,25 @@ public class Ablesebogen extends JFrame{
 
 		filterOutLayout = new AbleseOutPanel(this, newList, "filter");
 		con.add(filterOutLayout, "filter");
-		
+
 		// Rendert die List Items in einer ComboBox
 		kundenNummer.setRenderer(new ListCellRenderer<Kunde>() {
-		    @Override
-		    public Component getListCellRendererComponent(JList<? extends Kunde> list, Kunde value, int index, boolean isSelected, boolean cellHasFocus) {
-		        JLabel label = new JLabel(value.getName());
-		        if (isSelected) {
-		            label.setIcon(new ImageIcon(getClass().getResource("swarm.png")));
-		        }
-		        return label;
-		    }
+			@Override
+			public Component getListCellRendererComponent(JList<? extends Kunde> list, Kunde value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				JLabel label = new JLabel(value.getName());
+				if (isSelected) {
+					label.setIcon(new ImageIcon(getClass().getResource("swarm.png")));
+				}
+				return label;
+			}
 		});
 
-		kundeInLayout=new KundenInPanel(this); 
-		con.add(kundeInLayout,"kundeIn");
-		
+		kundeInLayout = new KundenInPanel(this);
+		con.add(kundeInLayout, "kundeIn");
+
 		// Enter zur Navigation
-		ArrayList<JComponent> tabOrder=new ArrayList();
+		ArrayList<JComponent> tabOrder = new ArrayList();
 		tabOrder.add(kundenNummer);
 		tabOrder.add(zaelerArt);
 		tabOrder.add(zaelernummer);
@@ -248,13 +247,14 @@ public class Ablesebogen extends JFrame{
 		tabOrder.add(neuEingebaut);
 		tabOrder.add(zaelerstand);
 		tabOrder.add(kommentar);
-		Util.handleTabOrder(tabOrder, e-> {return save();});
-		
+		Util.handleTabOrder(tabOrder, e -> {
+			return save();
+		});
+
 		this.setVisible(true);
 	}
 
-	
-	/** 
+	/**
 	 * Speichert den Datensatz aus dem in Layout, entweder als neuer Datensatz, oder
 	 * als Update falls vorhanden
 	 * 
@@ -262,7 +262,7 @@ public class Ablesebogen extends JFrame{
 	 */
 	public boolean save() {
 		Kunde selectedItem = (Kunde) kundenNummer.getSelectedItem();
-		String kn = selectedItem.getId().toString();   //kundenNummer.getSelectedItem().toString();
+		String kn = selectedItem.getId().toString(); // kundenNummer.getSelectedItem().toString();
 		if (kn.length() == 0) {
 			fehlerMessage("Kundennummer zu lang");
 			kundenNummer.requestFocus();
@@ -274,9 +274,9 @@ public class Ablesebogen extends JFrame{
 		int zN = 0;
 		try {
 			zN = Integer.parseInt(zaelernummer.getText());
-			if (zN<0) {
+			if (zN < 0) {
 				fehlerMessage("Zählernummer darf nicht negativ sein");
-				return false;				
+				return false;
 			}
 		} catch (NumberFormatException ec) {
 			fehlerMessage("Zählernummer ist nicht Nummerisch");
@@ -291,10 +291,10 @@ public class Ablesebogen extends JFrame{
 		int zStand = 0;
 		try {
 			zStand = Integer.parseInt(zaelerstand.getText());
-			if (zStand<0) {
+			if (zStand < 0) {
 				fehlerMessage("Zählerstand darf nicht Negativ sein");
 				zaelerstand.requestFocus();
-				return false;				
+				return false;
 			}
 		} catch (NumberFormatException ec2) {
 			fehlerMessage("Zählerstand nicht Nummerisch");
@@ -309,16 +309,18 @@ public class Ablesebogen extends JFrame{
 			return false;
 		}
 
-		if (curEntry==null) {
-			AbleseEntry entry=new AbleseEntry(kn,zA,zN,selectedDate,neuE,zStand,kom);
+		if (curEntry == null) {
+			AbleseEntry entry = new AbleseEntry(kn, zA, zN, selectedDate, neuE, zStand, kom);
 			liste.add(entry);
 			newList.add(entry);
-			/*Kunde k = new Kunde("Peter", "Maier");
-			Ablesung a = new Ablesung(String.valueOf(zN), convertToLocalDateViaInstant(selectedDate), k, kom, neuE, zStand);
-			a.setKundenId(UUID.fromString(String.valueOf("23eef2aa-67b8-4a4a-9777-e7ed8ba7b5d3")));
-			System.out.println(a);
-			System.out.println(service.post("hausverwaltung/ablesungen", a));*/
-			//service.get("");
+			/*
+			 * Kunde k = new Kunde("Peter", "Maier"); Ablesung a = new
+			 * Ablesung(String.valueOf(zN), convertToLocalDateViaInstant(selectedDate), k,
+			 * kom, neuE, zStand); a.setKundenId(UUID.fromString(String.valueOf(
+			 * "23eef2aa-67b8-4a4a-9777-e7ed8ba7b5d3"))); System.out.println(a);
+			 * System.out.println(service.post("hausverwaltung/ablesungen", a));
+			 */
+			// service.get("");
 		} else {
 			curEntry.setKundenNummer(kn);
 			curEntry.setZaelerArt(zA);
@@ -327,25 +329,21 @@ public class Ablesebogen extends JFrame{
 			curEntry.setNeuEingebaut(neuE);
 			curEntry.setZaelerstand(zStand);
 			curEntry.setKommentar(kom);
-			if (newList.indexOf(curEntry)<0) {
-				newList.add(curEntry);				
+			if (newList.indexOf(curEntry) < 0) {
+				newList.add(curEntry);
 			}
 		}
 		clear();
 		return true;
 	}
-	
-	
+
 	private LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
-	    return dateToConvert.toInstant()
-	      .atZone(ZoneId.systemDefault())
-	      .toLocalDate();
+		return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 
-	
-	/** 
-	 * Plausibilitatsprüfung für #009,
-	 * simpler check ob der eingegebene Wert größer als ein vordefinierter Wert ist
+	/**
+	 * Plausibilitatsprüfung für #009, simpler check ob der eingegebene Wert größer
+	 * als ein vordefinierter Wert ist
 	 * 
 	 * @param zA
 	 * @param zStand
@@ -353,97 +351,99 @@ public class Ablesebogen extends JFrame{
 	 */
 	public int Plausicheck(String zA, int zStand) {
 		int result = 0;
-		if(zStand > DEFAULT_WERTE.get(zA)) {			   
-			result = JOptionPane.showConfirmDialog(dialogFrame, "Werte ungewöhnlich trotzdem Speichern?", "",  JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+		if (zStand > DEFAULT_WERTE.get(zA)) {
+			result = JOptionPane.showConfirmDialog(dialogFrame, "Werte ungewöhnlich trotzdem Speichern?", "",
+					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 		}
 		return result;
-	 }	
-		
-	//Löscht die Daten aus den Eingabefeldern, nach dem speichern als Vorbereitung auf den nächsten Datensatz
+	}
+
+	// Löscht die Daten aus den Eingabefeldern, nach dem speichern als Vorbereitung
+	// auf den nächsten Datensatz
 	public void clear() {
 		this.setTitle("neuer Datensatz");
 
 		Date zDate = new Date();
-		//kundenNummer.setText("");
-		//zaelerArt.setSelectedIndex(0);
+		// kundenNummer.setText("");
+		// zaelerArt.setSelectedIndex(0);
 		zaelernummer.setText("");
-		model.setValue(zDate); 
+		model.setValue(zDate);
 		neuEingebaut.setSelected(false);
-		zaelerstand.setText("");;
+		zaelerstand.setText("");
+		;
 		kommentar.setText("");
-		
-		curEntry=null;
+
+		curEntry = null;
 	}
-	
-	
-	/** 
+
+	/**
 	 * Öffnet einen Datensatz zum editieren
 	 * 
 	 * @param entry
 	 */
 	public void loadWithValue(AbleseEntry entry) {
-		this.setTitle(entry.getKundenNummer()+" bearbeiten");
+		this.setTitle(entry.getKundenNummer() + " bearbeiten");
 
 		kundenNummer.setSelectedItem(entry.getKundenNummer());
-		//zaelerArt.setSelectedItem(entry.getZaelerArt());
+		// zaelerArt.setSelectedItem(entry.getZaelerArt());
 		zaelernummer.setText(Integer.toString(entry.getZaelernummer()));
-		model.setValue(entry.getDatum()); 
+		model.setValue(entry.getDatum());
 		neuEingebaut.setSelected(entry.getNeuEingebaut());
 		zaelerstand.setText(Integer.toString(entry.getZaelerstand()));
 		kommentar.setText(entry.getKommentar());
-		
-		curEntry=entry;
+
+		curEntry = entry;
 	}
-	
-	//Hilfsfunktion für die Menüleiste
+
+	// Hilfsfunktion für die Menüleiste
 	private void drawMenu() {
-		JMenuBar mb=new JMenuBar();  
-		 JMenu  menu=new JMenu("Exportieren");  
-    
-		 JMenuItem switchContext=new JMenuItem("Kunden bearbeiten");
-		 JMenuItem subMenuJSON=new JMenuItem("JSON"); 
-		 JMenuItem subMenuXML=new JMenuItem("XML");
-		 JMenuItem subMenuCSV=new JMenuItem("CSV");
-		 
-		 switchContext.addActionListener(ev -> {
-			 
-		 });
-		 
-		 subMenuJSON.addActionListener(new ActionListener() {
-		      public void actionPerformed(ActionEvent ev) {
-		          liste.exportJson();
-		          kundenContext=!kundenContext;
-		          
-		          if (kundenContext) {
-		        	  
-		          } else {
-		        	  
-		          }
-		        }
-		      });
-		 subMenuXML.addActionListener(new ActionListener() {
-		      public void actionPerformed(ActionEvent ev) {
-		          liste.exportXML();
-		        }
-		      });
-		 subMenuCSV.addActionListener(new ActionListener() {
-		      public void actionPerformed(ActionEvent ev) {
-		          liste.exportCSV();
-		        }
-		      });
-		 menu.add(subMenuJSON);
-		 menu.add(subMenuXML);
-		 menu.add(subMenuCSV);
-        
-        mb.add(menu);
-        this.setJMenuBar(mb);
+		JMenuBar mb = new JMenuBar();
+		//JMenu contextMenu = new JMenu("Bereiche");
+		JMenu menu = new JMenu("Exportieren");
+
+		JMenuItem switchContext = new JMenuItem("Kunden bearbeiten");
+		JMenuItem subMenuJSON = new JMenuItem("JSON");
+		JMenuItem subMenuXML = new JMenuItem("XML");
+		JMenuItem subMenuCSV = new JMenuItem("CSV");
+
+		switchContext.addActionListener(ev -> {
+
+		});
+
+		subMenuJSON.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				liste.exportJson();
+				kundenContext = !kundenContext;
+
+				if (kundenContext) {
+
+				} else {
+
+				}
+			}
+		});
+		subMenuXML.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				liste.exportXML();
+			}
+		});
+		subMenuCSV.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				liste.exportCSV();
+			}
+		});
+		menu.add(subMenuJSON);
+		menu.add(subMenuXML);
+		menu.add(subMenuCSV);
+
+		mb.add(menu);
+		this.setJMenuBar(mb);
 
 	}
+
 	public void fehlerMessage(String Message) {
-		JOptionPane.showMessageDialog(dialogFrame, Message, "",
-				JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(dialogFrame, Message, "", JOptionPane.ERROR_MESSAGE);
 	}
-	
 
 	/**
 	 * Request an den Server um eine Liste von Kunden objekten zu kriegen.
@@ -451,35 +451,30 @@ public class Ablesebogen extends JFrame{
 	 * @return Array mit Kunden Objekte, oder null
 	 */
 	private Kunde[] getKundenNrData() {
-		Response response = service.get("hausverwaltung/kunden"); //Server Anfrage für Kunden Daten
+		Response response = service.get("hausverwaltung/kunden"); // Server Anfrage für Kunden Daten
 		List<Kunde> objects = new ArrayList<>();
 		System.out.println(response);
-		if(response.getStatus() >= 200 && response.getStatus() < 400) {
-			List<Kunde> serverObjects = response.readEntity(new GenericType<List<Kunde>>() {});
+		if (response.getStatus() >= 200 && response.getStatus() < 400) {
+			List<Kunde> serverObjects = response.readEntity(new GenericType<List<Kunde>>() {
+			});
 			objects.addAll(serverObjects);
 			System.out.println(objects);
-			return objects.toArray(new Kunde[0]); //Liste von Objekten zu Array
-		}else {
+			return objects.toArray(new Kunde[0]); // Liste von Objekten zu Array
+		} else {
 			fehlerMessage(response.readEntity(String.class));
 		}
 		return null;
 	}
-	
-	
+
 	public void exit() {
 		liste.exportJson();
 		System.exit(0);
 	}
-	
-   
-		
-	
-	
-	/** 
+
+	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		new Ablesebogen();
-	}	
+	}
 }
-

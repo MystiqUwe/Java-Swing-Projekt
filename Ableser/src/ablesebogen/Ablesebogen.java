@@ -15,6 +15,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,6 +51,7 @@ import client.Service;
 import lombok.Getter;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -340,7 +342,15 @@ public class Ablesebogen extends JFrame {
 		}
 
 		if (curEntry == null) {
-			AbleseEntry entry = new AbleseEntry(null, null, zA, zN, selectedDate, neuE, zStand, kom);
+			AbleseEntry entry = new AbleseEntry(null, kn, zA, zN, selectedDate, neuE, zStand, kom);
+			Response res=service.post("ablesungen", entry);
+			
+			if (res.getStatus()!=Status.CREATED.getStatusCode()) {
+				fehlerMessage(res.getStatus()+" - " + res.readEntity(String.class));
+				return false;
+			}
+			
+			entry=res.readEntity(AbleseEntry.class);
 			liste.add(entry);
 			newList.add(entry);
 			/*
@@ -415,7 +425,7 @@ public class Ablesebogen extends JFrame {
 		kundenNummer.setSelectedItem(entry.getKundenNummer());
 		// zaelerArt.setSelectedItem(entry.getZaelerArt());
 		zaelernummer.setText(entry.getZaelernummer());
-		model.setValue(Date.from(entry.getDatum().atStartOfDay().toInstant(null)));
+		model.setValue(Date.from(entry.getDatum().atStartOfDay().toInstant(ZoneOffset.UTC)));
 		neuEingebaut.setSelected(entry.getNeuEingebaut());
 		zaelerstand.setText(Integer.toString(entry.getZaelerstand()));
 		kommentar.setText(entry.getKommentar());
@@ -517,6 +527,7 @@ public class Ablesebogen extends JFrame {
 
 	public void exit() {
 		//liste.exportJson(); Kein Lokaler Speicher mehr
+		Server.stopServer(true);
 		System.exit(0);
 	}
 

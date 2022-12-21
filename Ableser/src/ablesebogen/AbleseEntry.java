@@ -22,7 +22,7 @@ public class AbleseEntry {
 	private UUID id;
 	@JsonProperty("kundenId")
 	private UUID kundenNummer;
-	//@JsonIgnore
+	@JsonIgnore
 	private String zaelerArt;
 	@JsonProperty("zaehlernummer")
 	private String zaelernummer;
@@ -43,24 +43,7 @@ public class AbleseEntry {
 		this.neuEingebaut = neuEingebaut;
 		this.zaelerstand = zaelerstand;
 		this.kommentar = kommentar;
-	}
-	
-	public AbleseEntry(String zaehlernummer, LocalDate datum, Kunde kunde, String kommentar, boolean neuEingebaut,
-			Integer zaehlerstand) {
-		System.out.println("XXX");
-		this.id=null;
-		this.kundenNummer = null;
-		this.zaelerArt = zaelerArt;
-		this.zaelernummer = zaelernummer;
-		this.datum = datum;
-		this.neuEingebaut = neuEingebaut;
-		this.zaelerstand = zaelerstand;
-		this.kommentar = kommentar;
-		
-		
-	}
-
-		
+	}		
 	
 	/** 
 	 * lombak erstellt diesen Getter nicht

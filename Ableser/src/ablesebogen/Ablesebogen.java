@@ -380,12 +380,10 @@ public class Ablesebogen extends JFrame {
 	 * @return int
 	 */
 	public int Plausicheck(String zA, int zStand) {
-		int result = 0;
+		int result = 0; 
 		if (zStand > DEFAULT_WERTE.get(zA)) {
-			result = JOptionPane.showConfirmDialog(dialogFrame, "Werte ungewöhnlich trotzdem Speichern?", "",
-					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-		}
-		return result;
+			result = optionMessage("Werte ungewöhnlich trotzdem Speichern?");
+		} return result;
 	}
 
 	// Löscht die Daten aus den Eingabefeldern, nach dem speichern als Vorbereitung
@@ -488,6 +486,12 @@ public class Ablesebogen extends JFrame {
 
 	public void fehlerMessage(String Message) {
 		JOptionPane.showMessageDialog(dialogFrame, Message, "", JOptionPane.ERROR_MESSAGE);
+	}
+	public int optionMessage(String Message) {
+		//int result = 0;
+		int result = JOptionPane.showConfirmDialog(dialogFrame, "Werte ungewöhnlich trotzdem Speichern?", "",
+				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+		return result;
 	}
 
 	/**

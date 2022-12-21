@@ -255,9 +255,10 @@ public class Ablesebogen extends JFrame {
 			@Override
 			public Component getListCellRendererComponent(JList<? extends Kunde> list, Kunde value, int index,
 					boolean isSelected, boolean cellHasFocus) {
-				JLabel label = new JLabel(value.getName());
+				String nameundvorname = (value.getName() + ", " + value.getVorname() + " -> " + value.getId().toString());
+				JLabel label = new JLabel(nameundvorname);
 				if (isSelected) {
-					label.setIcon(new ImageIcon(getClass().getResource("swarm.png")));
+					label.setIcon(new ImageIcon(getClass().getResource("check.png")));
 				}
 				return label;
 			}

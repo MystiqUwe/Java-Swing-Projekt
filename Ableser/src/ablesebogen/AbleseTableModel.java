@@ -1,6 +1,7 @@
 package ablesebogen;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
@@ -86,7 +87,7 @@ public class AbleseTableModel extends AbstractTableModel {
 		case 5:
 			return Integer.class;
 		case 3:
-			return Date.class;
+			return LocalDate.class;
 		default:
 			return String.class;
 				

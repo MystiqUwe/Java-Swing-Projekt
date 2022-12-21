@@ -117,7 +117,7 @@ public class Ablesebogen extends JFrame {
 		this.baseURL=baseUrl;
 		service = new Service(baseURL);
 				
-		/iste = AbleseList.importJson(); //Nicht mehr verwendet
+		//liste = AbleseList.importJson(); //Nicht mehr verwendet
 		newList = new AbleseList();
 		DEFAULT_WERTE.put("Gas", 100000);
 		DEFAULT_WERTE.put("Strom", 200000);
@@ -137,7 +137,7 @@ public class Ablesebogen extends JFrame {
 		kundenListe=res.readEntity(new GenericType<ArrayList<Kunde>>() {
 		});
 		
-		/*res=service.get("ablesungenVorZweiJahrenHeute");
+		res=service.get("ablesungenVorZweiJahrenHeute");
 		
 		if (res.getStatus()!=200) {
 			System.out.println("Ablesungen laden "+res.getStatus()+" - "+res.readEntity(String.class));
@@ -145,9 +145,9 @@ public class Ablesebogen extends JFrame {
 			return;
 		}
 		
-		ArrayList<AbleseEntry> abl=res.readEntity(new GenericType<ArrayList<AbleseEntry>>() {
+		ArrayList<AbleseEntry> serverList=res.readEntity(new GenericType<ArrayList<AbleseEntry>>() {
 		});
-*/		
+		liste=new AbleseList(serverList);
 		
 		
 		// Root Container

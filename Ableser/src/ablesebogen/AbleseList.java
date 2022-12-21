@@ -14,9 +14,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 //Wrapper für die verwendete Liste, außerdem verantwortlich für den Export/Import mit den Methoden "export<Dateiformat>()
+@NoArgsConstructor
 public class AbleseList {
 
 	private static ObjectMapper obMap=new ObjectMapper();
@@ -28,6 +30,10 @@ public class AbleseList {
 	@Setter
 	private ArrayList<AbleseEntry> liste = new ArrayList<AbleseEntry>();
 	
+	public AbleseList(ArrayList<AbleseEntry> liste) {
+		super();
+		this.liste = liste;
+	}
 	
 	/** 
 	 * @param e
@@ -188,4 +194,5 @@ public class AbleseList {
 			System.exit(1);
 		   }
 	}
+
 }

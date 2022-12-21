@@ -22,13 +22,14 @@ public class AbleseEntry {
 	private UUID id;
 	@JsonProperty("kundenId")
 	private UUID kundenNummer;
-	@JsonIgnore
+	//@JsonIgnore
 	private String zaelerArt;
-	@JsonProperty("zaehlerNummer")
+	@JsonProperty("zaehlernummer")
 	private String zaelernummer;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate datum;
 	private boolean neuEingebaut;
-	@JsonProperty("zaelerstand")
+	@JsonProperty("zaehlerstand")
 	private int zaelerstand;
 	private String kommentar;
 	

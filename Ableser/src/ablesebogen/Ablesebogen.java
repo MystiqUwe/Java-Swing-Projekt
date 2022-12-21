@@ -94,13 +94,13 @@ public class Ablesebogen extends JFrame {
 	@Getter
 	private static Service service;
 
-	private static String baseURL = "http://localhost:8081/rest";
+	private static String baseURL;
 
 	// Für den Plausibilitätscheck
 	HashMap<String, Integer> DEFAULT_WERTE = new HashMap<String, Integer>();
 	private final String[] DEFAULT_ZAELERART = { "Gas", "Strom", "Heizung", "Wasser" };
 
-	public Ablesebogen() {
+	public Ablesebogen(String baseUrl) {
 		super("neuer Datensatz");
 		// Für unser eigenes Icon
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("swarm.png")));
@@ -111,9 +111,13 @@ public class Ablesebogen extends JFrame {
 				exit();
 			}
 		});
-
-		// Startwerte
-		liste = AbleseList.importJson();
+		drawMenu();
+		
+		//Serververbindung
+		this.baseURL=baseUrl;
+		service = new Service(baseURL);
+				
+		/iste = AbleseList.importJson(); //Nicht mehr verwendet
 		newList = new AbleseList();
 		DEFAULT_WERTE.put("Gas", 100000);
 		DEFAULT_WERTE.put("Strom", 200000);
@@ -122,13 +126,33 @@ public class Ablesebogen extends JFrame {
 		curEntry = null;
 		
 
+		//DATENIMPORT
+		Response res=service.get("kunden");
+		
+		if (res.getStatus()!=200) {
+			System.out.println(res.getStatus()+" - "+res.readEntity(String.class));
+			fehlerMessage(res.readEntity(String.class));
+			return;
+		}
+		kundenListe=res.readEntity(new GenericType<ArrayList<Kunde>>() {
+		});
+		
+		/*res=service.get("ablesungenVorZweiJahrenHeute");
+		
+		if (res.getStatus()!=200) {
+			System.out.println("Ablesungen laden "+res.getStatus()+" - "+res.readEntity(String.class));
+			fehlerMessage(res.readEntity(String.class));
+			return;
+		}
+		
+		ArrayList<AbleseEntry> abl=res.readEntity(new GenericType<ArrayList<AbleseEntry>>() {
+		});
+*/		
+		
+		
 		// Root Container
 		final Container con = getContentPane();
 		con.setLayout(new CardLayout());
-
-		drawMenu();
-		Server.startServer(baseURL, true);
-		service = new Service(baseURL);
 
 		// in Layout Base Layout
 		inLayout = new JPanel(new BorderLayout());
@@ -256,9 +280,10 @@ public class Ablesebogen extends JFrame {
 		Util.handleTabOrder(tabOrder, e -> {
 			return save();
 		});
-
+		
+		
 		this.setVisible(true);
-	}
+		}
 
 	/**
 	 * Speichert den Datensatz aus dem in Layout, entweder als neuer Datensatz, oder
@@ -268,17 +293,17 @@ public class Ablesebogen extends JFrame {
 	 */
 	public boolean save() {
 		Kunde selectedItem = (Kunde) kundenNummer.getSelectedItem();
-		String kn = selectedItem.getId().toString(); // kundenNummer.getSelectedItem().toString();
-		if (kn.length() == 0) {
+		UUID kn = selectedItem.getId(); // kundenNummer.getSelectedItem().toString();
+		/*if (kn.length() == 0) {
 			fehlerMessage("Kundennummer zu lang");
 			kundenNummer.requestFocus();
 			return false;
-		}
+		}*/
 
 		String zA = zaelerArt.getSelectedItem().toString();
 
-		int zN = 0;
-		try {
+		String zN = zaelernummer.getText();
+/*		try {
 			zN = Integer.parseInt(zaelernummer.getText());
 			if (zN < 0) {
 				fehlerMessage("Zählernummer darf nicht negativ sein");
@@ -288,9 +313,8 @@ public class Ablesebogen extends JFrame {
 			fehlerMessage("Zählernummer ist nicht Nummerisch");
 			zaelernummer.requestFocus();
 			return false;
-		}
-
-		Date selectedDate = (Date) datePicker.getModel().getValue();
+		}*/
+		LocalDate selectedDate = convertToLocalDateViaInstant((Date)datePicker.getModel().getValue());
 
 		boolean neuE = neuEingebaut.isSelected();// neuEingebaut.getText();
 
@@ -316,7 +340,7 @@ public class Ablesebogen extends JFrame {
 		}
 
 		if (curEntry == null) {
-			AbleseEntry entry = new AbleseEntry(kn, zA, zN, selectedDate, neuE, zStand, kom);
+			AbleseEntry entry = new AbleseEntry(null, null, zA, zN, selectedDate, neuE, zStand, kom);
 			liste.add(entry);
 			newList.add(entry);
 			/*
@@ -392,8 +416,8 @@ public class Ablesebogen extends JFrame {
 
 		kundenNummer.setSelectedItem(entry.getKundenNummer());
 		// zaelerArt.setSelectedItem(entry.getZaelerArt());
-		zaelernummer.setText(Integer.toString(entry.getZaelernummer()));
-		model.setValue(entry.getDatum());
+		zaelernummer.setText(entry.getZaelernummer());
+		model.setValue(Date.from(entry.getDatum().atStartOfDay().toInstant(null)));
 		neuEingebaut.setSelected(entry.getNeuEingebaut());
 		zaelerstand.setText(Integer.toString(entry.getZaelerstand()));
 		kommentar.setText(entry.getKommentar());
@@ -472,7 +496,7 @@ public class Ablesebogen extends JFrame {
 	 * @return Array mit Kunden Objekte, oder null
 	 */
 	private Kunde[] getKundenNrData() {
-		Response response = service.get("hausverwaltung/kunden"); // Server Anfrage für Kunden Daten
+		Response response = service.get("kunden"); // Server Anfrage für Kunden Daten
 		List<Kunde> objects = new ArrayList<>();
 		System.out.println(response);
 		if (response.getStatus() >= 200 && response.getStatus() < 400) {
@@ -488,7 +512,7 @@ public class Ablesebogen extends JFrame {
 	}
 
 	public void exit() {
-		liste.exportJson();
+		//liste.exportJson(); Kein Lokaler Speicher mehr
 		System.exit(0);
 	}
 
@@ -496,7 +520,9 @@ public class Ablesebogen extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new Ablesebogen();
+		String url="http://localhost:8081/rest";
+		Server.startServer(url, true);
+		new Ablesebogen(url);
 	}
 
 }

@@ -1,10 +1,17 @@
 package ablesebogen;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import server.Kunde;
 
 /* Datenklasse, repräsentiert einen einzelnen Dateneintrag*/
 @Getter
@@ -12,16 +19,22 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AbleseEntry {
 
-	private String kundenNummer;
+	private UUID id;
+	@JsonProperty("kundenId")
+	private UUID kundenNummer;
+	@JsonIgnore
 	private String zaelerArt;
-	private int zaelernummer;
-	private Date datum;
+	@JsonProperty("zaehlerNummer")
+	private String zaelernummer;
+	private LocalDate datum;
 	private boolean neuEingebaut;
+	@JsonProperty("zaelerstand")
 	private int zaelerstand;
 	private String kommentar;
 	
-	public AbleseEntry(String kundenNummer, String zaelerArt, int zaelernummer, Date datum, boolean neuEingebaut,
+	public AbleseEntry(UUID id, UUID kundenNummer, String zaelerArt, String zaelernummer, LocalDate datum, boolean neuEingebaut,
 			int zaelerstand, String kommentar) {
+		this.id=id;
 		this.kundenNummer = kundenNummer;
 		this.zaelerArt = zaelerArt;
 		this.zaelernummer = zaelernummer;
@@ -31,6 +44,22 @@ public class AbleseEntry {
 		this.kommentar = kommentar;
 	}
 	
+	public AbleseEntry(String zaehlernummer, LocalDate datum, Kunde kunde, String kommentar, boolean neuEingebaut,
+			Integer zaehlerstand) {
+		System.out.println("XXX");
+		this.id=null;
+		this.kundenNummer = null;
+		this.zaelerArt = zaelerArt;
+		this.zaelernummer = zaelernummer;
+		this.datum = datum;
+		this.neuEingebaut = neuEingebaut;
+		this.zaelerstand = zaelerstand;
+		this.kommentar = kommentar;
+		
+		
+	}
+
+		
 	
 	/** 
 	 * lombak erstellt diesen Getter nicht
@@ -40,6 +69,4 @@ public class AbleseEntry {
 	public boolean getNeuEingebaut() {
 		return neuEingebaut;
 	}
-
-	
 }

@@ -25,7 +25,7 @@ public class Service {
 	 * @param baseUrl the base URL for the client
 	 */
 	public Service(String baseUrl) {
-		this.baseUrl = baseUrl;
+		this.baseUrl = baseUrl+"/hausverwaltung";
 		this.client = ClientBuilder.newClient();
 	}
 

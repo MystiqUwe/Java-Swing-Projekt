@@ -163,7 +163,9 @@ public class AbleseList {
 		try {
 			final BufferedWriter out = new BufferedWriter(new FileWriter(CSVFILE, StandardCharsets.UTF_8));
 		    for (final AbleseEntry entry : liste) {
-		    	out.write(entry.getKundenNummer());
+		    	out.write(entry.getId().toString());
+		    	out.write(";");		    	
+		    	out.write(entry.getKundenNummer().toString());
 		    	out.write(";");
 		    	out.write(entry.getZaelerArt());
 		    	out.write(";");

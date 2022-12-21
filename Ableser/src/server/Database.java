@@ -34,6 +34,9 @@ public class Database {
 
 	
 	public void addKunde(Kunde k) {
+		if (k.getId()==null) {
+			k.setId(UUID.randomUUID());
+		}
 		kundenListe.add(k);
 	}
 	public Kunde getKunde(UUID id) {
@@ -75,6 +78,9 @@ public class Database {
 	}
 		
 	public void addAblesung(Ablesung a) {
+		if (a.getId()==null) {
+			a.setId(UUID.randomUUID());
+		}
 		ablesungListe.add(a);
 	}
 	

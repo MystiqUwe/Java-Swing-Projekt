@@ -229,8 +229,16 @@ public class Ablesebogen extends JFrame {
 			this.setTitle("Übersichtsliste");
 		});
 		deleteButton.addActionListener(e -> {
-			liste.remove(curEntry);
-			newList.remove(curEntry);
+			if (curEntry==null) {
+				return;
+			}
+			Response delRes=service.delete("ablesungen/"+curEntry.getId().toString());
+			
+			if (delRes.getStatus()!=Status.OK.getStatusCode()) {
+				Util.errorMessage("Löschen fehlgeschlagen\n"+delRes.getStatus()+" -"+delRes.readEntity(String.class));
+				return;
+			}
+			deleteEntry();
 			clear();
 		});
 		toFilterOutButton.addActionListener(e -> {
@@ -240,7 +248,7 @@ public class Ablesebogen extends JFrame {
 			}
 
 			Kunde selectedItem = (Kunde) kundenNummer.getSelectedItem();
-			filterOutLayout.openTable(selectedItem.getVorname());
+			filterOutLayout.openTable(selectedItem.getId().toString());
 			this.setTitle("Daten für " + selectedItem.getVorname());
 		});
 
@@ -433,7 +441,7 @@ public class Ablesebogen extends JFrame {
 	 * @param entry
 	 */
 	public void loadWithValue(AbleseEntry entry) {
-		this.setTitle(entry.getKundenNummer() + " bearbeiten");
+		this.setTitle(entry.getId() + " bearbeiten");
 
 		kundenNummer.setSelectedItem(entry.getKundenNummer());
 		// zaelerArt.setSelectedItem(entry.getZaelerArt());
@@ -540,10 +548,20 @@ public class Ablesebogen extends JFrame {
 			}
 			return true;
 		case 404:
-			return Util.optionMessage("404 - Ablesung nicht gefunden, wurde die Ablesung gelöscht?\nTrotzdem speichern?");
+			if (Util.optionMessage("404 - Ablesung nicht gefunden, wurde die Ablesung gelöscht?\nTrotzdem speichern?")) {
+				deleteEntry();
+				curEntry=null;
+				save();
+			}
+			return false;
 		default:
 			return Util.optionMessage(res.getStatus()+" - " + res.readEntity(String.class)+"\nTrotzdem speichern?");
 		}
+	}
+	
+	public void deleteEntry() {
+		liste.remove(curEntry);
+		newList.remove(curEntry);
 	}
 	
 	

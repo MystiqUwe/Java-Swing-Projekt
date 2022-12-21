@@ -3,6 +3,7 @@ package ablesebogen;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -83,6 +84,8 @@ public class AbleseTableModel extends AbstractTableModel {
 	@Override
 	public Class getColumnClass(int column) {
 		switch (column) {
+		case 0:
+			return UUID.class;
 		case 2:
 		case 5:
 			return Integer.class;

@@ -114,7 +114,6 @@ public class AbleseOutPanel extends JPanel {
 	 */
 	public void openTable(String filter) {
 		RowFilter<AbleseTableModel, Object> rf = null;
-		tableModel.fireTableDataChanged();
 	    try {
 	        rf = RowFilter.regexFilter(filter,0);
 	    } catch (java.util.regex.PatternSyntaxException e) {
@@ -127,7 +126,6 @@ public class AbleseOutPanel extends JPanel {
 		sortList.add( new RowSorter.SortKey(3, SortOrder.ASCENDING) );
 		sorter.setSortKeys(sortList);
 	    ((DefaultRowSorter<AbleseTableModel, Integer>) sorter).setRowFilter(rf);
-		((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),card);				
-	    
+		openTable();
 	}
 }

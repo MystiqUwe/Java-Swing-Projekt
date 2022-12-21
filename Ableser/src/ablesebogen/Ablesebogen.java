@@ -338,7 +338,7 @@ public class Ablesebogen extends JFrame {
 		String kom = kommentar.getText();
 
 		// #009 Plausibilitätsprüfung
-		if (Plausicheck(zA, zStand) == 1) {
+		if (!Plausicheck(zA, zStand)) {
 			return false;
 		}
 
@@ -363,6 +363,10 @@ public class Ablesebogen extends JFrame {
 			 */
 			// service.get("");
 		} else {
+			//CRUD Check
+			if (!checkChanged(curEntry)) {
+				return false;
+			}
 			curEntry.setKundenNummer(kn);
 			curEntry.setZaelerArt(zA);
 			curEntry.setZaelernummer(zN);
@@ -373,6 +377,14 @@ public class Ablesebogen extends JFrame {
 			if (newList.indexOf(curEntry) < 0) {
 				newList.add(curEntry);
 			}
+			Response res=service.put("ablesungen", curEntry);
+			
+			if (res.getStatus()!=Status.OK.getStatusCode()) {
+				fehlerMessage(res.getStatus()+" - " + res.readEntity(String.class));
+				return false;
+			}
+			
+			
 		}
 		clear();
 		return true;
@@ -390,11 +402,11 @@ public class Ablesebogen extends JFrame {
 	 * @param zStand
 	 * @return int
 	 */
-	public int Plausicheck(String zA, int zStand) {
-		int result = 0; 
+	public boolean Plausicheck(String zA, int zStand) {
 		if (zStand > DEFAULT_WERTE.get(zA)) {
-			result = optionMessage("Werte ungewöhnlich trotzdem Speichern?");
-		} return result;
+			return optionMessage("Werte ungewöhnlich trotzdem Speichern?");
+		} 
+		return true;
 	}
 
 	// Löscht die Daten aus den Eingabefeldern, nach dem speichern als Vorbereitung
@@ -499,11 +511,11 @@ public class Ablesebogen extends JFrame {
 	public void fehlerMessage(String Message) {
 		JOptionPane.showMessageDialog(dialogFrame, Message, "", JOptionPane.ERROR_MESSAGE);
 	}
-	public int optionMessage(String Message) {
+	public boolean optionMessage(String Message) {
 		//int result = 0;
 		int result = JOptionPane.showConfirmDialog(dialogFrame, "Werte ungewöhnlich trotzdem Speichern?", "",
 				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-		return result;
+		return JOptionPane.OK_OPTION==result;
 	}
 
 	/**
@@ -527,6 +539,24 @@ public class Ablesebogen extends JFrame {
 		return null;
 	}
 
+	public boolean checkChanged(AbleseEntry abl) {
+		Response res=service.get("ablesungen/"+abl.getId().toString());
+		//TODO Abfragen
+		switch (res.getStatus()) {
+		case 200:
+			AbleseEntry ablServer=res.readEntity(AbleseEntry.class);
+			if (!abl.equals(ablServer)) {
+				return optionMessage("Ablesung hat sich geändert \nTrotzdem speichern?");
+			}
+			return true;
+		case 404:
+			return optionMessage("404 - Ablesung nicht gefunden, wurde die Ablesung gelöscht?\nTrotzdem speichern?");
+		default:
+			return optionMessage(res.getStatus()+" - " + res.readEntity(String.class)+"\nTrotzdem speichern?");
+		}
+	}
+	
+	
 	public void exit() {
 		//liste.exportJson(); Kein Lokaler Speicher mehr
 		Server.stopServer(true);
@@ -539,6 +569,7 @@ public class Ablesebogen extends JFrame {
 	public static void main(String[] args) {
 		String url="http://localhost:8081/rest";
 		Server.startServer(url, true);
+		new Ablesebogen(url);
 		new Ablesebogen(url);
 	}
 

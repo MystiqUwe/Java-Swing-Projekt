@@ -2,6 +2,7 @@ package ablesebogen;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -53,4 +54,26 @@ public class AbleseEntry {
 	public boolean getNeuEingebaut() {
 		return neuEingebaut;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(kommentar);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AbleseEntry other = (AbleseEntry) obj;
+		return Objects.equals(datum, other.datum) && Objects.equals(id, other.id)
+				&& Objects.equals(kommentar, other.kommentar) && Objects.equals(kundenNummer, other.kundenNummer)
+				&& neuEingebaut == other.neuEingebaut && Objects.equals(zaelerArt, other.zaelerArt)
+				&& Objects.equals(zaelernummer, other.zaelernummer) && zaelerstand == other.zaelerstand;
+	}
+	
+	
 }

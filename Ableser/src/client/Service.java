@@ -47,7 +47,7 @@ public class Service {
 	public Response put(String path, Object requestBody) {
 		// Send the PUT request with the object as the request body
 		WebTarget target = client.target(baseUrl).path(path);
-		Response response = target.request(MediaType.APPLICATION_JSON)
+		Response response = target.request(MediaType.TEXT_PLAIN)
 				.put(Entity.entity(requestBody, MediaType.APPLICATION_JSON));
 
 		return response;

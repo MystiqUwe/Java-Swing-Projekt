@@ -76,9 +76,9 @@
     "id" : "31cac1ee-d63c-4f88-81be-abcb7b82900d",
     "zaehlernummer" : "1",
     "datum" : "2021-12-01",
-    "kommentar" : "test",
+    "kommentar" : "Fenster 2",
     "neuEingebaut" : false,
-    "zaehlerstand" : 0,
-    "kundenId" : "fd92b2d6-0a77-4eb6-9b56-64e8567b7028"
+    "zaehlerstand" : 7777,
+    "kundenId" : "ac1ff963-43a8-407a-863d-d934531a64dc"
   } ]
 }

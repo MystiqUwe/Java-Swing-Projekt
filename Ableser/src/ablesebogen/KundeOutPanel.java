@@ -62,6 +62,8 @@ public class KundeOutPanel extends JPanel {
 
 			buttonPanel.add(toInButton);
 			buttonPanel.add(editButton);
+			
+			editButton.addActionListener(e -> edit());
 
 			toInButton.addActionListener(e -> {
 				baseFrame.setTitle("neuer Datensatz");
@@ -90,7 +92,6 @@ public class KundeOutPanel extends JPanel {
 						return; //nur Doppelklick führt zum editieren
 					}
 					edit();
-					//System.out.println("edit");
 				}
 			});
 
@@ -99,12 +100,10 @@ public class KundeOutPanel extends JPanel {
 		private void edit() {
 			int row =outList.getSelectedRow();
 			if (row<0) return;
-			KundenInPanel in = new KundenInPanel(baseFrame);
 			Kunde k = tableModel.getMyList().get(outList.convertColumnIndexToModel(row));
+			KundenInPanel in = baseFrame.getKundeInLayout();
 			in.activate(k);
-			//baseFrame.loadWithValue(tableModel.getMyList().get(outList.convertRowIndexToModel(row)));
-			//((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"kundeIn");				
-			
+			//baseFrame.editKunde(k); // Hab kein Plan wie ich sonst auf das In Panel zugreife
 		}
 		
 		/* öffnet die Liste*/

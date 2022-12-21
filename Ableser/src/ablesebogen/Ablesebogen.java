@@ -75,6 +75,7 @@ public class Ablesebogen extends JFrame {
 	protected AbleseOutPanel outLayout;
 	protected KundeOutPanel outLayoutKunde;
 	protected AbleseOutPanel filterOutLayout;
+	@Getter
 	protected KundenInPanel kundeInLayout;
 
 	private JPanel panel;
@@ -432,6 +433,7 @@ public class Ablesebogen extends JFrame {
 
 		curEntry = entry;
 	}
+	
 
 	// Hilfsfunktion für die Menüleiste
 	private void drawMenu() {

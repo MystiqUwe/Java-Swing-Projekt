@@ -137,7 +137,7 @@ public class Database {
 		ArrayList<Ablesung> ausgabe=new ArrayList<Ablesung>();
 		for (Ablesung a:ablesungListe) {
 			if (kundenId!=null) {
-				if (!a.getKundenId().equals(kundenId)) {
+				if (!kundenId.equals(a.getKundenId())) {
 					continue;
 				}
 			}

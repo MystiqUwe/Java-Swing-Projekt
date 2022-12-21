@@ -74,7 +74,7 @@ public class KundeOutPanel extends JPanel {
 			//editButton.addActionListener(e-> edit());
 			
 			//Tabelle
-			tableModel = new KundeTableModel(liste);
+			tableModel = new KundeTableModel(baseFrame);
 			outList=new JTable(tableModel);
 			outList.setAutoCreateRowSorter(true);
 			sorter = new TableRowSorter<KundeTableModel>(tableModel);

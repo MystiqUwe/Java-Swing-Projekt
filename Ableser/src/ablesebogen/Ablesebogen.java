@@ -129,28 +129,7 @@ public class Ablesebogen extends JFrame {
 		
 
 		//DATENIMPORT
-		Response res=service.get("kunden");
-		
-		if (res.getStatus()!=200) {
-			System.out.println(res.getStatus()+" - "+res.readEntity(String.class));
-			Util.errorMessage(res.readEntity(String.class));
-			return;
-		}
-		kundenListe=res.readEntity(new GenericType<ArrayList<Kunde>>() {
-		});
-		
-		res=service.get("ablesungenVorZweiJahrenHeute");
-		
-		if (res.getStatus()!=200) {
-			System.out.println("Ablesungen laden "+res.getStatus()+" - "+res.readEntity(String.class));
-			Util.errorMessage(res.readEntity(String.class));
-			return;
-		}
-		
-		ArrayList<AbleseEntry> serverList=res.readEntity(new GenericType<ArrayList<AbleseEntry>>() {
-		});
-		liste=new AbleseList(serverList);
-		
+		loadData();		
 		
 		// Root Container
 		final Container con = getContentPane();
@@ -234,9 +213,13 @@ public class Ablesebogen extends JFrame {
 			}
 			Response delRes=service.delete("ablesungen/"+curEntry.getId().toString());
 			
-			if (delRes.getStatus()!=Status.OK.getStatusCode()) {
-				Util.errorMessage("Löschen fehlgeschlagen\n"+delRes.getStatus()+" -"+delRes.readEntity(String.class));
-				return;
+			if (delRes.getStatus()!=Status.OK.getStatusCode() ) {
+				if (delRes.getStatus()==Status.NOT_FOUND.getStatusCode()) {
+					Util.errorMessage("Datensatz wurde bereits gelöscht\n"+delRes.getStatus()+" -"+delRes.readEntity(String.class));
+				} else {
+					Util.errorMessage("Löschen fehlgeschlagen\n"+delRes.getStatus()+" -"+delRes.readEntity(String.class));
+					return;
+				}
 			}
 			deleteEntry();
 			clear();
@@ -263,6 +246,9 @@ public class Ablesebogen extends JFrame {
 			@Override
 			public Component getListCellRendererComponent(JList<? extends Kunde> list, Kunde value, int index,
 					boolean isSelected, boolean cellHasFocus) {
+				if (value==null) {
+					return new JLabel("");
+				}
 				String nameundvorname = (value.getName() + ", " + value.getVorname() + " -> " + value.getId().toString());
 				JLabel label = new JLabel(nameundvorname);
 				if (isSelected) {
@@ -304,7 +290,10 @@ public class Ablesebogen extends JFrame {
 	 */
 	public boolean save() {
 		Kunde selectedItem = (Kunde) kundenNummer.getSelectedItem();
-		UUID kn = selectedItem.getId(); // kundenNummer.getSelectedItem().toString();
+		UUID kn=null;
+		if (selectedItem!=null) {
+			kn = selectedItem.getId(); // kundenNummer.getSelectedItem().toString();
+		}
 		/*if (kn.length() == 0) {
 			Util.errorMessage("Kundennummer zu lang");
 			kundenNummer.requestFocus();
@@ -423,6 +412,7 @@ public class Ablesebogen extends JFrame {
 		this.setTitle("neuer Datensatz");
 
 		Date zDate = new Date();
+		kundenNummer.setSelectedItem(null);
 		// kundenNummer.setText("");
 		// zaelerArt.setSelectedIndex(0);
 		zaelernummer.setText("");
@@ -442,7 +432,8 @@ public class Ablesebogen extends JFrame {
 	 */
 	public void loadWithValue(AbleseEntry entry) {
 		this.setTitle(entry.getId() + " bearbeiten");
-
+//kundenListe.get(kundenListe.indexOf(entry.getKundenNummer()))
+		System.out.println("Edit "+entry.getKundenNummer());
 		kundenNummer.setSelectedItem(entry.getKundenNummer());
 		// zaelerArt.setSelectedItem(entry.getZaelerArt());
 		zaelernummer.setText(entry.getZaelernummer());
@@ -455,6 +446,34 @@ public class Ablesebogen extends JFrame {
 	}
 	
 
+	private void loadData() {
+		Response res=service.get("kunden");
+		
+		if (res.getStatus()!=200) {
+			System.out.println(res.getStatus()+" - "+res.readEntity(String.class));
+			Util.errorMessage("Laden der Kunden fehlgeschlagen\n"+res.getStatus()+" - "+res.readEntity(String.class));
+			return;
+		}
+		kundenListe=res.readEntity(new GenericType<ArrayList<Kunde>>() {
+		});
+		
+		res=service.get("ablesungenVorZweiJahrenHeute");
+		
+		if (res.getStatus()!=200) {
+			System.out.println("Laden der Ablesungen fehlgeschlagen\n"+res.getStatus()+" - "+res.readEntity(String.class));
+			Util.errorMessage(res.readEntity(String.class));
+			return;
+		}
+		
+		ArrayList<AbleseEntry> serverList=res.readEntity(new GenericType<ArrayList<AbleseEntry>>() {
+		});
+		if (liste==null) {
+			liste=new AbleseList(serverList);
+		} else {
+			liste.setListe(serverList);
+		}
+		
+	}
 	// Hilfsfunktion für die Menüleiste
 	private void drawMenu() {
 		JMenuBar mb = new JMenuBar();
@@ -477,23 +496,21 @@ public class Ablesebogen extends JFrame {
 		contextMenu.add(toKunden);
 		mb.add(contextMenu);
 		
-		JMenu menu = new JMenu("Exportieren");
+		JMenu menu = new JMenu("Ex-/Import");
 
-		JMenuItem subMenuJSON = new JMenuItem("JSON");
-		JMenuItem subMenuXML = new JMenuItem("XML");
-		JMenuItem subMenuCSV = new JMenuItem("CSV");
+		JMenuItem subReload = new JMenuItem("Daten neuladen");
+		
+		JMenuItem subMenuJSON = new JMenuItem("JSON exportieren");
+		JMenuItem subMenuXML = new JMenuItem("XML exportieren");
+		JMenuItem subMenuCSV = new JMenuItem("CSV exportieren");
 
+		subReload.addActionListener(ev -> {
+			loadData();
+		});
 		
 		subMenuJSON.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				liste.exportJson();
-				kundenContext = !kundenContext;
-
-				if (kundenContext) {
-
-				} else {
-
-				}
 			}
 		});
 		subMenuXML.addActionListener(new ActionListener() {
@@ -506,6 +523,7 @@ public class Ablesebogen extends JFrame {
 				liste.exportCSV();
 			}
 		});
+		menu.add(subReload);
 		menu.add(subMenuJSON);
 		menu.add(subMenuXML);
 		menu.add(subMenuCSV);
@@ -522,19 +540,8 @@ public class Ablesebogen extends JFrame {
 	 * @return Array mit Kunden Objekte, oder null
 	 */
 	private Kunde[] getKundenNrData() {
-		Response response = service.get("kunden"); // Server Anfrage für Kunden Daten
-		List<Kunde> objects = new ArrayList<>();
-		System.out.println(response);
-		if (response.getStatus() >= 200 && response.getStatus() < 400) {
-			List<Kunde> serverObjects = response.readEntity(new GenericType<List<Kunde>>() {
-			});
-			objects.addAll(serverObjects);
-			System.out.println(objects);
-			return objects.toArray(new Kunde[0]); // Liste von Objekten zu Array
-		} else {
-			Util.errorMessage(response.readEntity(String.class));
-		}
-		return null;
+		
+		return kundenListe.toArray(new Kunde[0]); // Liste von Objekten zu Array
 	}
 
 	public boolean checkChanged(AbleseEntry abl) {

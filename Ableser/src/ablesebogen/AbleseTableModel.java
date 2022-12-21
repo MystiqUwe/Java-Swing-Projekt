@@ -8,6 +8,8 @@ import java.util.UUID;
 import javax.swing.table.AbstractTableModel;
 
 import lombok.Getter;
+import lombok.Setter;
+import server.Kunde;
 
 /* Hilfsklasse für die Ausgabeliste, */
 public class AbleseTableModel extends AbstractTableModel {
@@ -15,10 +17,11 @@ public class AbleseTableModel extends AbstractTableModel {
 	private String[] columnNames = { "Kundennummer", "Zählerart", "Zählernummer", "Datum", "neu eingebaut",
 			"Zählerstand", "Kommentar" };
 	@Getter
-	private ArrayList<AbleseEntry> myList;
+	@Setter
+	private AbleseList myList;
 
 	public AbleseTableModel(AbleseList liste) {
-		myList = liste.getListe();
+		myList = liste;
 		
 	}
 

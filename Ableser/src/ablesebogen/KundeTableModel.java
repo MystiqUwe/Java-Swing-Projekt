@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.swing.table.AbstractTableModel;
 
 	import lombok.Getter;
+import lombok.Setter;
 import server.Kunde;
 
 	/* Hilfsklasse für die Ausgabeliste, */
@@ -16,15 +17,17 @@ public class KundeTableModel extends AbstractTableModel {
 
 		private String[] columnNames = { "Id", "Name", "Vorname" };
 		
-		@Getter
-		private ArrayList<Kunde> myList;
-
-		public KundeTableModel(ArrayList<Kunde> liste) {
+		private Ablesebogen baseframe;
+		
+		public KundeTableModel(Ablesebogen baseframe) {
 			//myList = liste.getListe();
-			myList = liste;
+			this.baseframe=baseframe;
 			
 		}
 
+		public ArrayList<Kunde> getMyList() {
+			return baseframe.getKundenListe();
+		}
 
 		public int getColumnCount() {
 			return columnNames.length;
@@ -35,11 +38,11 @@ public class KundeTableModel extends AbstractTableModel {
 		 */
 		public int getRowCount() {
 		      int size;
-		      if (myList == null) {
+		      if (getMyList() == null) {
 		         size = 0;
 		      }
 		      else {
-		         size = myList.size();
+		         size = getMyList().size();
 		      }
 		      return size;
 		   }
@@ -50,11 +53,11 @@ public class KundeTableModel extends AbstractTableModel {
 		public Object getValueAt(int row, int col) {
 			Object temp = null;
 			if (col == 0) {
-				temp = myList.get(row).getId();
+				temp = getMyList().get(row).getId();
 			} else if (col == 1) {
-				temp = myList.get(row).getName();
+				temp = getMyList().get(row).getName();
 			} else if (col == 2) {
-				temp = myList.get(row).getVorname();
+				temp = getMyList().get(row).getVorname();
 			}
 			return temp;
 		}

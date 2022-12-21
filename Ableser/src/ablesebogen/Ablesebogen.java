@@ -92,7 +92,6 @@ public class Ablesebogen extends JFrame {
 	private JDatePanelImpl datePanel;
 	private UtilDateModel model;
 
-	private JFrame dialogFrame = new JFrame();
 
 	@Getter
 	private static Service service;
@@ -134,7 +133,7 @@ public class Ablesebogen extends JFrame {
 		
 		if (res.getStatus()!=200) {
 			System.out.println(res.getStatus()+" - "+res.readEntity(String.class));
-			fehlerMessage(res.readEntity(String.class));
+			Util.errorMessage(res.readEntity(String.class));
 			return;
 		}
 		kundenListe=res.readEntity(new GenericType<ArrayList<Kunde>>() {
@@ -144,7 +143,7 @@ public class Ablesebogen extends JFrame {
 		
 		if (res.getStatus()!=200) {
 			System.out.println("Ablesungen laden "+res.getStatus()+" - "+res.readEntity(String.class));
-			fehlerMessage(res.readEntity(String.class));
+			Util.errorMessage(res.readEntity(String.class));
 			return;
 		}
 		
@@ -222,7 +221,7 @@ public class Ablesebogen extends JFrame {
 
 		toOutButton.addActionListener(e -> {
 			if (liste.size() < 1) {
-				fehlerMessage("Liste konnte nicht angezeigt werden");
+				Util.errorMessage("Liste konnte nicht angezeigt werden");
 				return;
 			}
 
@@ -236,7 +235,7 @@ public class Ablesebogen extends JFrame {
 		});
 		toFilterOutButton.addActionListener(e -> {
 			if (newList.size() < 1) {
-				fehlerMessage("Liste konnte nicht Angezeigt werden");
+				Util.errorMessage("Liste konnte nicht Angezeigt werden");
 				return;
 			}
 
@@ -298,7 +297,7 @@ public class Ablesebogen extends JFrame {
 		Kunde selectedItem = (Kunde) kundenNummer.getSelectedItem();
 		UUID kn = selectedItem.getId(); // kundenNummer.getSelectedItem().toString();
 		/*if (kn.length() == 0) {
-			fehlerMessage("Kundennummer zu lang");
+			Util.errorMessage("Kundennummer zu lang");
 			kundenNummer.requestFocus();
 			return false;
 		}*/
@@ -309,11 +308,11 @@ public class Ablesebogen extends JFrame {
 /*		try {
 			zN = Integer.parseInt(zaelernummer.getText());
 			if (zN < 0) {
-				fehlerMessage("Zählernummer darf nicht negativ sein");
+				Util.errorMessage("Zählernummer darf nicht negativ sein");
 				return false;
 			}
 		} catch (NumberFormatException ec) {
-			fehlerMessage("Zählernummer ist nicht Nummerisch");
+			Util.errorMessage("Zählernummer ist nicht Nummerisch");
 			zaelernummer.requestFocus();
 			return false;
 		}*/
@@ -325,12 +324,12 @@ public class Ablesebogen extends JFrame {
 		try {
 			zStand = Integer.parseInt(zaelerstand.getText());
 			if (zStand < 0) {
-				fehlerMessage("Zählerstand darf nicht Negativ sein");
+				Util.errorMessage("Zählerstand darf nicht Negativ sein");
 				zaelerstand.requestFocus();
 				return false;
 			}
 		} catch (NumberFormatException ec2) {
-			fehlerMessage("Zählerstand nicht Nummerisch");
+			Util.errorMessage("Zählerstand nicht Nummerisch");
 			zaelerstand.requestFocus();
 			return false;
 		}
@@ -347,7 +346,7 @@ public class Ablesebogen extends JFrame {
 			Response res=service.post("ablesungen", entry);
 			
 			if (res.getStatus()!=Status.CREATED.getStatusCode()) {
-				fehlerMessage(res.getStatus()+" - " + res.readEntity(String.class));
+				Util.errorMessage(res.getStatus()+" - " + res.readEntity(String.class));
 				return false;
 			}
 			
@@ -380,7 +379,7 @@ public class Ablesebogen extends JFrame {
 			Response res=service.put("ablesungen", curEntry);
 			
 			if (res.getStatus()!=Status.OK.getStatusCode()) {
-				fehlerMessage(res.getStatus()+" - " + res.readEntity(String.class));
+				Util.errorMessage(res.getStatus()+" - " + res.readEntity(String.class));
 				return false;
 			}
 			
@@ -404,7 +403,7 @@ public class Ablesebogen extends JFrame {
 	 */
 	public boolean Plausicheck(String zA, int zStand) {
 		if (zStand > DEFAULT_WERTE.get(zA)) {
-			return optionMessage("Werte ungewöhnlich trotzdem Speichern?");
+			return Util.optionMessage("Werte ungewöhnlich trotzdem Speichern?");
 		} 
 		return true;
 	}
@@ -508,16 +507,6 @@ public class Ablesebogen extends JFrame {
 
 	}
 
-	public void fehlerMessage(String Message) {
-		JOptionPane.showMessageDialog(dialogFrame, Message, "", JOptionPane.ERROR_MESSAGE);
-	}
-	public boolean optionMessage(String Message) {
-		//int result = 0;
-		int result = JOptionPane.showConfirmDialog(dialogFrame, "Werte ungewöhnlich trotzdem Speichern?", "",
-				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-		return JOptionPane.OK_OPTION==result;
-	}
-
 	/**
 	 * Request an den Server um eine Liste von Kunden objekten zu kriegen.
 	 * 
@@ -534,7 +523,7 @@ public class Ablesebogen extends JFrame {
 			System.out.println(objects);
 			return objects.toArray(new Kunde[0]); // Liste von Objekten zu Array
 		} else {
-			fehlerMessage(response.readEntity(String.class));
+			Util.errorMessage(response.readEntity(String.class));
 		}
 		return null;
 	}
@@ -546,13 +535,13 @@ public class Ablesebogen extends JFrame {
 		case 200:
 			AbleseEntry ablServer=res.readEntity(AbleseEntry.class);
 			if (!abl.equals(ablServer)) {
-				return optionMessage("Ablesung hat sich geändert \nTrotzdem speichern?");
+				return Util.optionMessage("Ablesung hat sich geändert \nTrotzdem speichern?");
 			}
 			return true;
 		case 404:
-			return optionMessage("404 - Ablesung nicht gefunden, wurde die Ablesung gelöscht?\nTrotzdem speichern?");
+			return Util.optionMessage("404 - Ablesung nicht gefunden, wurde die Ablesung gelöscht?\nTrotzdem speichern?");
 		default:
-			return optionMessage(res.getStatus()+" - " + res.readEntity(String.class)+"\nTrotzdem speichern?");
+			return Util.optionMessage(res.getStatus()+" - " + res.readEntity(String.class)+"\nTrotzdem speichern?");
 		}
 	}
 	

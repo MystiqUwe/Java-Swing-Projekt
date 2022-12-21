@@ -59,7 +59,7 @@ public class KundenInPanel extends JPanel{
 
 		toOutButton.addActionListener(e -> {
 			if (baseFrame.getKundenListe().size() < 1) {
-				baseFrame.fehlerMessage("Liste konnte nicht angezeigt werden");
+				Util.errorMessage("Liste konnte nicht angezeigt werden");
 				return;
 			}
 			baseFrame.setTitle("Übersichtsliste");
@@ -94,7 +94,7 @@ public class KundenInPanel extends JPanel{
 		Response res=Ablesebogen.getService().get("kunden/"+k.getId());
 		
 		if (res.getStatus()!=200) {
-			baseFrame.fehlerMessage(res.readEntity(String.class));
+			Util.errorMessage(res.readEntity(String.class));
 
 			//TODO Gelöscht - neu Hochladen?
 			toEdit=null;

@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.function.Function;
 
 import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class Util {
 
@@ -37,5 +39,16 @@ public class Util {
 				}
 			}
 		});
+	}
+
+	private static JFrame dialogFrame = new JFrame();
+	public static void errorMessage(String message) {
+		JOptionPane.showMessageDialog(dialogFrame, message, "", JOptionPane.ERROR_MESSAGE);
+	}
+	public static boolean optionMessage(String message) {
+		//int result = 0;
+		int result = JOptionPane.showConfirmDialog(dialogFrame, message, "",
+				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+		return JOptionPane.OK_OPTION==result;
 	}
 }

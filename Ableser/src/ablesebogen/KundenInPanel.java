@@ -63,8 +63,9 @@ public class KundenInPanel extends JPanel{
 				Util.errorMessage("Liste konnte nicht angezeigt werden");
 				return;
 			}
-			((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"kundeOut");
-			baseFrame.setTitle("Übersichtsliste");
+			baseFrame.outLayoutKunde.openTable();
+			//((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"kundeOut");
+			//baseFrame.setTitle("Übersichtsliste");
 		});
 		deleteButton.addActionListener(e -> {
 			if (toEdit==null) {
@@ -159,7 +160,8 @@ public class KundenInPanel extends JPanel{
 			
 			
 			
-			//baseFrame.getKundenListe().add(toSave);
+			baseFrame.getKundenListe().add(toSave);
+
 ;			
 		
 			return true;

@@ -142,7 +142,7 @@ public class KundenInPanel extends JPanel{
 	
 	
 	public void activate(Kunde k) {
-		((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"in");
+		((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"kundeIn");
 
 		toEdit=k;
 		if (k==null) {

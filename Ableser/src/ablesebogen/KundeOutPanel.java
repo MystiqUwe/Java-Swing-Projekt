@@ -57,7 +57,7 @@ public class KundeOutPanel extends JPanel {
 			JPanel buttonPanel=new JPanel(new GridLayout(1,2));
 			this.add(buttonPanel,BorderLayout.SOUTH);
 			
-			JButton toInButton=new JButton("neuer Prnis");
+			JButton toInButton=new JButton("neuer Datensatz");
 			JButton editButton=new JButton("bearbeiten");
 
 			buttonPanel.add(toInButton);
@@ -66,7 +66,7 @@ public class KundeOutPanel extends JPanel {
 			toInButton.addActionListener(e -> {
 				baseFrame.setTitle("neuer Datensatz");
 				baseFrame.clear();
-				((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"in");
+				((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"kundeIn");
 			});
 			
 			//editButton.addActionListener(e-> edit());
@@ -89,20 +89,23 @@ public class KundeOutPanel extends JPanel {
 					if (e.getClickCount()!=2) {
 						return; //nur Doppelklick führt zum editieren
 					}
-					//edit();
-					System.out.println("edit");
+					edit();
+					//System.out.println("edit");
 				}
 			});
 
 		}
 		
-		/*private void edit() {
+		private void edit() {
 			int row =outList.getSelectedRow();
 			if (row<0) return;
-			baseFrame.loadWithValue(tableModel.getMyList().get(outList.convertRowIndexToModel(row)));
-			((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"in");				
+			KundenInPanel in = new KundenInPanel(baseFrame);
+			Kunde k = tableModel.getMyList().get(outList.convertColumnIndexToModel(row));
+			in.activate(k);
+			//baseFrame.loadWithValue(tableModel.getMyList().get(outList.convertRowIndexToModel(row)));
+			//((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"kundeIn");				
 			
-		}*/
+		}
 		
 		/* öffnet die Liste*/
 		public void openTable() {

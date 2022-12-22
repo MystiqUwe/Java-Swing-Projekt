@@ -1,96 +1,84 @@
 {
   "kundenListe" : [ {
-    "id" : "1040f9e6-cdc9-4a58-bfba-417800beef21",
+    "id" : "451f3f76-f796-41e9-9008-1f0de2e032eb",
     "name" : "A",
     "vorname" : "a"
   }, {
-    "id" : "032b113e-e25b-4526-8060-6ae0022c589e",
+    "id" : "49b86411-a311-463a-9f9c-6d54b796f3cb",
     "name" : "B",
     "vorname" : "b"
-  }, {
-    "id" : "4efc3137-f244-42f6-9ae9-f16acc0e9ae5",
-    "name" : "bh",
-    "vorname" : "bh"
-  }, {
-    "id" : "2879dbfa-ee19-4857-b74f-c224ab0a74c5",
-    "name" : "tfffp",
-    "vorname" : "ffgg"
-  }, {
-    "id" : "c2168acb-0f4d-42be-858b-2b766e45240e",
-    "name" : "neu",
-    "vorname" : "Lolol"
   } ],
   "ablesungListe" : [ {
-    "id" : "adbcac34-80c4-4bdf-bb8a-0e333dcf9820",
+    "id" : "93546297-76a6-443d-bf49-aee745154665",
     "zaehlernummer" : "1",
     "datum" : "2021-01-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "032b113e-e25b-4526-8060-6ae0022c589e"
+    "kundenId" : "49b86411-a311-463a-9f9c-6d54b796f3cb"
   }, {
-    "id" : "96a21fdd-a989-4057-90f9-afb62c7ebbe1",
+    "id" : "4c5137b3-ec9f-477e-a3bb-bf96a2240cf0",
     "zaehlernummer" : "1",
     "datum" : "2021-04-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "032b113e-e25b-4526-8060-6ae0022c589e"
+    "kundenId" : "49b86411-a311-463a-9f9c-6d54b796f3cb"
   }, {
-    "id" : "849afe05-9224-438d-aaa7-fcd334e83913",
+    "id" : "6a426fe4-0428-498c-a84e-224b15315e0f",
     "zaehlernummer" : "1",
     "datum" : "2021-08-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "032b113e-e25b-4526-8060-6ae0022c589e"
+    "kundenId" : "49b86411-a311-463a-9f9c-6d54b796f3cb"
   }, {
-    "id" : "7ad0a6ae-2af8-4db9-84a4-bde854eb4b3c",
+    "id" : "5f1c9a4a-3b2b-4dcf-9fe3-8a30f41202a8",
     "zaehlernummer" : "1",
     "datum" : "2021-12-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "032b113e-e25b-4526-8060-6ae0022c589e"
+    "kundenId" : "49b86411-a311-463a-9f9c-6d54b796f3cb"
   }, {
-    "id" : "f2d42f7e-4738-45ea-8372-9adbe938be03",
+    "id" : "9d8dc47e-ee4a-4932-8578-5473ca434360",
     "zaehlernummer" : "1",
     "datum" : "2021-01-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "1040f9e6-cdc9-4a58-bfba-417800beef21"
+    "kundenId" : "451f3f76-f796-41e9-9008-1f0de2e032eb"
   }, {
-    "id" : "b1e9d7a4-3e94-47f8-be2f-72247b577de4",
+    "id" : "0a77826b-e0b9-4bf6-a7c2-ab569db0dcd7",
     "zaehlernummer" : "1",
     "datum" : "2021-04-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "1040f9e6-cdc9-4a58-bfba-417800beef21"
+    "kundenId" : "451f3f76-f796-41e9-9008-1f0de2e032eb"
   }, {
-    "id" : "9d2f602e-e69d-490b-8461-3c850fe555bc",
+    "id" : "4336a0e6-8ca6-4a0c-b103-c8246643e5f4",
     "zaehlernummer" : "1",
     "datum" : "2021-08-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "1040f9e6-cdc9-4a58-bfba-417800beef21"
+    "kundenId" : "451f3f76-f796-41e9-9008-1f0de2e032eb"
   }, {
-    "id" : "70fca770-0987-4fac-a59c-36bab5f24d35",
+    "id" : "514341e4-ae39-4eb0-9189-e77bffeea2ac",
+    "zaehlernummer" : "1",
+    "datum" : "2021-12-01",
+    "kommentar" : "test",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 0,
+    "kundenId" : "451f3f76-f796-41e9-9008-1f0de2e032eb"
+  }, {
+    "id" : "0a1713e4-7bb5-43be-955a-5b13367a4006",
     "zaehlernummer" : "1",
     "datum" : "2018-08-01",
     "kommentar" : "ablesungen",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "1040f9e6-cdc9-4a58-bfba-417800beef21"
-  }, {
-    "id" : "8d714b39-e7a6-47b3-a2bc-c5e566132079",
-    "zaehlernummer" : "jsdfsd",
-    "datum" : "2022-12-22",
-    "kommentar" : "34",
-    "neuEingebaut" : false,
-    "zaehlerstand" : 434,
-    "kundenId" : "c2168acb-0f4d-42be-858b-2b766e45240e"
+    "kundenId" : "451f3f76-f796-41e9-9008-1f0de2e032eb"
   } ]
 }

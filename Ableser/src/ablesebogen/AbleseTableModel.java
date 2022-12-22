@@ -1,17 +1,15 @@
 package ablesebogen;
 
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.swing.table.AbstractTableModel;
 
 import lombok.Getter;
 import lombok.Setter;
-import server.Kunde;
 
 /* Hilfsklasse für die Ausgabeliste, */
+@SuppressWarnings("serial")
 public class AbleseTableModel extends AbstractTableModel {
 
 	private String[] columnNames = { "Kundennummer", "Zählerart", "Zählernummer", "Datum", "neu eingebaut",
@@ -22,37 +20,35 @@ public class AbleseTableModel extends AbstractTableModel {
 
 	public AbleseTableModel(AbleseList liste) {
 		myList = liste;
-		
-	}
 
+	}
 
 	@Override
 	public int getColumnCount() {
 		return columnNames.length;
 	}
-	
-	/** 
+
+	/**
 	 * @return int
 	 */
 	@Override
-	   public int getRowCount() {
-	      int size;
-	      if (myList == null) {
-	         size = 0;
-	      }
-	      else {
-	         size = myList.size();
-	      }
-	      return size;
-	   }
-	
-	/** 
+	public int getRowCount() {
+		int size;
+		if (myList == null) {
+			size = 0;
+		} else {
+			size = myList.size();
+		}
+		return size;
+	}
+
+	/**
 	 * @return int
 	 */
 	@Override
 	public Object getValueAt(int row, int col) {
 		Object temp = null;
-		if (row >=myList.size()) {
+		if (row >= myList.size()) {
 			return null;
 		}
 		if (col == 0) {
@@ -62,7 +58,7 @@ public class AbleseTableModel extends AbstractTableModel {
 		} else if (col == 2) {
 			temp = myList.get(row).getZaelernummer();
 		} else if (col == 3) {
-			temp=myList.get(row).getDatum();
+			temp = myList.get(row).getDatum();
 		} else if (col == 4) {
 			temp = (myList.get(row).getNeuEingebaut() ? "Ja" : "Nein");
 		} else if (col == 5) {
@@ -72,21 +68,21 @@ public class AbleseTableModel extends AbstractTableModel {
 		}
 		return temp;
 	}
-	
 
-	   /** 
-		* @param col
-		* @return String
-		*/
-	   public String getColumnName(int col) {
-		      return columnNames[col];
-		   }
-	
-	/** 
+	/**
+	 * @param col
+	 * @return String
+	 */
+	public String getColumnName(int col) {
+		return columnNames[col];
+	}
+
+	/**
 	 * @param row
 	 * @param col
 	 * @return Object
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Class getColumnClass(int column) {
 		switch (column) {
@@ -99,7 +95,7 @@ public class AbleseTableModel extends AbstractTableModel {
 			return LocalDate.class;
 		default:
 			return String.class;
-				
+
 		}
 	}
 

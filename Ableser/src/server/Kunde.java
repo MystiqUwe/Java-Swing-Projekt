@@ -21,11 +21,11 @@ public class Kunde {
 	private String name;
 	@JsonProperty
 	private String vorname;
-	
+
 	public Kunde() {
-		id=UUID.randomUUID();
+		id = UUID.randomUUID();
 	}
-	
+
 	public Kunde(String name, String vorname) {
 		this();
 		this.name = name;
@@ -33,12 +33,12 @@ public class Kunde {
 	}
 
 	public Kunde(String jsonString) {
-		String[] splitString=jsonString.split("=|:");
-		this.id=UUID.fromString(splitString[1]);
-		this.name=splitString[3];
-		this.vorname=splitString[5];
+		String[] splitString = jsonString.split("=|:");
+		this.id = UUID.fromString(splitString[1]);
+		this.name = splitString[3];
+		this.vorname = splitString[5];
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Kunde [id=" + id + ": name=" + name + ": vorname=" + vorname + ":]";
@@ -46,7 +46,7 @@ public class Kunde {
 
 	@Override
 	public int hashCode() {
-		//System.out.println("Hash "+Objects.hash(id, name, vorname));
+		// System.out.println("Hash "+Objects.hash(id, name, vorname));
 		return Objects.hash(id);
 	}
 
@@ -55,22 +55,20 @@ public class Kunde {
 		if (!(obj instanceof Kunde)) {
 			return false;
 		}
-			
+
 		if (!this.id.equals(((Kunde) obj).getId())) {
 			return false;
 		}
-		
+
 		if (!this.name.equals(((Kunde) obj).getName())) {
 			return false;
 		}
-		
+
 		if (!this.vorname.equals(((Kunde) obj).getVorname())) {
 			return false;
 		}
-			
+
 		return true;
 	}
-	
 
-	
 }

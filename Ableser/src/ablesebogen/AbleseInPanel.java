@@ -1,7 +1,6 @@
 package ablesebogen;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.time.LocalDate;
@@ -11,7 +10,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,11 +27,12 @@ import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import server.Kunde;
 
-public class AbleseInPanel extends JAblesebogenPanel{
-	
+@SuppressWarnings("serial")
+public class AbleseInPanel extends JAblesebogenPanel {
+
 	public Ablesebogen baseFrame;
 	private AbleseEntry curEntry; // Der aktuell zu editierender Datensatz, null falls nicht vorhanden
-	
+
 	// Eingabefelder
 	private JComboBox<Kunde> kundenNummer;
 	private JTextField zaelernummer;
@@ -52,17 +51,15 @@ public class AbleseInPanel extends JAblesebogenPanel{
 	HashMap<String, Integer> DEFAULT_WERTE = new HashMap<String, Integer>();
 	private final String[] DEFAULT_ZAELERART = { "Gas", "Strom", "Heizung", "Wasser" };
 
-	
 	public AbleseInPanel(Ablesebogen bFrame) {
 		super(new BorderLayout());
-		baseFrame=bFrame;
+		baseFrame = bFrame;
 		DEFAULT_WERTE.put("Gas", 100000);
 		DEFAULT_WERTE.put("Strom", 200000);
 		DEFAULT_WERTE.put("Wasser", 300000);
 		DEFAULT_WERTE.put("Heizung", 400000);
 		curEntry = null;
 
-		
 		// in Layout Komponenten
 		panel = new JPanel(new GridLayout(7, 2));
 		this.add(panel, BorderLayout.CENTER);
@@ -117,24 +114,24 @@ public class AbleseInPanel extends JAblesebogenPanel{
 		});
 		deleteButton.addActionListener(e -> {
 			if (baseFrame.getListe().remove(curEntry)) {
-				clear();				
+				clear();
 			}
 		});
 		toFilterOutButton.addActionListener(e -> {
 			Kunde selectedItem = (Kunde) kundenNummer.getSelectedItem();
-			baseFrame.openPage(Ablesebogen.ABLESUNG_OUT,selectedItem.getId());
+			baseFrame.openPage(Ablesebogen.ABLESUNG_OUT, selectedItem.getId());
 		});
-
 
 		// Rendert die List Items in einer ComboBox
 		kundenNummer.setRenderer(new ListCellRenderer<Kunde>() {
 			@Override
 			public Component getListCellRendererComponent(JList<? extends Kunde> list, Kunde value, int index,
 					boolean isSelected, boolean cellHasFocus) {
-				if (value==null) {
+				if (value == null) {
 					return new JLabel("");
 				}
-				String nameundvorname = (value.getName() + ", " + value.getVorname() + " -> " + value.getId().toString());
+				String nameundvorname = (value.getName() + ", " + value.getVorname() + " -> "
+						+ value.getId().toString());
 				JLabel label = new JLabel(nameundvorname);
 				if (isSelected) {
 					label.setIcon(new ImageIcon(getClass().getResource("check.png")));
@@ -142,16 +139,15 @@ public class AbleseInPanel extends JAblesebogenPanel{
 				return label;
 			}
 		});
-		
-		//Kunden Änderungen mitbekommen
-		baseFrame.getKundenListe().addChangeListener( e-> {
-			
+
+		// Kunden Änderungen mitbekommen
+		baseFrame.getKundenListe().addChangeListener(e -> {
+
 			DefaultComboBoxModel<Kunde> model = new DefaultComboBoxModel<Kunde>(e.toArray(new Kunde[0]));
 			kundenNummer.setModel(model);
 			return true;
 		});
-		
-		
+
 		// Enter zur Navigation
 		ArrayList<JComponent> tabOrder = new ArrayList<>();
 		tabOrder.add(kundenNummer);
@@ -165,19 +161,18 @@ public class AbleseInPanel extends JAblesebogenPanel{
 			return save();
 		});
 
-
 	}
-	
+
 	@Override
 	public boolean activate(Object eOpts) {
 		if (eOpts instanceof AbleseEntry) {
-			loadWithValue((AbleseEntry)eOpts);
+			loadWithValue((AbleseEntry) eOpts);
 		} else {
 			clear();
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Speichert den Datensatz aus dem in Layout, entweder als neuer Datensatz, oder
 	 * als Update falls vorhanden
@@ -186,15 +181,15 @@ public class AbleseInPanel extends JAblesebogenPanel{
 	 */
 	public boolean save() {
 		Kunde selectedItem = (Kunde) kundenNummer.getSelectedItem();
-		UUID kn=null;
-		if (selectedItem!=null) {
+		UUID kn = null;
+		if (selectedItem != null) {
 			kn = selectedItem.getId(); // kundenNummer.getSelectedItem().toString();
 		}
 
 		String zA = zaelerArt.getSelectedItem().toString();
 
 		String zN = zaelernummer.getText();
-		LocalDate selectedDate = Util.dateToLocalDate((Date)datePicker.getModel().getValue());
+		LocalDate selectedDate = Util.dateToLocalDate((Date) datePicker.getModel().getValue());
 
 		boolean neuE = neuEingebaut.isSelected();// neuEingebaut.getText();
 
@@ -218,21 +213,20 @@ public class AbleseInPanel extends JAblesebogenPanel{
 		if (!Plausicheck(zA, zStand)) {
 			return false;
 		}
-		
+
 		AbleseEntry newEntry = new AbleseEntry(null, kn, zA, zN, selectedDate, neuE, zStand, kom);
 		boolean success;
 		if (curEntry == null) {
-			success=baseFrame.getListe().add(newEntry);
+			success = baseFrame.getListe().add(newEntry);
 		} else {
 			newEntry.setId(curEntry.getId());
-			success=baseFrame.getListe().update(curEntry, newEntry);			
+			success = baseFrame.getListe().update(curEntry, newEntry);
 		}
 		if (success) {
 			clear();
 		}
 		return success;
 	}
-
 
 	/**
 	 * Plausibilitatsprüfung für #009, simpler check ob der eingegebene Wert größer
@@ -245,12 +239,10 @@ public class AbleseInPanel extends JAblesebogenPanel{
 	public boolean Plausicheck(String zA, int zStand) {
 		if (zStand > DEFAULT_WERTE.get(zA)) {
 			return Util.optionMessage("Werte ungewöhnlich trotzdem Speichern?");
-		} 
+		}
 		return true;
 	}
 
-	
-	
 	/**
 	 * Öffnet einen Datensatz zum editieren
 	 * 
@@ -258,10 +250,10 @@ public class AbleseInPanel extends JAblesebogenPanel{
 	 */
 	public void loadWithValue(AbleseEntry entry) {
 		baseFrame.setTitle(entry.getId() + " bearbeiten");
-		System.out.println("Edit "+entry.getKundenNummer());
-		
-		Kunde kunde=baseFrame.getKundenListe().getById(entry.getKundenNummer());
-		
+		System.out.println("Edit " + entry.getKundenNummer());
+
+		Kunde kunde = baseFrame.getKundenListe().getById(entry.getKundenNummer());
+
 		kundenNummer.setSelectedItem(kunde);
 		// zaelerArt.setSelectedItem(entry.getZaelerArt());
 		zaelernummer.setText(entry.getZaelernummer());
@@ -293,5 +285,4 @@ public class AbleseInPanel extends JAblesebogenPanel{
 		kundenNummer.requestFocus();
 	}
 
-	
 }

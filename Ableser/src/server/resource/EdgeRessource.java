@@ -20,8 +20,9 @@ public class EdgeRessource {
 	@GET
 	@Path("ablesungenVorZweiJahrenHeute")
 	public Response getAblesungenVorZweiJahrenHeute() {
-		ArrayList<Ablesung> list=Server.getServerData().getAblesungList(null, LocalDate.of( LocalDate.now().getYear()-2, 1, 1), LocalDate.now());
-		return Response.status(Response.Status.OK).entity(list).build();		
-		
+		ArrayList<Ablesung> list = Server.getServerData().getAblesungList(null,
+				LocalDate.of(LocalDate.now().getYear() - 2, 1, 1), LocalDate.now());
+		return Response.status(Response.Status.OK).entity(list).build();
+
 	}
 }

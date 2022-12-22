@@ -7,10 +7,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+
 import client.Service;
 import lombok.Getter;
 import server.Server;
@@ -30,17 +32,15 @@ public class Ablesebogen extends JFrame {
 	protected KundeOutPanel outLayoutKunde;
 	protected KundenInPanel inLayoutKunde;
 
-
 	@Getter
 	private Service service;
 	private String baseURL;
 
-	public final static String ABLESUNG_IN="ablIn";
-	public final static String ABLESUNG_OUT="ablOut";
-	public final static String KUNDE_IN="kIn";
-	public final static String KUNDE_OUT="kOut";
-	
-	
+	public final static String ABLESUNG_IN = "ablIn";
+	public final static String ABLESUNG_OUT = "ablOut";
+	public final static String KUNDE_IN = "kIn";
+	public final static String KUNDE_OUT = "kOut";
+
 	public Ablesebogen(String baseUrl) {
 		super("neuer Datensatz");
 		// Für unser eigenes Icon
@@ -53,21 +53,21 @@ public class Ablesebogen extends JFrame {
 			}
 		});
 		drawMenu();
-		
-		//Serververbindung
-		this.baseURL=baseUrl;
+
+		// Serververbindung
+		this.baseURL = baseUrl;
 		service = new Service(baseURL);
-		//DATENIMPORT
-		this.liste=new AbleseList(service);
-		this.kundenListe=new KundeList(service);
-		
+		// DATENIMPORT
+		this.liste = new AbleseList(service);
+		this.kundenListe = new KundeList(service);
+
 		// Root Container
 		final Container con = getContentPane();
 		con.setLayout(new CardLayout());
 
-		inLayout= new AbleseInPanel(this);
+		inLayout = new AbleseInPanel(this);
 		con.add(inLayout, ABLESUNG_IN);
-		
+
 		inLayoutKunde = new KundenInPanel(this);
 		con.add(inLayoutKunde, KUNDE_IN);
 
@@ -76,14 +76,9 @@ public class Ablesebogen extends JFrame {
 
 		outLayoutKunde = new KundeOutPanel(this, kundenListe);
 		con.add(outLayoutKunde, KUNDE_OUT);
-		
-		
-		
+
 		this.setVisible(true);
-		}
-
-
-	
+	}
 
 	private void loadData() {
 		kundenListe.refresh();
@@ -91,32 +86,33 @@ public class Ablesebogen extends JFrame {
 		liste.refresh();
 		outLayoutKunde.refresh();
 	}
+
 	// Hilfsfunktion für die Menüleiste
 	private void drawMenu() {
 		JMenuBar mb = new JMenuBar();
-		
-		//Context Menu
+
+		// Context Menu
 		JMenu contextMenu = new JMenu("Bereiche");
 
-		JMenuItem toAblesung=new JMenuItem("Ablesungen");
-		JMenuItem toKunden=new JMenuItem("Kunden");
-		
-		toAblesung.addActionListener(e-> {
+		JMenuItem toAblesung = new JMenuItem("Ablesungen");
+		JMenuItem toKunden = new JMenuItem("Kunden");
+
+		toAblesung.addActionListener(e -> {
 			openPage(ABLESUNG_OUT);
 		});
 
-		toKunden.addActionListener(e-> {
+		toKunden.addActionListener(e -> {
 			openPage(KUNDE_OUT);
 		});
-		
+
 		contextMenu.add(toAblesung);
 		contextMenu.add(toKunden);
 		mb.add(contextMenu);
-		
+
 		JMenu menu = new JMenu("Ex-/Import");
 
 		JMenuItem subReload = new JMenuItem("Daten neuladen");
-		
+
 		JMenuItem subMenuJSON = new JMenuItem("JSON exportieren");
 		JMenuItem subMenuXML = new JMenuItem("XML exportieren");
 		JMenuItem subMenuCSV = new JMenuItem("CSV exportieren");
@@ -124,7 +120,7 @@ public class Ablesebogen extends JFrame {
 		subReload.addActionListener(ev -> {
 			loadData();
 		});
-		
+
 		subMenuJSON.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				liste.exportJson();
@@ -146,16 +142,13 @@ public class Ablesebogen extends JFrame {
 		menu.add(subMenuCSV);
 
 		mb.add(menu);
-				
+
 		this.setJMenuBar(mb);
 
 	}
 
-
-	
-
 	public void exit() {
-		//liste.exportJson(); Kein Lokaler Speicher mehr
+		// liste.exportJson(); Kein Lokaler Speicher mehr
 		Server.stopServer(true);
 		System.exit(0);
 	}
@@ -164,36 +157,36 @@ public class Ablesebogen extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String url="http://localhost:8081/rest";
+		String url = "http://localhost:8081/rest";
 		Server.startServer(url, true);
 		new Ablesebogen(url);
 		new Ablesebogen(url);
 	}
 
 	public void openPage(String page) {
-		openPage(page,null);
+		openPage(page, null);
 	}
 
 	public void openPage(String page, Object eOpts) {
-		boolean open=false;
+		boolean open = false;
 		switch (page) {
 		case ABLESUNG_OUT:
-			open=outLayout.activate(eOpts);
+			open = outLayout.activate(eOpts);
 			break;
 		case ABLESUNG_IN:
-			open=inLayout.activate(eOpts);
+			open = inLayout.activate(eOpts);
 			break;
 		case KUNDE_OUT:
-			open=outLayoutKunde.activate(eOpts);
+			open = outLayoutKunde.activate(eOpts);
 			break;
 		case KUNDE_IN:
-			open=inLayoutKunde.activate(eOpts);
+			open = inLayoutKunde.activate(eOpts);
 			break;
 		default:
-			
+
 		}
 		if (open) {
-			((CardLayout) getContentPane().getLayout()).show(getContentPane(),page);	
+			((CardLayout) getContentPane().getLayout()).show(getContentPane(), page);
 		}
 	}
 

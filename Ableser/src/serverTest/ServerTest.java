@@ -37,7 +37,7 @@ import server.Ablesung;
 import server.Kunde;
 import server.Server;
 
-@TestMethodOrder(MethodOrderer.Alphanumeric.class)
+@TestMethodOrder(MethodOrderer.MethodName.class)
 class ServerTest {
 
 	private static final String url = "http://localhost:8080/test";

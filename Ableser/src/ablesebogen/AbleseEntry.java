@@ -1,7 +1,6 @@
 package ablesebogen;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -12,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import server.Kunde;
 
 /* Datenklasse, repräsentiert einen einzelnen Dateneintrag*/
 @Getter
@@ -33,10 +31,10 @@ public class AbleseEntry {
 	@JsonProperty("zaehlerstand")
 	private int zaelerstand;
 	private String kommentar;
-	
-	public AbleseEntry(UUID id, UUID kundenNummer, String zaelerArt, String zaelernummer, LocalDate datum, boolean neuEingebaut,
-			int zaelerstand, String kommentar) {
-		this.id=id;
+
+	public AbleseEntry(UUID id, UUID kundenNummer, String zaelerArt, String zaelernummer, LocalDate datum,
+			boolean neuEingebaut, int zaelerstand, String kommentar) {
+		this.id = id;
 		this.kundenNummer = kundenNummer;
 		this.zaelerArt = zaelerArt;
 		this.zaelernummer = zaelernummer;
@@ -44,9 +42,9 @@ public class AbleseEntry {
 		this.neuEingebaut = neuEingebaut;
 		this.zaelerstand = zaelerstand;
 		this.kommentar = kommentar;
-	}		
-	
-	/** 
+	}
+
+	/**
 	 * lombak erstellt diesen Getter nicht
 	 * 
 	 * @return boolean
@@ -74,6 +72,5 @@ public class AbleseEntry {
 				&& neuEingebaut == other.neuEingebaut && Objects.equals(zaelerArt, other.zaelerArt)
 				&& Objects.equals(zaelernummer, other.zaelernummer) && zaelerstand == other.zaelerstand;
 	}
-	
-	
+
 }

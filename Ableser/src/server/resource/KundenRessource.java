@@ -21,10 +21,10 @@ import server.Server;
 @Path("hausverwaltung/kunden")
 public class KundenRessource {
 
-    /** 
-     * @param kunde
-     * @return Response
-     */
+	/**
+	 * @param kunde
+	 * @return Response
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -33,15 +33,15 @@ public class KundenRessource {
 			return Response.status(Response.Status.BAD_REQUEST).entity("Kunde konnte nicht angelegt werden!")
 					.type(MediaType.TEXT_PLAIN).build();
 		}
-		
+
 		Server.getServerData().addKunde(kunde);
 		return Response.status(Response.Status.CREATED).entity(kunde).build();
 	}
-	
-    /** 
-     * @param kunde
-     * @return Response
-     */
+
+	/**
+	 * @param kunde
+	 * @return Response
+	 */
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
@@ -59,56 +59,59 @@ public class KundenRessource {
 
 	}
 
-    /** 
-     * @param id
-     * @return Response
-     */
+	/**
+	 * @param id
+	 * @return Response
+	 */
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
 	public Response deleteKunde(@PathParam("id") String param) {
 		UUID id;
 		try {
-			id=UUID.fromString(param);
+			id = UUID.fromString(param);
 		} catch (IllegalArgumentException e) {
-			return Response.status(Response.Status.NOT_FOUND).entity("Keine gültige UUID").type(MediaType.TEXT_PLAIN).build();
+			return Response.status(Response.Status.NOT_FOUND).entity("Keine gültige UUID").type(MediaType.TEXT_PLAIN)
+					.build();
 
 		}
-		Kunde k=Server.getServerData().getKunde(id);
+		Kunde k = Server.getServerData().getKunde(id);
 		if (k == null) {
 			return Response.status(Response.Status.NOT_FOUND).entity("Kunde konnte nicht gelöscht werden!")
 					.type(MediaType.TEXT_PLAIN).build();
 		}
-		Map<Kunde, ArrayList<Ablesung>> map= Server.getServerData().removeKunde(id);
+		Map<Kunde, ArrayList<Ablesung>> map = Server.getServerData().removeKunde(id);
 		return Response.status(Response.Status.OK).entity(map).build();
 
 	}
 
-    /** 
-     * @return Response
-     */
+	/**
+	 * @return Response
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllKunden() {
 		return Response.status(Response.Status.OK).entity(Server.getServerData().getAllKunden()).build();
 	}
-	
-    /** 
-     * @return Response
-     */
+
+	/**
+	 * @return Response
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
 	public Response getKunde(@PathParam("id") String param) {
 		UUID id;
 		try {
-			id=UUID.fromString(param);
+			id = UUID.fromString(param);
 		} catch (IllegalArgumentException e) {
-			return Response.status(Response.Status.NOT_FOUND).entity("Keine gültige UUID").type(MediaType.TEXT_PLAIN).build();
+			return Response.status(Response.Status.NOT_FOUND).entity("Keine gültige UUID").type(MediaType.TEXT_PLAIN)
+					.build();
 		}
-		Kunde k=Server.getServerData().getKunde(id);
-		if (k==null) {
-			return Response.status(Response.Status.NOT_FOUND).entity("Kunde nicht gefunden").type(MediaType.TEXT_PLAIN).build();
+		Kunde k = Server.getServerData().getKunde(id);
+		if (k == null) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Kunde nicht gefunden").type(MediaType.TEXT_PLAIN)
+					.build();
 		}
 		return Response.status(Response.Status.OK).entity(k).build();
 	}

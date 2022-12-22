@@ -23,10 +23,9 @@ import jakarta.ws.rs.core.Response.Status;
 import lombok.Getter;
 import server.Kunde;
 
-
 //Wrapper für die verwendete Liste, außerdem verantwortlich für den Export/Import mit den Methoden "export<Dateiformat>()
 public class KundeList {
-	private static ObjectMapper obMap=new ObjectMapper();
+	private static ObjectMapper obMap = new ObjectMapper();
 	private static final String FILE = "target/Ablesewerte.json";
 	private static final String XMLFILE = "target/Ablesewerte.xml";
 	private static final String CSVFILE = "target/Ablesewerte.csv";
@@ -38,29 +37,28 @@ public class KundeList {
 
 	@JsonIgnore
 	private ArrayList<Function<ArrayList<Kunde>, Boolean>> onChange;
-	
-	
+
 	public KundeList(Service service) {
 		super();
-		this.service=service;
-		liste=new ArrayList<>();
-		onChange=new ArrayList<Function<ArrayList<Kunde>,Boolean>>();
+		this.service = service;
+		liste = new ArrayList<>();
+		onChange = new ArrayList<Function<ArrayList<Kunde>, Boolean>>();
 		refresh();
 	}
 
-	/** 
+	/**
 	 * @param e
 	 * @return boolean
 	 */
 	public boolean add(Kunde e) {
-		Response res=service.post("kunden", e);
+		Response res = service.post("kunden", e);
 
-		if (res.getStatus()!=Status.CREATED.getStatusCode()) {
-			Util.errorMessage(res.getStatus()+" - " + res.readEntity(String.class));
+		if (res.getStatus() != Status.CREATED.getStatusCode()) {
+			Util.errorMessage(res.getStatus() + " - " + res.readEntity(String.class));
 			return false;
 		}
 
-		Kunde serverKunde=res.readEntity(Kunde.class);
+		Kunde serverKunde = res.readEntity(Kunde.class);
 
 		if (liste.add(serverKunde)) {
 			callOnChanged();
@@ -74,9 +72,9 @@ public class KundeList {
 		liste.clear();
 	}
 
-	public boolean update(Kunde oldK,Kunde newK) {
+	public boolean update(Kunde oldK, Kunde newK) {
 
-		switch(checkChanged(oldK)) {
+		switch (checkChanged(oldK)) {
 		case noSave:
 			return false;
 		case addNew:
@@ -88,10 +86,10 @@ public class KundeList {
 			break;
 		}
 
-		Response res=service.put("kunden", newK);
+		Response res = service.put("kunden", newK);
 
-		if (res.getStatus()!=Status.OK.getStatusCode()) {
-			Util.errorMessage(res.getStatus()+" - " + res.readEntity(String.class));
+		if (res.getStatus() != Status.OK.getStatusCode()) {
+			Util.errorMessage(res.getStatus() + " - " + res.readEntity(String.class));
 			return false;
 		}
 		oldK.setName(newK.getName());
@@ -100,7 +98,7 @@ public class KundeList {
 		return true;
 	}
 
-	/** 
+	/**
 	 * @param index
 	 * @return Kunde
 	 */
@@ -109,19 +107,19 @@ public class KundeList {
 	}
 
 	public Kunde getById(UUID id) {
-		for (Kunde k:liste) {
+		for (Kunde k : liste) {
 			if (k.getId().equals(id)) {
 				return k;
 			}
 		}
 		return null;
 	}
-	
+
 	public Kunde[] getArray() {
 		return liste.toArray(new Kunde[0]);
 	}
-	
-	/** 
+
+	/**
 	 * @param Kunde
 	 * @return int
 	 */
@@ -129,40 +127,41 @@ public class KundeList {
 		return liste.indexOf(k);
 	}
 
-
-	/** 
+	/**
 	 * @param Kunde
 	 * @return boolean
 	 */
 	public boolean remove(Kunde k) {
-		if (k==null) {
+		if (k == null) {
 			return false;
 		}
-		Response delRes=service.delete("kunden/"+k.getId().toString());
+		Response delRes = service.delete("kunden/" + k.getId().toString());
 
-		if (delRes.getStatus()!=Status.OK.getStatusCode() ) {
-			if (delRes.getStatus()==Status.NOT_FOUND.getStatusCode()) {
-				Util.errorMessage("Datensatz wurde bereits gelöscht\n"+delRes.getStatus()+" -"+delRes.readEntity(String.class));
+		if (delRes.getStatus() != Status.OK.getStatusCode()) {
+			if (delRes.getStatus() == Status.NOT_FOUND.getStatusCode()) {
+				Util.errorMessage("Datensatz wurde bereits gelöscht\n" + delRes.getStatus() + " -"
+						+ delRes.readEntity(String.class));
 			} else {
-				Util.errorMessage("Löschen fehlgeschlagen\n"+delRes.getStatus()+" -"+delRes.readEntity(String.class));
+				Util.errorMessage(
+						"Löschen fehlgeschlagen\n" + delRes.getStatus() + " -" + delRes.readEntity(String.class));
 				return false;
 			}
 		}
 
-		int index=indexOf(k);
-		if (index<0) {
+		int index = indexOf(k);
+		if (index < 0) {
 			return false;
 		}
-		if (remove(index)!=null) {
+		if (remove(index) != null) {
 			callOnChanged();
 			return true;
-		} {
+		}
+		{
 			return false;
 		}
 	}
 
-
-	/** 
+	/**
 	 * @param index
 	 * @return Kunde
 	 */
@@ -170,23 +169,21 @@ public class KundeList {
 		return liste.remove(index);
 	}
 
-
-	/** 
+	/**
 	 * @return int
 	 */
 	public int size() {
 		return liste.size();
 	}
 
-
-	/** 
+	/**
 	 * @return Stream<KundeList>
 	 */
 	public Stream<Kunde> stream() {
 		return liste.stream();
 	}
 
-	/** 
+	/**
 	 * @return String
 	 */
 	@Override
@@ -196,7 +193,7 @@ public class KundeList {
 		return buf.toString();
 	}
 
-	/** 
+	/**
 	 * @return Kundenl
 	 */
 	public static KundeList importJson(Service service) {
@@ -206,7 +203,7 @@ public class KundeList {
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				obMap.setDateFormat(df);
 
-				KundeList list= obMap.readValue(new File(FILE), KundeList.class);
+				KundeList list = obMap.readValue(new File(FILE), KundeList.class);
 				System.out.format("Datei %s gelesen\n", FILE);
 				return list;
 
@@ -221,7 +218,7 @@ public class KundeList {
 	public void exportJson() {
 		try {
 
-			obMap.writerWithDefaultPrettyPrinter().writeValue(new File(FILE), this);			
+			obMap.writerWithDefaultPrettyPrinter().writeValue(new File(FILE), this);
 
 			System.out.format("Datei %s erzeugt\n", FILE);
 		} catch (final Exception e) {
@@ -233,7 +230,7 @@ public class KundeList {
 	public void exportXML() {
 		try {
 			XmlMapper xmlMapper = new XmlMapper();
-			xmlMapper.writerWithDefaultPrettyPrinter().writeValue(new File(XMLFILE),this);
+			xmlMapper.writerWithDefaultPrettyPrinter().writeValue(new File(XMLFILE), this);
 			System.out.format("Datei %s erzeugt\n", XMLFILE);
 		} catch (final Exception e) {
 			e.printStackTrace();
@@ -246,7 +243,7 @@ public class KundeList {
 			final BufferedWriter out = new BufferedWriter(new FileWriter(CSVFILE, StandardCharsets.UTF_8));
 			for (final Kunde k : liste) {
 				out.write(k.getId().toString());
-				out.write(";");		    	
+				out.write(";");
 				out.write(k.getName());
 				out.write(";");
 				out.write(k.getVorname());
@@ -261,29 +258,31 @@ public class KundeList {
 	}
 
 	public boolean refresh() {
-		Response res=service.get("kunden");
+		Response res = service.get("kunden");
 
-		if (res.getStatus()!=200) {
-			System.out.println("Laden der Kunden fehlgeschlagen\n"+res.getStatus()+" - "+res.readEntity(String.class));
+		if (res.getStatus() != 200) {
+			System.out.println(
+					"Laden der Kunden fehlgeschlagen\n" + res.getStatus() + " - " + res.readEntity(String.class));
 			Util.errorMessage(res.readEntity(String.class));
 			return false;
 		}
 
-		liste=res.readEntity(new GenericType<ArrayList<Kunde>>() {
+		liste = res.readEntity(new GenericType<ArrayList<Kunde>>() {
 		});
 		callOnChanged();
 		return true;
 	}
 
 	private enum ChangedState {
-		noSave,doSave,addNew;
+		noSave, doSave, addNew;
 	}
+
 	private ChangedState checkChanged(Kunde k) {
-		Response res=service.get("kunden/"+k.getId().toString());
-		
+		Response res = service.get("kunden/" + k.getId().toString());
+
 		switch (res.getStatus()) {
 		case 200:
-			Kunde kServer=res.readEntity(Kunde.class);
+			Kunde kServer = res.readEntity(Kunde.class);
 			if (!k.equals(kServer)) {
 				System.out.println("DIFFTOOL");
 				System.out.println(k.toString());
@@ -292,36 +291,36 @@ public class KundeList {
 				if (Util.optionMessage("Ablesung hat sich geändert \nTrotzdem speichern?")) {
 					return ChangedState.doSave;
 				} else {
-					return ChangedState.noSave; 
+					return ChangedState.noSave;
 				}
 			}
 			return ChangedState.doSave;
 		case 404:
-			if (Util.optionMessage("404 - Ablesung nicht gefunden, wurde die Ablesung gelöscht?\nTrotzdem speichern?")) {
-				return ChangedState.addNew; 
+			if (Util.optionMessage(
+					"404 - Ablesung nicht gefunden, wurde die Ablesung gelöscht?\nTrotzdem speichern?")) {
+				return ChangedState.addNew;
 			} else {
-				return ChangedState.noSave;	
+				return ChangedState.noSave;
 			}
 
 		default:
-			if (Util.optionMessage(res.getStatus()+" - " + res.readEntity(String.class)+"\nTrotzdem speichern?")){
+			if (Util.optionMessage(res.getStatus() + " - " + res.readEntity(String.class) + "\nTrotzdem speichern?")) {
 				return ChangedState.doSave;
 			} else {
 				return ChangedState.noSave;
 			}
 		}
 	}
-	
-	public void addChangeListener(Function<ArrayList<Kunde>,Boolean> newF) {
-	
+
+	public void addChangeListener(Function<ArrayList<Kunde>, Boolean> newF) {
+
 		onChange.add(newF);
 	}
-	
+
 	private void callOnChanged() {
-		for (Function<ArrayList<Kunde>,Boolean> f: onChange) {
+		for (Function<ArrayList<Kunde>, Boolean> f : onChange) {
 			f.apply(liste);
 		}
 	}
-
 
 }

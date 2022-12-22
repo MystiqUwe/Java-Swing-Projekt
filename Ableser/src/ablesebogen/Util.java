@@ -1,10 +1,7 @@
 package ablesebogen;
 
-import java.awt.Component;
-import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -13,23 +10,19 @@ import java.util.Date;
 import java.util.function.Function;
 
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import client.Service;
 import server.Kunde;
 
 public class Util {
-	
-	private JDialog filterJDialog;
 
-	public static void handleTabOrder(ArrayList<JComponent> list,Function<Void,Boolean> saveMethod) {
-		if (list==null || list.size()<2) {
+	public static void handleTabOrder(ArrayList<JComponent> list, Function<Void, Boolean> saveMethod) {
+		if (list == null || list.size() < 2) {
 			return;
 		}
-		for (int i = 0; i < list.size()-1; i++) {
-			final JComponent nextItem=list.get(i+1);
+		for (int i = 0; i < list.size() - 1; i++) {
+			final JComponent nextItem = list.get(i + 1);
 			list.get(i).addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent e) {
@@ -39,8 +32,8 @@ public class Util {
 				}
 			});
 		}
-		
-		list.get(list.size()-1).addKeyListener(new KeyAdapter() {
+
+		list.get(list.size() - 1).addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -54,21 +47,21 @@ public class Util {
 	}
 
 	private static JFrame dialogFrame = new JFrame();
+
 	public static void errorMessage(String message) {
 		JOptionPane.showMessageDialog(dialogFrame, message, "", JOptionPane.ERROR_MESSAGE);
 	}
-	public static boolean optionMessage(String message) {
-		//int result = 0;
-		int result = JOptionPane.showConfirmDialog(dialogFrame, message, "",
-				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-		return JOptionPane.OK_OPTION==result;
-	}
 
+	public static boolean optionMessage(String message) {
+		// int result = 0;
+		int result = JOptionPane.showConfirmDialog(dialogFrame, message, "", JOptionPane.YES_NO_OPTION,
+				JOptionPane.WARNING_MESSAGE);
+		return JOptionPane.OK_OPTION == result;
+	}
 
 	public static void questionMessage(Kunde[] kunde, Ablesebogen baseFrame) {
-		FilterDialog dialog = new FilterDialog(kunde, baseFrame);
+		new FilterDialog(kunde, baseFrame);
 	}
-
 
 	public static LocalDate dateToLocalDate(Date dateToConvert) {
 		return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -79,10 +72,10 @@ public class Util {
 	}
 
 	public static String[] createPair(String key, String value) {
-		String[] pair=new String[2];
-		pair[0]=key;
-		pair[1]=value;
+		String[] pair = new String[2];
+		pair[0] = key;
+		pair[1] = value;
 		return pair;
-		
+
 	}
 }

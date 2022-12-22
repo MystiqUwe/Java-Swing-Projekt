@@ -1,5 +1,9 @@
 package client;
 
+import java.util.HashMap;
+import java.util.Map;
+
+
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -64,6 +68,25 @@ public class Service {
 		WebTarget target = client.target(baseUrl).path(path);
 
 		// Send the GET request and return the response
+		return target.request(MediaType.APPLICATION_JSON).get();
+	}
+	
+	/**
+	 * GET request with query Parameters
+	 *
+	 * @param path for the request
+	 * @param query Parameter
+	 * @return a Response object
+	 */
+	public Response get(String path, HashMap<String, String> queryParam) {
+
+		WebTarget target = client.target(baseUrl).path(path);
+
+		//QueryParam queryParam = queryParamEntity.getEntity();
+		for (Map.Entry<String, String> entry : queryParam.entrySet()) {
+			target = target.queryParam(entry.getKey(), entry.getValue());
+		}
+
 		return target.request(MediaType.APPLICATION_JSON).get();
 	}
 	

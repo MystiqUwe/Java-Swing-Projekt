@@ -120,7 +120,6 @@ public class Database {
 		Ablesung abl=getAblesung(id);
 		if (abl!=null) {
 			ablesungListe.remove(abl);
-			abl.removeKunde(); //***Für die Test nötig***
 		}
 		return abl;
 	}

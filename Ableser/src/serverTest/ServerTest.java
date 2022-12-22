@@ -286,7 +286,7 @@ class ServerTest {
 	@Test
 	void t15_deleteAblesung() {
 		ablesungen.get(k2_RangeTest).remove(crudTest);
-		crudTest.setKunde(null);
+		//crudTest.setKunde(null);
 		String aid = crudTest.getId().toString();
 		Response re = target.path(endpointAblesungen.concat("/").concat(aid)).request()
 				.accept(MediaType.APPLICATION_JSON).delete();

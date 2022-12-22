@@ -64,7 +64,7 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 		});
 		
 		filButton.addActionListener(e -> {
-			Util.questionMessage(baseFrame.getKundenNrData());
+			Util.questionMessage(baseFrame.getKundenListe().getArray(),baseFrame.getService());
 		});
 		
 		editButton.addActionListener(e-> edit());

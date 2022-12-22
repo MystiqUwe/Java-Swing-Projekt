@@ -71,7 +71,7 @@ public class AbleseInPanel extends JAblesebogenPanel{
 		model.setSelected(true); // init DatePicker Value
 		datePanel = new JDatePanelImpl(model);
 
-		kundenNummer = new JComboBox<>(bFrame.getKundenListe().getListe().toArray(new Kunde[0])); // Holt die Auswahl für die ComboBox
+		kundenNummer = new JComboBox<>(bFrame.getKundenListe().getArray()); // Holt die Auswahl für die ComboBox
 		zaelerArt = new JComboBox<String>(DEFAULT_ZAELERART);
 		zaelernummer = new JTextField();
 		datePicker = new JDatePickerImpl(datePanel);

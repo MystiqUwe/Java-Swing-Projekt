@@ -8,9 +8,13 @@
     "name" : "B",
     "vorname" : "b"
   }, {
-    "id" : "09cdcdde-33b4-4104-a219-da75ab8ec20f",
-    "name" : "beni",
-    "vorname" : "bsd"
+    "id" : "4efc3137-f244-42f6-9ae9-f16acc0e9ae5",
+    "name" : "bh",
+    "vorname" : "bh"
+  }, {
+    "id" : "2879dbfa-ee19-4857-b74f-c224ab0a74c5",
+    "name" : "tfffp",
+    "vorname" : "ffgg"
   } ],
   "ablesungListe" : [ {
     "id" : "adbcac34-80c4-4bdf-bb8a-0e333dcf9820",
@@ -64,14 +68,6 @@
     "id" : "9d2f602e-e69d-490b-8461-3c850fe555bc",
     "zaehlernummer" : "1",
     "datum" : "2021-08-01",
-    "kommentar" : "test",
-    "neuEingebaut" : false,
-    "zaehlerstand" : 0,
-    "kundenId" : "1040f9e6-cdc9-4a58-bfba-417800beef21"
-  }, {
-    "id" : "c01f3d68-7150-43ae-a627-bfdeb5877958",
-    "zaehlernummer" : "1",
-    "datum" : "2021-12-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,

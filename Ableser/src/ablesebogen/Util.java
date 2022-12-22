@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 
+import client.Service;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -73,7 +74,7 @@ public class Util {
 		return JOptionPane.OK_OPTION==result;
 	}
 
-	public static void questionMessage(Kunde[] kunde) {
+	public static void questionMessage(Kunde[] kunde, Service service) {
 		JDialog filterJDialog = new JDialog();
 		filterJDialog.setLayout(new GridLayout(7, 2));
 		//JComboBox kundenNummer = new JComboBox<>(Ablesebogen.getKundenNrData());
@@ -128,7 +129,7 @@ public class Util {
 		
 		buttonfilter.addActionListener(e -> {
 			Kunde selectedItem = (Kunde) kundenNummer.getSelectedItem();
-			Ablesebogen.getService().get("ablesungen/" + selectedItem.getId() );
+			service.get("ablesungen/" + selectedItem.getId() );
 			});
 	}
 

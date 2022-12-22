@@ -117,6 +117,10 @@ public class KundeList {
 		return null;
 	}
 	
+	public Kunde[] getArray() {
+		return liste.toArray(new Kunde[0]);
+	}
+	
 	/** 
 	 * @param Kunde
 	 * @return int

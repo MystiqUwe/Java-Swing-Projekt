@@ -1,54 +1,31 @@
 package ablesebogen;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-
-import javax.swing.DefaultRowSorter;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.RowFilter;
 import javax.swing.RowSorter;
-import javax.swing.SortOrder;
 import javax.swing.table.TableRowSorter;
 
 import server.Kunde;
 
-public class KundeOutPanel extends JPanel {
-	
+public class KundeOutPanel extends JAblesebogenPanel {
 
-
-	/*Eine Übersichtsliste von AbleseEntrys "outLayout"
-	 * -Ein Button in der Fußleiste um einen neuen Datensatz anzulegen
-	 * -Doppelklick auf einen Datensatz um ihn zu bearbeiten
-	 * 
-	 *  Wenn keine Datensätze vorhanden sind kann die Liste nicht geöffnet werden
-	 *  
-	 *  openTable() öffnet die Liste, optional mit einem Filterparameter, dann werden nur die Daten
-	 *  angezeigt bei denen die Kundennummer mit diesem Filter beginnt
-	*/
-		public Ablesebogen baseFrame;
-		
-		private KundeTableModel tableModel;
+	private KundeTableModel tableModel;
 		private RowSorter<KundeTableModel> sorter;
 		private JTable outList;
 		
-		private String card;
-
 		/* bFrame: Basisframe in dem das Panel einfefügt wird, ein CardLayout
 		 * liste: Die anzuzeigende Liste
-		 * card: Der Name der CardLayout Card die dieses Objekt repräsentieren soll
 		 */
-		public KundeOutPanel(Ablesebogen bFrame,  ArrayList<Kunde> liste, String card) {
+		public KundeOutPanel(Ablesebogen bFrame,  KundeList liste) {
 			super(new BorderLayout());
 			baseFrame=bFrame;
-			this.card=card;
 			//out Layout Base Layout
 			
 			//out Layout Komponenten
@@ -66,15 +43,13 @@ public class KundeOutPanel extends JPanel {
 			editButton.addActionListener(e -> edit());
 
 			toInButton.addActionListener(e -> {
-				baseFrame.setTitle("neuer Datensatz");
-				baseFrame.clear();
-				((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"kundeIn");
+				baseFrame.openPage(Ablesebogen.KUNDE_IN);
 			});
 			
 			//editButton.addActionListener(e-> edit());
 			
 			//Tabelle
-			tableModel = new KundeTableModel(baseFrame);
+			tableModel = new KundeTableModel(liste);
 			outList=new JTable(tableModel);
 			outList.setAutoCreateRowSorter(true);
 			sorter = new TableRowSorter<KundeTableModel>(tableModel);
@@ -97,45 +72,26 @@ public class KundeOutPanel extends JPanel {
 
 		}
 		
+		public void refresh() {
+			tableModel.fireTableDataChanged();
+		}
+		
 		private void edit() {
 			int row =outList.getSelectedRow();
 			if (row<0) return;
-			Kunde k = tableModel.getMyList().get(outList.convertColumnIndexToModel(row));
-			KundenInPanel in = baseFrame.getKundeInLayout();
-			in.activate(k);
-			//baseFrame.editKunde(k); // Hab kein Plan wie ich sonst auf das In Panel zugreife
+			baseFrame.openPage(Ablesebogen.KUNDE_IN,tableModel.getMyList().get(outList.convertRowIndexToModel(row)));
 		}
-		
-		/* öffnet die Liste*/
-		public void openTable() {
-			tableModel.fireTableDataChanged();
-			((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),card);				
-		}
-		
-		
-		/** 
-		 * Öffnet die Liste, mit einem Filterparameter, es werden nur die Daten
-		 * angezeigt bei denen die Kundennummer mit diesem Filter beginnt
-		 * 
-		 * @param filter
-		 */
-		public void openTable(String filter) {
-			RowFilter<KundeTableModel, Object> rf = null;
-			tableModel.fireTableDataChanged();
-		    try {
-		        rf = RowFilter.regexFilter(filter,0);
-		    } catch (java.util.regex.PatternSyntaxException e) {
-		        return;
-		    }
-			tableModel.fireTableDataChanged();
-			ArrayList<RowSorter.SortKey> sortList = new ArrayList<RowSorter.SortKey>();
-			sortList.add( new RowSorter.SortKey(0, SortOrder.ASCENDING) );
-			sortList.add( new RowSorter.SortKey(1, SortOrder.ASCENDING) );
-			sortList.add( new RowSorter.SortKey(3, SortOrder.ASCENDING) );
-			sorter.setSortKeys(sortList);
-		    ((DefaultRowSorter<KundeTableModel, Integer>) sorter).setRowFilter(rf);
-			((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),card);				
-		    
+				
+		@Override
+		public boolean activate(Object eOpts) {
+			if (tableModel.getRowCount()<1) {
+				Util.errorMessage("Liste konnte nicht angezeigt werden");
+				return false;
+			}
+
+			baseFrame.setTitle("Übersichtsliste Kunden");
+			refresh();
+			return true;
 		}
 	}
 

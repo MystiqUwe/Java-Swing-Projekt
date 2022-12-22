@@ -15,10 +15,8 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import server.Kunde;
 
-public class KundenInPanel extends JPanel{
+public class KundenInPanel extends JAblesebogenPanel{
 
-	public Ablesebogen baseFrame;
-	
 	private Kunde toEdit;
 	private JTextField nameField;
 	private JTextField vornameField;
@@ -46,6 +44,7 @@ public class KundenInPanel extends JPanel{
 		// untere Leiste
 		JPanel buttonPanel=new JPanel(new GridLayout(1,3));
 		this.add(buttonPanel,BorderLayout.SOUTH);
+		
 		JButton saveButton = new JButton("Speichern");
 		JButton toOutButton = new JButton("Liste Anzeigen");
 		JButton deleteButton = new JButton("Löschen");
@@ -59,143 +58,60 @@ public class KundenInPanel extends JPanel{
 		});
 
 		toOutButton.addActionListener(e -> {
-			if (baseFrame.getKundenListe().size() < 1) {
-				Util.errorMessage("Liste konnte nicht angezeigt werden");
-				return;
-			}
-			baseFrame.outLayoutKunde.openTable();
-			//((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"kundeOut");
-			//baseFrame.setTitle("Übersichtsliste");
+			baseFrame.openPage(Ablesebogen.KUNDE_OUT);
 		});
 		deleteButton.addActionListener(e -> {
-			if (toEdit==null) {
-				return;
+			if (baseFrame.getKundenListe().remove(toEdit)) {
+				clear();
 			}
-			Response delRes=Ablesebogen.getService().delete("kunden/"+toEdit.getId().toString());
-			
-			if (delRes.getStatus()!=Status.OK.getStatusCode()) {
-				Util.errorMessage("Löschen fehlgeschlagen\n"+delRes.getStatus()+" -"+delRes.readEntity(String.class));
-				return;
-			}
-			
-			//baseFrame.getKundenListe().remove(toEdit);
-			
-			//deleteEntry();
-			//clear();
 		});
-		/*toFilterOutButton.addActionListener(e -> {
-			if (newList.size() < 1) {
-				fehlerMessage("Liste konnte nicht Angezeigt werden");
-				return;
-			}
-			
-			Kunde selectedItem = (Kunde) kundenNummer.getSelectedItem();
-			filterOutLayout.openTable(selectedItem.getVorname());
-			this.setTitle("Daten für " + selectedItem.getVorname());
-		});*/
-		
-
 		
 	}
 	
-	/**
-	 * @return soll das Speichern fortgesetzt werden
-	 **/
-	/*public boolean checkChanged(Kunde k) {
-		if (k.getId()==null) {
-			return true;
-		}
-		Response res=Ablesebogen.getService().get("kunden/"+k.getId());
-		
-		if (res.getStatus()!=200) {
-			Util.errorMessage(res.readEntity(String.class));
-
-			//TODO Gelöscht - neu Hochladen?
-			toEdit=null;
-			save();
-			return false;
-		}
-		
-		Kunde kServer=res.readEntity(Kunde.class);
-		
-		if (k.equals(kServer)) {
-			return true;
-		}
-		
-		//TODO Geändert - überschreiben?
-		return true;
-	}*/
-	
-	public boolean checkChanged(Kunde k) {
-		Response res=Ablesebogen.getService().get("kunden/"+k.getId().toString());
-		//TODO Abfragen
-		switch (res.getStatus()) {
-		case 200:
-			Kunde kServer=res.readEntity(Kunde.class);
-			if (!k.equals(kServer)) {
-				return Util.optionMessage("Kunde hat sich geändert \nTrotzdem speichern?");
-			}
-			return true;
-		case 404:
-			return Util.optionMessage("404 - Kunde nicht gefunden, wurde der Kunde gelöscht?\nTrotzdem speichern?");
-		default:
-			return Util.optionMessage(res.getStatus()+" - " + res.readEntity(String.class)+"\nTrotzdem speichern?");
-		}
+	public void clear() {
+		baseFrame.setTitle("Neuer Kunde");
+		this.nameField.setText("");
+		this.vornameField.setText("");
+		toEdit=null;
 	}
-	
 	public boolean save() {
 		String name=nameField.getText();
 		String vorname=vornameField.getText();
-		Kunde toSave;
+		Kunde toSave=new Kunde(name,vorname);
+
+		boolean success=false;
 		if (toEdit==null) {
 			//Neuer Datensatz
-			toSave=new Kunde(name,vorname);
-			//toSave.setId(null);
-			Response res=Ablesebogen.getService().post("kunden",toSave);
-			
-			if(res.getStatus() != Status.CREATED.getStatusCode()) {
-				Util.errorMessage(res.getStatus()+" - "+ res.readEntity(String.class));
-				return false;
-			}
-			
-			
-			
-			baseFrame.getKundenListe().add(toSave);
-
-;			
-		
-			return true;
+			toSave.setId(null);
+			success= baseFrame.getKundenListe().add(toSave);
 		} else {
 			//Editieren
-			toSave=toEdit;
-			toSave.setName(name);
-			toSave.setVorname(vorname);
-			if (!checkChanged(toSave)) {
-				return false; //Abbruch
-			}
-			System.out.println("checkChange true");
+			toSave.setId(toEdit.getId());
+			success= baseFrame.getKundenListe().update(toEdit, toSave);
 			
 		}
 		
-		Response res=Ablesebogen.getService().put("kunden",toSave);
-		
-		return true;
-		
-	}
-	
-	
-	public void activate(Kunde k) {
-		((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"kundeIn");
-
-		toEdit=k;
-		if (k==null) {
-			baseFrame.setTitle("Neuer Kunde");
-			this.nameField.setText("");
-			this.vornameField.setText("");
-			return;
+		if (success) {
+			clear();
 		}
-		baseFrame.setTitle(k.getId()+" editieren");
-		this.nameField.setText(k.getName());
-		this.vornameField.setText(k.getVorname());
+		return success;
+		
 	}
+	
+	
+	public boolean activate(Object eOpts) {
+
+		if (eOpts instanceof Kunde) {
+			Kunde k=(Kunde) eOpts;
+			baseFrame.setTitle(k.getId()+" editieren");
+			this.nameField.setText(k.getName());
+			this.vornameField.setText(k.getVorname());
+			toEdit=k;
+			
+		} else {
+			clear();
+		}
+		return true;
+	}
+
 }

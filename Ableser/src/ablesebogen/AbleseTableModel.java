@@ -52,6 +52,9 @@ public class AbleseTableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int row, int col) {
 		Object temp = null;
+		if (row >=myList.size()) {
+			return null;
+		}
 		if (col == 0) {
 			temp = myList.get(row).getKundenNummer();
 		} else if (col == 1) {

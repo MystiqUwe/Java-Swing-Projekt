@@ -8,8 +8,11 @@ import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
@@ -18,110 +21,121 @@ import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import server.Kunde;
+
 
 //Wrapper für die verwendete Liste, außerdem verantwortlich für den Export/Import mit den Methoden "export<Dateiformat>()
-public class AbleseList {
-
+public class KundeList {
 	private static ObjectMapper obMap=new ObjectMapper();
 	private static final String FILE = "target/Ablesewerte.json";
 	private static final String XMLFILE = "target/Ablesewerte.xml";
 	private static final String CSVFILE = "target/Ablesewerte.csv";
-	
 	@Getter
-	@Setter
-	private ArrayList<AbleseEntry> liste = new ArrayList<AbleseEntry>();
-	
+	private ArrayList<Kunde> liste = new ArrayList<Kunde>();
+
+	@JsonIgnore
 	private Service service;
+
+	@JsonIgnore
+	private ArrayList<Function<ArrayList<Kunde>, Void>> onChange;
 	
-	public AbleseList(Service service) {
+	
+	public KundeList(Service service) {
 		super();
 		this.service=service;
 		liste=new ArrayList<>();
+		onChange=new ArrayList<Function<ArrayList<Kunde>,Void>>();
 		refresh();
 	}
-	
+
 	/** 
 	 * @param e
 	 * @return boolean
 	 */
-	public boolean add(AbleseEntry e) {
-		Response res=service.post("ablesungen", e);
-		
+	public boolean add(Kunde e) {
+		Response res=service.post("kunden", e);
+
 		if (res.getStatus()!=Status.CREATED.getStatusCode()) {
 			Util.errorMessage(res.getStatus()+" - " + res.readEntity(String.class));
 			return false;
 		}
-		
-		AbleseEntry serverEntry=res.readEntity(AbleseEntry.class);
-		
-		return liste.add(serverEntry);
+
+		Kunde serverKunde=res.readEntity(Kunde.class);
+
+		if (liste.add(serverKunde)) {
+			callOnChanged();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void clear() {
 		liste.clear();
 	}
-	
-	public boolean update(AbleseEntry oldAbl,AbleseEntry newAbl) {
-	
-		switch(checkChanged(oldAbl)) {
+
+	public boolean update(Kunde oldK,Kunde newK) {
+
+		switch(checkChanged(oldK)) {
 		case noSave:
 			return false;
 		case addNew:
-			liste.remove(oldAbl);
-			return add(newAbl);
+			liste.remove(oldK);
+			return add(newK);
+		case doSave:
+			break;
+		default:
+			break;
 		}
-		
-		Response res=service.put("ablesungen", newAbl);
-		
+
+		Response res=service.put("kunden", newK);
+
 		if (res.getStatus()!=Status.OK.getStatusCode()) {
 			Util.errorMessage(res.getStatus()+" - " + res.readEntity(String.class));
 			return false;
 		}
-		oldAbl.setKundenNummer(newAbl.getKundenNummer());
-		oldAbl.setZaelerArt(newAbl.getZaelerArt());
-		oldAbl.setZaelernummer(newAbl.getZaelernummer());
-		oldAbl.setDatum(newAbl.getDatum());
-		oldAbl.setNeuEingebaut(newAbl.getNeuEingebaut());
-		oldAbl.setZaelerstand(newAbl.getZaelerstand());
-		oldAbl.setKommentar(newAbl.getKommentar());
-		
+		oldK.setName(newK.getName());
+		oldK.setVorname(newK.getVorname());
+		callOnChanged();
 		return true;
 	}
-	
+
 	/** 
 	 * @param index
-	 * @return AbleseEntry
+	 * @return Kunde
 	 */
-	public AbleseEntry get(int index) {
-		if (index>=liste.size()) {
-			return new AbleseEntry(null, null, "XXX", "XXX", null, false, 666, "XXX");
-		}
+	public Kunde get(int index) {
 		return liste.get(index);
 	}
-	
-	
-	/** 
-	 * @param entry
-	 * @return int
-	 */
-	public int indexOf(AbleseEntry entry) {
-		return liste.indexOf(entry);
+
+	public Kunde getById(UUID id) {
+		for (Kunde k:liste) {
+			if (k.getId().equals(id)) {
+				return k;
+			}
+		}
+		return null;
 	}
 	
-	
 	/** 
-	 * @param entry
-	 * @return AbleseEntry
+	 * @param Kunde
+	 * @return int
 	 */
-	public boolean remove(AbleseEntry entry) {
-		if (entry==null) {
+	public int indexOf(Kunde k) {
+		return liste.indexOf(k);
+	}
+
+
+	/** 
+	 * @param Kunde
+	 * @return boolean
+	 */
+	public boolean remove(Kunde k) {
+		if (k==null) {
 			return false;
 		}
+		Response delRes=service.delete("kunden/"+k.getId().toString());
 
-		Response delRes=service.delete("ablesungen/"+entry.getId().toString());
-		
 		if (delRes.getStatus()!=Status.OK.getStatusCode() ) {
 			if (delRes.getStatus()==Status.NOT_FOUND.getStatusCode()) {
 				Util.errorMessage("Datensatz wurde bereits gelöscht\n"+delRes.getStatus()+" -"+delRes.readEntity(String.class));
@@ -131,23 +145,28 @@ public class AbleseList {
 			}
 		}
 
-		int index=indexOf(entry);
+		int index=indexOf(k);
 		if (index<0) {
 			return false;
 		}
-		return remove(index)!=null;
+		if (remove(index)!=null) {
+			callOnChanged();
+			return true;
+		} {
+			return false;
+		}
 	}
-	
-	
+
+
 	/** 
 	 * @param index
-	 * @return AbleseEntry
+	 * @return Kunde
 	 */
-	private AbleseEntry remove(int index) {
+	private Kunde remove(int index) {
 		return liste.remove(index);
 	}
 
-	
+
 	/** 
 	 * @return int
 	 */
@@ -155,11 +174,11 @@ public class AbleseList {
 		return liste.size();
 	}
 
-	
+
 	/** 
-	 * @return Stream<AbleseEntry>
+	 * @return Stream<KundeList>
 	 */
-	public Stream<AbleseEntry> stream() {
+	public Stream<Kunde> stream() {
 		return liste.stream();
 	}
 
@@ -172,37 +191,34 @@ public class AbleseList {
 		liste.stream().forEach(en -> buf.append(en.toString()));
 		return buf.toString();
 	}
-	
+
 	/** 
-	 * @return AbleseList
+	 * @return Kundenl
 	 */
-	public static AbleseList importJson(Service service) {
+	public static KundeList importJson(Service service) {
 		final File f = new File(FILE);
 		if (f.exists()) {
 			try {
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				obMap.setDateFormat(df);
 
-				AbleseList list= obMap.readValue(new File(FILE), AbleseList.class);
-				
+				KundeList list= obMap.readValue(new File(FILE), KundeList.class);
 				System.out.format("Datei %s gelesen\n", FILE);
 				return list;
-				
+
 			} catch (final Exception e) {
 				e.printStackTrace();
 				// ignore
 			}
 		}
-		return new AbleseList(null);
+		return new KundeList(service);
 	}
 
 	public void exportJson() {
 		try {
 
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			obMap.setDateFormat(df);
 			obMap.writerWithDefaultPrettyPrinter().writeValue(new File(FILE), this);			
-			
+
 			System.out.format("Datei %s erzeugt\n", FILE);
 		} catch (final Exception e) {
 			e.printStackTrace();
@@ -213,9 +229,6 @@ public class AbleseList {
 	public void exportXML() {
 		try {
 			XmlMapper xmlMapper = new XmlMapper();
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			xmlMapper.setDateFormat(df);
-
 			xmlMapper.writerWithDefaultPrettyPrinter().writeValue(new File(XMLFILE),this);
 			System.out.format("Datei %s erzeugt\n", XMLFILE);
 		} catch (final Exception e) {
@@ -227,60 +240,50 @@ public class AbleseList {
 	public void exportCSV() {
 		try {
 			final BufferedWriter out = new BufferedWriter(new FileWriter(CSVFILE, StandardCharsets.UTF_8));
-		    for (final AbleseEntry entry : liste) {
-		    	out.write(entry.getId().toString());
-		    	out.write(";");		    	
-		    	out.write(entry.getKundenNummer().toString());
-		    	out.write(";");
-		    	out.write(entry.getZaelerArt());
-		    	out.write(";");
-		    	out.write(""+entry.getZaelernummer());
-		    	out.write(";");
-				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		    	out.write(df.format(entry.getDatum()));
-		    	out.write(";");
-		    	out.write(""+entry.getNeuEingebaut());
-		    	out.write(";");
-		    	out.write(""+entry.getZaelerstand());
-		    	out.write(";");
-		    	out.write(entry.getKommentar());
-		    	out.write("\n");
-		    }
-		    out.close();
-		    System.out.format("Datei %s erzeugt\n", CSVFILE);
+			for (final Kunde k : liste) {
+				out.write(k.getId().toString());
+				out.write(";");		    	
+				out.write(k.getName());
+				out.write(";");
+				out.write(k.getVorname());
+				out.write("\n");
+			}
+			out.close();
+			System.out.format("Datei %s erzeugt\n", CSVFILE);
 		} catch (final IOException e) {
 			e.printStackTrace();
 			System.exit(1);
-		   }
+		}
 	}
-	
+
 	public boolean refresh() {
-		Response res=service.get("ablesungenVorZweiJahrenHeute");
-		
+		Response res=service.get("kunden");
+
 		if (res.getStatus()!=200) {
-			System.out.println("Laden der Ablesungen fehlgeschlagen\n"+res.getStatus()+" - "+res.readEntity(String.class));
+			System.out.println("Laden der Kunden fehlgeschlagen\n"+res.getStatus()+" - "+res.readEntity(String.class));
 			Util.errorMessage(res.readEntity(String.class));
 			return false;
 		}
-		
-		liste=res.readEntity(new GenericType<ArrayList<AbleseEntry>>() {
+
+		liste=res.readEntity(new GenericType<ArrayList<Kunde>>() {
 		});
+		callOnChanged();
 		return true;
 	}
-	
+
 	private enum ChangedState {
 		noSave,doSave,addNew;
 	}
-	private ChangedState checkChanged(AbleseEntry abl) {
-		Response res=service.get("ablesungen/"+abl.getId().toString());
-		//TODO Abfragen
+	private ChangedState checkChanged(Kunde k) {
+		Response res=service.get("kunden/"+k.getId().toString());
+		
 		switch (res.getStatus()) {
 		case 200:
-			AbleseEntry ablServer=res.readEntity(AbleseEntry.class);
-			if (!abl.equals(ablServer)) {
+			Kunde kServer=res.readEntity(Kunde.class);
+			if (!k.equals(kServer)) {
 				System.out.println("DIFFTOOL");
-				System.out.println(abl.toString());
-				System.out.println(ablServer.toString());
+				System.out.println(k.toString());
+				System.out.println(kServer.toString());
 				System.out.println("--------");
 				if (Util.optionMessage("Ablesung hat sich geändert \nTrotzdem speichern?")) {
 					return ChangedState.doSave;
@@ -295,13 +298,24 @@ public class AbleseList {
 			} else {
 				return ChangedState.noSave;	
 			}
-			
+
 		default:
 			if (Util.optionMessage(res.getStatus()+" - " + res.readEntity(String.class)+"\nTrotzdem speichern?")){
 				return ChangedState.doSave;
 			} else {
 				return ChangedState.noSave;
 			}
+		}
+	}
+	
+	public void addChangeListener(Function<ArrayList<Kunde>,Void> newF) {
+	
+		onChange.add(newF);
+	}
+	
+	private void callOnChanged() {
+		for (Function<ArrayList<Kunde>,Void> f: onChange) {
+			f.apply(liste);
 		}
 	}
 

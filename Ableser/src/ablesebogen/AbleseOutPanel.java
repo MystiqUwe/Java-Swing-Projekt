@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import javax.swing.DefaultRowSorter;
 import javax.swing.JButton;
@@ -28,7 +29,7 @@ import javax.swing.table.TableRowSorter;
  *  openTable() öffnet die Liste, optional mit einem Filterparameter, dann werden nur die Daten
  *  angezeigt bei denen die Kundennummer mit diesem Filter beginnt
 */
-public class AbleseOutPanel extends JPanel {
+public class AbleseOutPanel extends JAblesebogenPanel {
 
 	public Ablesebogen baseFrame;
 	
@@ -36,16 +37,12 @@ public class AbleseOutPanel extends JPanel {
 	private RowSorter<AbleseTableModel> sorter;
 	private JTable outList;
 	
-	private String card;
-
 	/* bFrame: Basisframe in dem das Panel einfefügt wird, ein CardLayout
 	 * liste: Die anzuzeigende Liste
-	 * card: Der Name der CardLayout Card die dieses Objekt repräsentieren soll
 	 */
-	public AbleseOutPanel(Ablesebogen bFrame, AbleseList liste, String card) {
+	public AbleseOutPanel(Ablesebogen bFrame, AbleseList liste) {
 		super(new BorderLayout());
 		baseFrame=bFrame;
-		this.card=card;
 		//out Layout Base Layout
 		
 		//out Layout Komponenten
@@ -63,9 +60,7 @@ public class AbleseOutPanel extends JPanel {
 		buttonPanel.add(editButton);
 
 		toInButton.addActionListener(e -> {
-			baseFrame.setTitle("neuer Datensatz");
-			baseFrame.clear();
-			((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"in");
+			baseFrame.openPage(Ablesebogen.ABLESUNG_IN);
 		});
 		
 		filButton.addActionListener(e -> {
@@ -101,28 +96,24 @@ public class AbleseOutPanel extends JPanel {
 	private void edit() {
 		int row =outList.getSelectedRow();
 		if (row<0) return;
-		baseFrame.loadWithValue(tableModel.getMyList().get(outList.convertRowIndexToModel(row)));
-		((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"in");				
+		baseFrame.openPage(Ablesebogen.ABLESUNG_IN,tableModel.getMyList().get(outList.convertRowIndexToModel(row)));
 		
 	}
 	
-	/* öffnet die Liste*/
-	public void openTable() {
+	public void refresh() {
 		tableModel.fireTableDataChanged();
-		((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),card);				
 	}
-	
-	
+
 	/** 
 	 * Öffnet die Liste, mit einem Filterparameter, es werden nur die Daten
 	 * angezeigt bei denen die Kundennummer mit diesem Filter beginnt
 	 * 
 	 * @param filter
 	 */
-	public void openTable(String filter) {
+	private void openTable(UUID filter) {
 		RowFilter<AbleseTableModel, Object> rf = null;
 	    try {
-	        rf = RowFilter.regexFilter(filter,0);
+	        rf = RowFilter.regexFilter(filter.toString(),0);
 	    } catch (java.util.regex.PatternSyntaxException e) {
 	        return;
 	    }
@@ -133,6 +124,22 @@ public class AbleseOutPanel extends JPanel {
 		sortList.add( new RowSorter.SortKey(3, SortOrder.ASCENDING) );
 		sorter.setSortKeys(sortList);
 	    ((DefaultRowSorter<AbleseTableModel, Integer>) sorter).setRowFilter(rf);
-		openTable();
+	}
+
+	@Override
+	public boolean activate(Object eOpts) {
+		if (tableModel.getRowCount()<1) {
+			Util.errorMessage("Liste konnte nicht angezeigt werden");
+			return false;
+		}
+		if (eOpts instanceof UUID) {
+			openTable((UUID) eOpts);
+			baseFrame.setTitle("Ablesungen für "+eOpts.toString());
+		} else{
+			baseFrame.setTitle("Übersichtsliste Ablesungen");
+		}
+		refresh();
+
+		return true;
 	}
 }

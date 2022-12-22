@@ -1,7 +1,6 @@
 package ablesebogen;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 
@@ -11,8 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.Response.Status;
 import server.Kunde;
 
 public class KundenInPanel extends JAblesebogenPanel{
@@ -26,7 +23,7 @@ public class KundenInPanel extends JAblesebogenPanel{
 		
 		this.baseFrame=bFrame;
 		//Grid
-		JPanel grid=new JPanel(new GridLayout(2, 2));
+		JPanel grid=new JPanel(new GridLayout(7, 2));
 		this.add(grid,BorderLayout.CENTER);
 		nameField=new JTextField();
 		vornameField=new JTextField();
@@ -36,7 +33,7 @@ public class KundenInPanel extends JAblesebogenPanel{
 		grid.add(new JLabel("Vorname"));
 		grid.add(vornameField);
 
-		ArrayList<JComponent> tabOrder=new ArrayList();
+		ArrayList<JComponent> tabOrder=new ArrayList<JComponent>();
 		tabOrder.add(nameField);
 		tabOrder.add(vornameField);
 		Util.handleTabOrder(tabOrder, e-> {return save();});

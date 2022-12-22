@@ -3,7 +3,11 @@ package ablesebogen;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Method;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.function.Function;
 
 import javax.swing.JComponent;
@@ -51,4 +55,13 @@ public class Util {
 				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 		return JOptionPane.OK_OPTION==result;
 	}
+
+	public static LocalDate dateToLocalDate(Date dateToConvert) {
+		return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+
+	public static Date localDatetoDate(LocalDate dateToConvert) {
+		return Date.from(dateToConvert.atStartOfDay().toInstant(ZoneOffset.UTC));
+	}
+
 }

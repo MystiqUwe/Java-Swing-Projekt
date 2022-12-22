@@ -77,6 +77,20 @@ public class KundenInPanel extends JAblesebogenPanel{
 	public boolean save() {
 		String name=nameField.getText();
 		String vorname=vornameField.getText();
+		
+		if(name.isBlank()) {
+			Util.errorMessage("Name darf nicht leer sein!");
+			nameField.requestFocus();
+			return false;
+		}
+		
+		if(vorname.isBlank()) {
+			Util.errorMessage("Vorname darf nicht leer sein!");
+			vornameField.requestFocus();
+			return false;
+		}
+		
+		
 		Kunde toSave=new Kunde(name,vorname);
 
 		boolean success=false;

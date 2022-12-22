@@ -37,14 +37,14 @@ public class KundeList {
 	private Service service;
 
 	@JsonIgnore
-	private ArrayList<Function<ArrayList<Kunde>, Void>> onChange;
+	private ArrayList<Function<ArrayList<Kunde>, Boolean>> onChange;
 	
 	
 	public KundeList(Service service) {
 		super();
 		this.service=service;
 		liste=new ArrayList<>();
-		onChange=new ArrayList<Function<ArrayList<Kunde>,Void>>();
+		onChange=new ArrayList<Function<ArrayList<Kunde>,Boolean>>();
 		refresh();
 	}
 
@@ -312,13 +312,13 @@ public class KundeList {
 		}
 	}
 	
-	public void addChangeListener(Function<ArrayList<Kunde>,Void> newF) {
+	public void addChangeListener(Function<ArrayList<Kunde>,Boolean> newF) {
 	
 		onChange.add(newF);
 	}
 	
 	private void callOnChanged() {
-		for (Function<ArrayList<Kunde>,Void> f: onChange) {
+		for (Function<ArrayList<Kunde>,Boolean> f: onChange) {
 			f.apply(liste);
 		}
 	}

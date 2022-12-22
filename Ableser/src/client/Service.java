@@ -1,5 +1,6 @@
 package client;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,13 +79,13 @@ public class Service {
 	 * @param query Parameter
 	 * @return a Response object
 	 */
-	public Response get(String path, HashMap<String, String> queryParam) {
+	public Response get(String path, ArrayList<String[]> queryParam) {
 
 		WebTarget target = client.target(baseUrl).path(path);
 
 		//QueryParam queryParam = queryParamEntity.getEntity();
-		for (Map.Entry<String, String> entry : queryParam.entrySet()) {
-			target = target.queryParam(entry.getKey(), entry.getValue());
+		for (String[] entry:queryParam) {
+			target = target.queryParam(entry[0], entry[1]);
 		}
 
 		return target.request(MediaType.APPLICATION_JSON).get();

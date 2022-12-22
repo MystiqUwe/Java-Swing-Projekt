@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +18,7 @@ import client.Service;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
+import javassist.expr.NewArray;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -268,12 +270,29 @@ public class AbleseList {
 		return true;
 	}
 	
+	public boolean refresh(ArrayList<String[]> map) {
+		Response res=service.get("ablesungen",map);
+		
+		if (res.getStatus()!=200) {
+			if (res.getStatus()!=404) {
+				System.out.println("Laden der Ablesungen fehlgeschlagen\n"+res.getStatus()+" - "+res.readEntity(String.class));
+				Util.errorMessage(res.readEntity(String.class));
+				return false;
+			}
+			liste=new ArrayList<>();
+			return true;
+		}
+		
+		liste=res.readEntity(new GenericType<ArrayList<AbleseEntry>>() {
+		});
+		return true;
+	}
+	
 	private enum ChangedState {
 		noSave,doSave,addNew;
 	}
 	private ChangedState checkChanged(AbleseEntry abl) {
 		Response res=service.get("ablesungen/"+abl.getId().toString());
-		//TODO Abfragen
 		switch (res.getStatus()) {
 		case 200:
 			AbleseEntry ablServer=res.readEntity(AbleseEntry.class);

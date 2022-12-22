@@ -65,8 +65,8 @@ public class Util {
 	}
 
 
-	public static void questionMessage(Kunde[] kunde, Service service) {
-		FilterDialog dialog = new FilterDialog(kunde, service);
+	public static void questionMessage(Kunde[] kunde, Ablesebogen baseFrame) {
+		FilterDialog dialog = new FilterDialog(kunde, baseFrame);
 	}
 
 
@@ -78,4 +78,11 @@ public class Util {
 		return Date.from(dateToConvert.atStartOfDay().toInstant(ZoneOffset.UTC));
 	}
 
+	public static String[] createPair(String key, String value) {
+		String[] pair=new String[2];
+		pair[0]=key;
+		pair[1]=value;
+		return pair;
+		
+	}
 }

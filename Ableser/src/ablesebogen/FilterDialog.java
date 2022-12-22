@@ -3,6 +3,7 @@ package ablesebogen;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -32,9 +33,11 @@ public class FilterDialog {
     private final JDatePickerImpl startDatePicker;
     private final JDatePickerImpl endDatePicker;
     private final JButton filterButton;
+    
+    private Ablesebogen baseFrame;
 
-    public FilterDialog(Kunde[] kunden, Service service) {
-    	
+    public FilterDialog(Kunde[] kunden, Ablesebogen baseFrame) {
+    	this.baseFrame=baseFrame;
         dialog = new JDialog();
         dialog.setLayout(new GridLayout(ROWS, COLUMNS));
 
@@ -64,14 +67,15 @@ public class FilterDialog {
             Kunde selectedItem = (Kunde) kundenNummer.getSelectedItem();
             LocalDate startDate = Util.dateToLocalDate((Date) startDatePicker.getModel().getValue());
             LocalDate endDate = Util.dateToLocalDate((Date) endDatePicker.getModel().getValue());
-			HashMap<String, String> queryParam = new HashMap<String, String>();
-	        queryParam.put("kunde", selectedItem.getId().toString());
-	        queryParam.put("beginn", startDate.toString());
-	        queryParam.put("ende", endDate.toString());
+			ArrayList<String[]> queryParam = new ArrayList<String[]>();
+			
+			
+			queryParam.add(Util.createPair("kunde", selectedItem.getId().toString()));
+	        queryParam.add(Util.createPair("beginn", startDate.toString()));
+	        queryParam.add(Util.createPair("ende", endDate.toString()));
 
-	        Response res = service.get("ablesungen", queryParam);
-			System.out.println(res);
-			System.out.println(res.readEntity(String.class));
+	       baseFrame.getListe().refresh(queryParam);
+	       baseFrame.outLayout.refresh();
 		});
 		
 		kundenNummer.setRenderer(new ListCellRenderer<Kunde>() {

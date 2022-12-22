@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -140,6 +142,15 @@ public class AbleseInPanel extends JAblesebogenPanel{
 				return label;
 			}
 		});
+		
+		//Kunden Änderungen mitbekommen
+		baseFrame.getKundenListe().addChangeListener( e-> {
+			
+			DefaultComboBoxModel<Kunde> model = new DefaultComboBoxModel<Kunde>(e.toArray(new Kunde[0]));
+			kundenNummer.setModel(model);
+			return true;
+		});
+		
 		
 		// Enter zur Navigation
 		ArrayList<JComponent> tabOrder = new ArrayList<>();
@@ -279,6 +290,7 @@ public class AbleseInPanel extends JAblesebogenPanel{
 		kommentar.setText("");
 
 		curEntry = null;
+		kundenNummer.requestFocus();
 	}
 
 	

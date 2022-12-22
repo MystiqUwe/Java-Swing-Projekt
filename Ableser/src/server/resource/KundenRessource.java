@@ -74,8 +74,9 @@ public class KundenRessource {
 			return Response.status(Response.Status.NOT_FOUND).entity("Keine gültige UUID").type(MediaType.TEXT_PLAIN).build();
 
 		}
-		if (id == null) {
-			return Response.status(Response.Status.BAD_REQUEST).entity("Kunde konnte nicht gelöscht werden!")
+		Kunde k=Server.getServerData().getKunde(id);
+		if (k == null) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Kunde konnte nicht gelöscht werden!")
 					.type(MediaType.TEXT_PLAIN).build();
 		}
 		Map<Kunde, ArrayList<Ablesung>> map= Server.getServerData().removeKunde(id);

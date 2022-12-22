@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -149,7 +150,7 @@ public class Ablesebogen extends JFrame {
 		model.setSelected(true); // init DatePicker Value
 		datePanel = new JDatePanelImpl(model);
 
-		kundenNummer = new JComboBox<>(getKundenNrData()); // Holt die Auswahl für die ComboBox
+		kundenNummer = new JComboBox<>(kundenListe.toArray(new Kunde[0])); // Holt die Auswahl für die ComboBox
 		zaelerArt = new JComboBox<String>(DEFAULT_ZAELERART);
 		zaelernummer = new JTextField();
 		datePicker = new JDatePickerImpl(datePanel);
@@ -432,9 +433,16 @@ public class Ablesebogen extends JFrame {
 	 */
 	public void loadWithValue(AbleseEntry entry) {
 		this.setTitle(entry.getId() + " bearbeiten");
-//kundenListe.get(kundenListe.indexOf(entry.getKundenNummer()))
 		System.out.println("Edit "+entry.getKundenNummer());
-		kundenNummer.setSelectedItem(entry.getKundenNummer());
+		
+		Kunde kunde=null;
+		for (Kunde k:kundenListe) {
+			if (k.getId().equals(entry.getKundenNummer())) {
+				kunde=k;
+				break;
+			}
+		}
+		kundenNummer.setSelectedItem(kunde);
 		// zaelerArt.setSelectedItem(entry.getZaelerArt());
 		zaelernummer.setText(entry.getZaelernummer());
 		model.setValue(Date.from(entry.getDatum().atStartOfDay().toInstant(ZoneOffset.UTC)));
@@ -471,6 +479,8 @@ public class Ablesebogen extends JFrame {
 			liste=new AbleseList(serverList);
 		} else {
 			liste.setListe(serverList);
+			DefaultComboBoxModel<Kunde> model = new DefaultComboBoxModel<>( kundenListe.toArray(new Kunde[0]));
+			kundenNummer.setModel(model);
 		}
 		
 	}
@@ -534,15 +544,6 @@ public class Ablesebogen extends JFrame {
 
 	}
 
-	/**
-	 * Request an den Server um eine Liste von Kunden objekten zu kriegen.
-	 * 
-	 * @return Array mit Kunden Objekte, oder null
-	 */
-	private Kunde[] getKundenNrData() {
-		
-		return kundenListe.toArray(new Kunde[0]); // Liste von Objekten zu Array
-	}
 
 	public boolean checkChanged(AbleseEntry abl) {
 		Response res=service.get("ablesungen/"+abl.getId().toString());

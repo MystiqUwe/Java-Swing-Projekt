@@ -3,6 +3,10 @@
     "id" : "d94180d5-c0e5-4869-a402-d7db0d1ec83d",
     "name" : "B",
     "vorname" : "b"
+  }, {
+    "id" : "09cdcdde-33b4-4104-a219-da75ab8ec20f",
+    "name" : "beni",
+    "vorname" : "bsd"
   } ],
   "ablesungListe" : [ {
     "id" : "143f1954-450d-4ec7-8a29-ac4d9d8ea33e",

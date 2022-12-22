@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultRowSorter;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -55,14 +56,20 @@ public class AbleseOutPanel extends JPanel {
 		
 		JButton toInButton=new JButton("neuer Datensatz");
 		JButton editButton=new JButton("bearbeiten");
+		JButton filButton=new JButton("Filtern");
 
 		buttonPanel.add(toInButton);
+		buttonPanel.add(filButton);
 		buttonPanel.add(editButton);
 
 		toInButton.addActionListener(e -> {
 			baseFrame.setTitle("neuer Datensatz");
 			baseFrame.clear();
 			((CardLayout) baseFrame.getContentPane().getLayout()).show(baseFrame.getContentPane(),"in");
+		});
+		
+		filButton.addActionListener(e -> {
+			Util.questionMessage(baseFrame.getKundenNrData());
 		});
 		
 		editButton.addActionListener(e-> edit());

@@ -539,7 +539,7 @@ public class Ablesebogen extends JFrame {
 	 * 
 	 * @return Array mit Kunden Objekte, oder null
 	 */
-	private Kunde[] getKundenNrData() {
+	public Kunde[] getKundenNrData() {
 		
 		return kundenListe.toArray(new Kunde[0]); // Liste von Objekten zu Array
 	}

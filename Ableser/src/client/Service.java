@@ -13,6 +13,11 @@ import jakarta.ws.rs.core.Response;
  */
 public class Service {
 
+	public static final String endpointHausverwaltung = "/hausverwaltung";
+	public static final String endpointKunden = "kunden";
+	public static final String endpointAblesungen = "ablesungen";
+	public static final String endpointAblesungClientStart = "ablesungenVorZweiJahrenHeute";
+
 	private final String baseUrl;
 
 	private final Client client;
@@ -22,7 +27,7 @@ public class Service {
 	 * @param baseUrl the base URL for the client
 	 */
 	public Service(String baseUrl) {
-		this.baseUrl = baseUrl + "/hausverwaltung";
+		this.baseUrl = baseUrl + endpointHausverwaltung;
 		this.client = ClientBuilder.newClient();
 	}
 

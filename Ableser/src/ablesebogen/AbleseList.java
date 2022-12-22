@@ -46,7 +46,7 @@ public class AbleseList {
 	 * @return boolean
 	 */
 	public boolean add(AbleseEntry e) {
-		Response res = service.post("ablesungen", e);
+		Response res = service.post(Service.endpointAblesungen, e);
 
 		if (res.getStatus() != Status.CREATED.getStatusCode()) {
 			Util.errorMessage(res.getStatus() + " - " + res.readEntity(String.class));
@@ -76,7 +76,7 @@ public class AbleseList {
 			break;
 		}
 
-		Response res = service.put("ablesungen", newAbl);
+		Response res = service.put(Service.endpointAblesungen, newAbl);
 
 		if (res.getStatus() != Status.OK.getStatusCode()) {
 			Util.errorMessage(res.getStatus() + " - " + res.readEntity(String.class));
@@ -98,9 +98,6 @@ public class AbleseList {
 	 * @return AbleseEntry
 	 */
 	public AbleseEntry get(int index) {
-		if (index >= liste.size()) {
-			return new AbleseEntry(null, null, "XXX", "XXX", null, false, 666, "XXX");
-		}
 		return liste.get(index);
 	}
 
@@ -121,7 +118,7 @@ public class AbleseList {
 			return false;
 		}
 
-		Response delRes = service.delete("ablesungen/" + entry.getId().toString());
+		Response delRes = service.delete(Service.endpointAblesungen+"/" + entry.getId().toString());
 
 		if (delRes.getStatus() != Status.OK.getStatusCode()) {
 			if (delRes.getStatus() == Status.NOT_FOUND.getStatusCode()) {
@@ -255,7 +252,7 @@ public class AbleseList {
 	}
 
 	public boolean refresh() {
-		Response res = service.get("ablesungenVorZweiJahrenHeute");
+		Response res = service.get(Service.endpointAblesungClientStart);
 
 		if (res.getStatus() != 200) {
 			System.out.println(
@@ -270,7 +267,7 @@ public class AbleseList {
 	}
 
 	public boolean refresh(ArrayList<String[]> map) {
-		Response res = service.get("ablesungen", map);
+		Response res = service.get(Service.endpointAblesungen, map);
 
 		if (res.getStatus() != 200) {
 			if (res.getStatus() != 404) {
@@ -293,7 +290,7 @@ public class AbleseList {
 	}
 
 	private ChangedState checkChanged(AbleseEntry abl) {
-		Response res = service.get("ablesungen/" + abl.getId().toString());
+		Response res = service.get(Service.endpointAblesungen+"/" + abl.getId().toString());
 		switch (res.getStatus()) {
 		case 200:
 			AbleseEntry ablServer = res.readEntity(AbleseEntry.class);

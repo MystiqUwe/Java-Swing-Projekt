@@ -51,7 +51,7 @@ public class KundeList {
 	 * @return boolean
 	 */
 	public boolean add(Kunde e) {
-		Response res = service.post("kunden", e);
+		Response res = service.post(Service.endpointKunden, e);
 
 		if (res.getStatus() != Status.CREATED.getStatusCode()) {
 			Util.errorMessage(res.getStatus() + " - " + res.readEntity(String.class));
@@ -86,7 +86,7 @@ public class KundeList {
 			break;
 		}
 
-		Response res = service.put("kunden", newK);
+		Response res = service.put(Service.endpointKunden, newK);
 
 		if (res.getStatus() != Status.OK.getStatusCode()) {
 			Util.errorMessage(res.getStatus() + " - " + res.readEntity(String.class));
@@ -135,7 +135,7 @@ public class KundeList {
 		if (k == null) {
 			return false;
 		}
-		Response delRes = service.delete("kunden/" + k.getId().toString());
+		Response delRes = service.delete(Service.endpointKunden+"/" + k.getId().toString());
 
 		if (delRes.getStatus() != Status.OK.getStatusCode()) {
 			if (delRes.getStatus() == Status.NOT_FOUND.getStatusCode()) {
@@ -258,7 +258,7 @@ public class KundeList {
 	}
 
 	public boolean refresh() {
-		Response res = service.get("kunden");
+		Response res = service.get(Service.endpointKunden);
 
 		if (res.getStatus() != 200) {
 			System.out.println(
@@ -278,7 +278,7 @@ public class KundeList {
 	}
 
 	private ChangedState checkChanged(Kunde k) {
-		Response res = service.get("kunden/" + k.getId().toString());
+		Response res = service.get(Service.endpointKunden+"/" + k.getId().toString());
 
 		switch (res.getStatus()) {
 		case 200:

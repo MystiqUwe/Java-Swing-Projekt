@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
+import client.Service;
 import jakarta.ws.rs.core.Response;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
@@ -32,7 +33,7 @@ public class FilterDialog {
     private final JDatePickerImpl endDatePicker;
     private final JButton filterButton;
 
-    public FilterDialog(Kunde[] kunden) {
+    public FilterDialog(Kunde[] kunden, Service service) {
     	
         dialog = new JDialog();
         dialog.setLayout(new GridLayout(ROWS, COLUMNS));
@@ -68,7 +69,7 @@ public class FilterDialog {
 	        queryParam.put("beginn", startDate.toString());
 	        queryParam.put("ende", endDate.toString());
 
-	        Response res = Ablesebogen.getService().get("ablesungen", queryParam);
+	        Response res = service.get("ablesungen", queryParam);
 			System.out.println(res);
 			System.out.println(res.readEntity(String.class));
 		});

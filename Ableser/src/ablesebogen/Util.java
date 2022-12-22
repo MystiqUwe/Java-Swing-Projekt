@@ -17,6 +17,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import client.Service;
 import server.Kunde;
 
 public class Util {
@@ -65,7 +66,7 @@ public class Util {
 
 
 	public static void questionMessage(Kunde[] kunde, Service service) {
-		FilterDialog dialog = new FilterDialog(kunde);
+		FilterDialog dialog = new FilterDialog(kunde, service);
 	}
 
 

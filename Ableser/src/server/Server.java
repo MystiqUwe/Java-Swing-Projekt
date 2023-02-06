@@ -19,11 +19,15 @@ public class Server {
 	private static final String SERVERFILE = "target/ServerSave.json";
 	private static HttpServer server = null;
 
-	private static Database serverData;
+	private static AbstractDatabase serverData;
 	@Getter
 	private static boolean serverReady = false;
 
 	public static void startServer(String url, boolean loadFromFile) {
+		startServer(url,loadFromFile,false);
+	}
+	
+	public static void startServer(String url, boolean loadFromFile, boolean useSQLDatabase) {
 		if (server != null) {
 			System.out.println("Server läuft bereits unter: " + server.getAddress());
 			return;
@@ -33,13 +37,17 @@ public class Server {
 
 		System.out.println("Server starten unter: " + url);
 
-		if (loadFromFile) {
-			serverData = loadJSON(SERVERFILE);
+		if (useSQLDatabase) {
+			serverData=new SQLDatabase();
 		} else {
-			serverData = new Database();
+			if (loadFromFile) {
+				serverData = loadJSON(SERVERFILE);
+			} else {
+				serverData = new JsonDatabase();
+			}
 		}
-		serverReady = true;
 		serverData.init();
+		serverReady = true;
 
 		final ResourceConfig rc = new ResourceConfig().packages(pack);
 		server = JdkHttpServerFactory.createHttpServer(URI.create(url), rc);
@@ -62,16 +70,16 @@ public class Server {
 		System.out.println("Server angehalten");
 	}
 
-	public static Database getServerData() {
+	public static AbstractDatabase getServerData() {
 		return serverData;
 	}
 
-	private static Database loadJSON(String file) {
+	private static JsonDatabase loadJSON(String file) {
 		final File f = new File(file);
 		if (f.exists()) {
 			try {
 				obMap.registerModule(new JavaTimeModule());
-				Database db = obMap.readValue(f, Database.class);
+				JsonDatabase db = obMap.readValue(f, JsonDatabase.class);
 
 				System.out.format("Datei %s gelesen\n", file);
 
@@ -81,7 +89,7 @@ public class Server {
 				// ignore
 			}
 		}
-		return new Database();
+		return new JsonDatabase();
 
 	}
 
@@ -102,8 +110,8 @@ public class Server {
 	}
 
 	public static void main(String[] args) {
-		startServer("http://localhost:8081/rest", true);
-
+		//startServer("http://localhost:8081/rest", true);
+		startServer("http://localhost:8081/rest", true,true);
 		/*
 		 * Kunde k1=new Kunde("Heinz", "Müller"); Kunde k2=new Kunde("Max","Meier");
 		 * serverData.addKunde(k1); serverData.addKunde(k2); serverData.addAblesung(new

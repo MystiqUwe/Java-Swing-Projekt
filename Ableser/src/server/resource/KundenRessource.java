@@ -92,7 +92,7 @@ public class KundenRessource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllKunden() {
-		return Response.status(Response.Status.OK).entity(Server.getServerData().getAllKunden()).build();
+		return Response.status(Response.Status.OK).entity(Server.getServerData().getKundenListe()).build();
 	}
 
 	/**

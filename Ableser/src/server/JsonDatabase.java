@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import lombok.Getter;
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
-public class Database {
+public class JsonDatabase extends AbstractDatabase {
 
 	@Getter
 	private ArrayList<Kunde> kundenListe;
@@ -20,13 +20,13 @@ public class Database {
 	@Getter
 	private ArrayList<Ablesung> ablesungListe;
 
-	public Database() {
+	public JsonDatabase() {
 		super();
 		kundenListe = new ArrayList<Kunde>();
 		ablesungListe = new ArrayList<Ablesung>();
 	}
 
-	public Database(ArrayList<Kunde> kundenListe, ArrayList<Ablesung> ablesungListe) {
+	public JsonDatabase(ArrayList<Kunde> kundenListe, ArrayList<Ablesung> ablesungListe) {
 		super();
 		this.kundenListe = kundenListe;
 		this.ablesungListe = ablesungListe;
@@ -74,9 +74,9 @@ public class Database {
 		return map;
 	}
 
-	public ArrayList<Kunde> getAllKunden() {
+/*	public ArrayList<Kunde> getAllKunden() {
 		return kundenListe;
-	}
+	}*/
 
 	public void addAblesung(Ablesung a) {
 		if (a.getId() == null) {
@@ -129,10 +129,6 @@ public class Database {
 
 	public void init() {
 		ablesungListe.forEach(e -> e.updateKunde());
-	}
-
-	public ArrayList<Ablesung> getAblesungList(UUID kundenId) {
-		return getAblesungList(kundenId, null, null);
 	}
 
 	public ArrayList<Ablesung> getAblesungList(UUID kundenId, LocalDate sDate, LocalDate eDate) {

@@ -342,8 +342,8 @@ class ServerTest {
 
 	@Test
 	void t21_getEveryAblesungInRangeForSpecificKunde() {
-		LocalDate beginn = LocalDate.of(2021, 2, 1);
-		LocalDate ende = LocalDate.of(2021, 9, 1);
+		LocalDate beginn = LocalDate.of(LocalDate.now().getYear() - 1, 2, 1);
+		LocalDate ende = LocalDate.of(LocalDate.now().getYear() - 1, 9, 1);
 		List<Ablesung> filter = ablesungen.get(k2_RangeTest).stream()
 				.filter(x -> x.getDatum().isAfter(beginn) && x.getDatum().isBefore(ende)).collect(Collectors.toList());
 		String kid = k2_RangeTest.getId().toString();

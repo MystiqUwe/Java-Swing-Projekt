@@ -34,6 +34,7 @@ public class KundenRessource {
 					.type(MediaType.TEXT_PLAIN).build();
 		}
 
+		kunde.setId(UUID.randomUUID());
 		Server.getServerData().addKunde(kunde);
 		return Response.status(Response.Status.CREATED).entity(kunde).build();
 	}

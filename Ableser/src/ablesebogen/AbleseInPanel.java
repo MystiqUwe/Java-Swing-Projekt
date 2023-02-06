@@ -165,11 +165,14 @@ public class AbleseInPanel extends JAblesebogenPanel {
 
 	@Override
 	public boolean activate(Object eOpts) {
+		//kundenNummer.requestFocusInWindow();
 		if (eOpts instanceof AbleseEntry) {
 			loadWithValue((AbleseEntry) eOpts);
 		} else {
+			kundenNummer.setSelectedItem(null);
 			clear();
 		}
+		kundenNummer.requestFocusInWindow();
 		return true;
 	}
 
@@ -181,11 +184,13 @@ public class AbleseInPanel extends JAblesebogenPanel {
 	 */
 	public boolean save() {
 		Kunde selectedItem = (Kunde) kundenNummer.getSelectedItem();
-		UUID kn = null;
-		if (selectedItem != null) {
-			kn = selectedItem.getId(); // kundenNummer.getSelectedItem().toString();
+		if (selectedItem == null) {
+			Util.errorMessage("Es muss ein Kunde ausgewählt sein");
+			kundenNummer.requestFocus();
+			return false;
 		}
-
+		UUID kn = selectedItem.getId(); // kundenNummer.getSelectedItem().toString();
+		
 		String zA = zaelerArt.getSelectedItem().toString();
 
 		String zN = zaelernummer.getText();
@@ -271,7 +276,6 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		baseFrame.setTitle("neuer Datensatz");
 
 		Date zDate = new Date();
-		kundenNummer.setSelectedItem(null);
 		// kundenNummer.setText("");
 		// zaelerArt.setSelectedIndex(0);
 		zaelernummer.setText("");

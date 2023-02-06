@@ -35,8 +35,17 @@ public class FilterDialog {
 		dialog = new JDialog();
 		dialog.setLayout(new GridLayout(ROWS, COLUMNS));
 
-		kundenNummer = new JComboBox<>(kunden);
+		Kunde[] kArray=new Kunde[kunden.length+1];
+		
+		kArray[0]=new Kunde("Alle","alle");
+		//kArray[0].setId(null);
+		for (int i = 1; i < kArray.length; i++) {
+			kArray[i]=kunden[i-1];
+		}
+		
+		kundenNummer = new JComboBox<>(kArray);
 		UtilDateModel startDateModel = new UtilDateModel();
+		startDateModel.setDate(LocalDate.now().getYear()-2, 0, 1);
 		startDateModel.setSelected(true);
 		UtilDateModel endDateModel = new UtilDateModel();
 		endDateModel.setSelected(true);
@@ -63,12 +72,14 @@ public class FilterDialog {
 			LocalDate endDate = Util.dateToLocalDate((Date) endDatePicker.getModel().getValue());
 			ArrayList<String[]> queryParam = new ArrayList<String[]>();
 
-			queryParam.add(Util.createPair("kunde", selectedItem.getId().toString()));
+			if (!kArray[0].equals( selectedItem)) {
+				queryParam.add(Util.createPair("kunde", selectedItem.getId().toString()));
+			}			
+			//queryParam.add(Util.createPair("kunde", selectedItem.getId().toString()));
 			queryParam.add(Util.createPair("beginn", startDate.toString()));
 			queryParam.add(Util.createPair("ende", endDate.toString()));
 
-			baseFrame.getListe().refresh(queryParam);
-			baseFrame.outLayout.refresh();
+			baseFrame.loadData(queryParam);
 		});
 
 		kundenNummer.setRenderer(new ListCellRenderer<Kunde>() {
@@ -77,6 +88,9 @@ public class FilterDialog {
 					boolean isSelected, boolean cellHasFocus) {
 				if (value == null) {
 					return new JLabel("");
+				}
+				if (kArray[0].equals(value)) {
+					return new JLabel("Alle Kunden");
 				}
 				String nameundvorname = (value.getName() + ", " + value.getVorname() + " -> "
 						+ value.getId().toString());

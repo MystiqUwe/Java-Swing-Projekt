@@ -295,10 +295,10 @@ public class AbleseList {
 		case 200:
 			AbleseEntry ablServer = res.readEntity(AbleseEntry.class);
 			if (!abl.equals(ablServer)) {
-				System.out.println("DIFFTOOL");
+	/*			System.out.println("DIFFTOOL");
 				System.out.println(abl.toString());
 				System.out.println(ablServer.toString());
-				System.out.println("--------");
+				System.out.println("--------");*/
 				if (Util.optionMessage("Ablesung hat sich geändert \nTrotzdem speichern?")) {
 					return ChangedState.doSave;
 				} else {

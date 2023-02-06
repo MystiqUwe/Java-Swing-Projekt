@@ -28,8 +28,9 @@ public class AblesungRessource {
 	public Response createAblesung(Ablesung abl) {
 		if (abl instanceof Ablesung) {
 			if (abl.getKunde() == null) {
-				return Response.status(Response.Status.NOT_FOUND).entity("Kunde nicht gefunden").build();
+				return Response.status(Response.Status.NOT_FOUND).entity("Zugehöriger Kunde wurde nicht gefunden").build();
 			}
+			abl.setId(UUID.randomUUID());
 			Server.getServerData().addAblesung(abl);
 			return Response.status(Response.Status.CREATED).entity(abl).build();
 		}

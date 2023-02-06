@@ -56,8 +56,14 @@ public class Kunde {
 			return false;
 		}
 
-		if (!this.id.equals(((Kunde) obj).getId())) {
-			return false;
+		if (this.id==null) {
+			if (((Kunde) obj).getId()!=null) {
+				return false;
+			}
+		} else {
+			if (!this.id.equals(((Kunde) obj).getId())) {
+				return false;
+			}
 		}
 
 		if (!this.name.equals(((Kunde) obj).getName())) {

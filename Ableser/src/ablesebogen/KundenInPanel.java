@@ -73,8 +73,6 @@ public class KundenInPanel extends JAblesebogenPanel {
 		this.nameField.setText("");
 		this.vornameField.setText("");
 		toEdit = null;
-		nameField.requestFocus();
-
 	}
 
 	public boolean save() {
@@ -115,6 +113,7 @@ public class KundenInPanel extends JAblesebogenPanel {
 	}
 
 	public boolean activate(Object eOpts) {
+		nameField.requestFocus();
 
 		if (eOpts instanceof Kunde) {
 			Kunde k = (Kunde) eOpts;
@@ -122,7 +121,6 @@ public class KundenInPanel extends JAblesebogenPanel {
 			this.nameField.setText(k.getName());
 			this.vornameField.setText(k.getVorname());
 			toEdit = k;
-			nameField.requestFocus();
 		} else {
 			clear();
 		}

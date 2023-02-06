@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -42,7 +43,7 @@ public class Ablesebogen extends JFrame {
 	public final static String KUNDE_OUT = "kOut";
 
 	public Ablesebogen(String baseUrl) {
-		super("neuer Datensatz");
+		super();
 		// Für unser eigenes Icon
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("swarm.png")));
 		this.setSize(650, 275);
@@ -77,14 +78,23 @@ public class Ablesebogen extends JFrame {
 		outLayoutKunde = new KundeOutPanel(this, kundenListe);
 		con.add(outLayoutKunde, KUNDE_OUT);
 
+		openPage(ABLESUNG_IN);
 		this.setVisible(true);
 	}
-
-	private void loadData() {
+	
+	protected void loadData(ArrayList<String[]> filter) {
 		kundenListe.refresh();
-		outLayout.refresh();
-		liste.refresh();
 		outLayoutKunde.refresh();
+		liste.refresh(filter);
+		outLayout.refresh();
+	}
+
+	protected void loadData() {
+		kundenListe.refresh();
+		outLayoutKunde.refresh();
+		
+		liste.refresh();
+		outLayout.refresh();
 	}
 
 	// Hilfsfunktion für die Menüleiste
@@ -160,7 +170,7 @@ public class Ablesebogen extends JFrame {
 		String url = "http://localhost:8081/rest";
 		Server.startServer(url, true);
 		new Ablesebogen(url);
-		new Ablesebogen(url);
+		//new Ablesebogen(url);
 	}
 
 	public void openPage(String page) {

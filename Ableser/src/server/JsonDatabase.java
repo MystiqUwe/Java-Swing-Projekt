@@ -32,13 +32,16 @@ public class JsonDatabase extends AbstractDatabase {
 		this.ablesungListe = ablesungListe;
 	}
 
-	public void addKunde(Kunde k) {
+	@Override
+	public OPERATION_RESULT addKunde(Kunde k) {
 		if (k.getId() == null) {
 			k.setId(UUID.randomUUID());
 		}
 		kundenListe.add(k);
+		return OPERATION_RESULT.SUCCESS;
 	}
 
+	@Override
 	public Kunde getKunde(UUID id) {
 		for (Kunde k : kundenListe) {
 			if (k.getId().equals(id)) {
@@ -48,16 +51,19 @@ public class JsonDatabase extends AbstractDatabase {
 		return null;
 	}
 
-	public Kunde updateKunde(Kunde kunde) {
+	@Override
+	public OPERATION_RESULT updateKunde(Kunde kunde) {
 		Kunde k = this.getKunde(kunde.getId());
-		if (k == null)
-			return null;
-
+		if (k == null) {
+			return OPERATION_RESULT.KUNDE_NOT_FOUND;
+		}
+		
 		int index = kundenListe.indexOf(k);
 		kundenListe.set(index, kunde);
-		return k;
+		return OPERATION_RESULT.SUCCESS;
 	}
 
+	@Override
 	public Map<Kunde, ArrayList<Ablesung>> removeKunde(UUID id) {
 		Kunde k = this.getKunde(id);
 		if (k == null)
@@ -74,18 +80,26 @@ public class JsonDatabase extends AbstractDatabase {
 		return map;
 	}
 
-/*	public ArrayList<Kunde> getAllKunden() {
-		return kundenListe;
-	}*/
+	/*
+	 * public ArrayList<Kunde> getAllKunden() { return kundenListe; }
+	 */
 
-	public void addAblesung(Ablesung a) {
+	@Override
+	public OPERATION_RESULT addAblesung(Ablesung a) {
+		if (a==null) {
+			return OPERATION_RESULT.ABLESUNG_NOT_FOUND;
+		}
 		if (a.getId() == null) {
 			a.setId(UUID.randomUUID());
 		}
+		if (a.getKunde()==null) {
+			return OPERATION_RESULT.KUNDE_NOT_FOUND;
+		}
 		ablesungListe.add(a);
+		return OPERATION_RESULT.SUCCESS;
 	}
 
-	public int getAblesungIndex(UUID id) {
+	private int getAblesungIndex(UUID id) {
 		for (int i = 0; i < ablesungListe.size(); i++) {
 			if (ablesungListe.get(i).getId().equals(id)) {
 				return i;
@@ -94,6 +108,7 @@ public class JsonDatabase extends AbstractDatabase {
 		return -1;
 	}
 
+	@Override
 	public Ablesung getAblesung(UUID id) {
 		int pos = getAblesungIndex(id);
 		if (pos < 0) {
@@ -109,16 +124,21 @@ public class JsonDatabase extends AbstractDatabase {
 	 *              alte Element gesucht
 	 * @return false falls das Update fehlgeschlagen ist
 	 */
-	public boolean updateAblesung(Ablesung abNeu) {
+	@Override
+	public OPERATION_RESULT updateAblesung(Ablesung abNeu) {
+		if (abNeu.getKunde()==null) {
+			return OPERATION_RESULT.KUNDE_NOT_FOUND;
+		}
 		int pos = getAblesungIndex(abNeu.getId());
 		if (pos < 0) {
-			return false;
+			return OPERATION_RESULT.ABLESUNG_NOT_FOUND;
 		}
 		ablesungListe.remove(pos);
 		ablesungListe.add(abNeu);
-		return true;
+		return OPERATION_RESULT.SUCCESS;
 	}
 
+	@Override
 	public Ablesung deleteAblesung(UUID id) {
 		Ablesung abl = getAblesung(id);
 		if (abl != null) {
@@ -127,10 +147,12 @@ public class JsonDatabase extends AbstractDatabase {
 		return abl;
 	}
 
+	
 	public void init() {
 		ablesungListe.forEach(e -> e.updateKunde());
 	}
 
+	@Override
 	public ArrayList<Ablesung> getAblesungList(UUID kundenId, LocalDate sDate, LocalDate eDate) {
 		ArrayList<Ablesung> ausgabe = new ArrayList<Ablesung>();
 		for (Ablesung a : ablesungListe) {

@@ -9,15 +9,14 @@ public abstract class AbstractDatabase{
 
 	public abstract ArrayList<Kunde> getKundenListe();
 	public abstract ArrayList<Ablesung> getAblesungListe();
-	public abstract void init();
 
-	public abstract void addKunde(Kunde k);
+	public abstract OPERATION_RESULT addKunde(Kunde k);
 	public abstract Kunde getKunde(UUID id);
-	public abstract Kunde updateKunde(Kunde kunde);
+	public abstract OPERATION_RESULT updateKunde(Kunde kunde);
 	public abstract Map<Kunde, ArrayList<Ablesung>> removeKunde(UUID id);
 
-	public abstract void addAblesung(Ablesung a);
-	public abstract int getAblesungIndex(UUID id);
+	public abstract OPERATION_RESULT addAblesung(Ablesung a);
+	//public abstract int getAblesungIndex(UUID id);
 	public abstract Ablesung getAblesung(UUID id);
 	/**
 	 * Aktualisiert eine Ablesung mit neuen Werten
@@ -26,7 +25,7 @@ public abstract class AbstractDatabase{
 	 *              alte Element gesucht
 	 * @return false falls das Update fehlgeschlagen ist
 	 */
-	public abstract boolean updateAblesung(Ablesung abNeu);
+	public abstract OPERATION_RESULT updateAblesung(Ablesung abNeu);
 	public abstract Ablesung deleteAblesung(UUID id);
 	
 	public ArrayList<Ablesung> getAblesungList(UUID kundenId) {

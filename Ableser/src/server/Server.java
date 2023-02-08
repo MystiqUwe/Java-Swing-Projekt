@@ -38,15 +38,18 @@ public class Server {
 		System.out.println("Server starten unter: " + url);
 
 		if (useSQLDatabase) {
-			serverData=new SQLDatabase();
+			serverData=SQLDatabase.startDatabase();
+			if (serverData==null) {
+				return; //Verbindungsfehler
+			}
 		} else {
 			if (loadFromFile) {
 				serverData = loadJSON(SERVERFILE);
 			} else {
 				serverData = new JsonDatabase();
 			}
+			((JsonDatabase)serverData).init();
 		}
-		serverData.init();
 		serverReady = true;
 
 		final ResourceConfig rc = new ResourceConfig().packages(pack);

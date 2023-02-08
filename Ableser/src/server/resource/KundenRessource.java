@@ -16,6 +16,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import server.Ablesung;
 import server.Kunde;
+import server.OPERATION_RESULT;
 import server.Server;
 
 @Path("hausverwaltung/kunden")
@@ -33,10 +34,16 @@ public class KundenRessource {
 			return Response.status(Response.Status.BAD_REQUEST).entity("Kunde konnte nicht angelegt werden!")
 					.type(MediaType.TEXT_PLAIN).build();
 		}
-
 		kunde.setId(UUID.randomUUID());
-		Server.getServerData().addKunde(kunde);
-		return Response.status(Response.Status.CREATED).entity(kunde).build();
+		switch(Server.getServerData().addKunde(kunde)) {
+		case SUCCESS:
+			return Response.status(Response.Status.CREATED).entity(kunde).build();
+		default:
+			System.err.println("Interner Fehler beim Erstellen von "+kunde);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Interner Serverfehler!")
+					.type(MediaType.TEXT_PLAIN).build();
+						
+		}
 	}
 
 	/**
@@ -51,13 +58,18 @@ public class KundenRessource {
 			return Response.status(Response.Status.BAD_REQUEST).entity("Kunde konnte nicht bearbeitet werden!")
 					.type(MediaType.TEXT_PLAIN).build();
 		}
-		Kunde k = Server.getServerData().updateKunde(kunde);
-		if (k == null) { // Falls Kunde null
+		switch(Server.getServerData().updateKunde(kunde)) {
+		case SUCCESS:
+			return Response.status(Response.Status.OK).entity("Kunde erfolgreich bearbeitet!").build();
+		case KUNDE_NOT_FOUND:
 			return Response.status(Response.Status.NOT_FOUND).entity("Kunde konnte nicht gefunden werden!")
 					.type(MediaType.TEXT_PLAIN).build();
+		default:
+			System.err.println("Interner Fehler beim Update von "+kunde);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Interner Serverfehler!")
+					.type(MediaType.TEXT_PLAIN).build();
 		}
-		return Response.status(Response.Status.OK).entity("Kunde erfolgreich bearbeitet!").build();
-
+	
 	}
 
 	/**

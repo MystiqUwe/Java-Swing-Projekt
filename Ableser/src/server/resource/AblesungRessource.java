@@ -26,30 +26,43 @@ public class AblesungRessource {
 
 	@POST
 	public Response createAblesung(Ablesung abl) {
-		if (abl instanceof Ablesung) {
-			if (abl.getKunde() == null) {
-				return Response.status(Response.Status.NOT_FOUND).entity("Zugehöriger Kunde wurde nicht gefunden").build();
-			}
-			abl.setId(UUID.randomUUID());
-			Server.getServerData().addAblesung(abl);
-			return Response.status(Response.Status.CREATED).entity(abl).build();
+		if (!(abl instanceof Ablesung)) {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Ungültige Ablesung").type(MediaType.TEXT_PLAIN)
+					.build();			
 		}
-		return Response.status(Response.Status.BAD_REQUEST).entity("Ungültige Ablesung").type(MediaType.TEXT_PLAIN)
-				.build();
+		
+		
+		abl.setId(UUID.randomUUID());
+		switch(Server.getServerData().addAblesung(abl)) {
+		case SUCCESS:
+			return Response.status(Response.Status.CREATED).entity(abl).build();
+		case KUNDE_NOT_FOUND:
+			return Response.status(Response.Status.NOT_FOUND).entity("Zugehöriger Kunde wurde nicht gefunden").build();
+		default:
+			System.err.println("Interner Fehler beim Erstellen von "+abl);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Interner Serverfehler!")
+					.type(MediaType.TEXT_PLAIN).build();
+		}
 	}
 
 	@PUT
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response updateAblesung(Ablesung abl) {
 		if (abl instanceof Ablesung) {
-			if (abl.getKunde() == null) {
-				return Response.status(Response.Status.NOT_FOUND).entity("Kunde nicht gefunden").build();
+			
+			
+			switch(Server.getServerData().updateAblesung(abl)) {
+				case SUCCESS:
+					return Response.status(Response.Status.OK).entity("Erfolg").build();
+				case ABLESUNG_NOT_FOUND:
+					return Response.status(Response.Status.NOT_FOUND).entity("Ablesung nicht gefunden").build();
+				case KUNDE_NOT_FOUND:
+					return Response.status(Response.Status.NOT_FOUND).entity("Kunde nicht gefunden").build();					
+				default:
+					System.err.println("Interner Fehler beim Erstellen von "+abl);
+					return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Interner Serverfehler!")
+							.type(MediaType.TEXT_PLAIN).build();
 			}
-			if (Server.getServerData().updateAblesung(abl)) {
-				return Response.status(Response.Status.OK).entity("Erfolg").build();
-
-			}
-			return Response.status(Response.Status.NOT_FOUND).entity("Ablesung nicht gefunden").build();
 		}
 		return Response.status(Response.Status.BAD_REQUEST).entity("Ungültige Ablesung").type(MediaType.TEXT_PLAIN)
 				.build();

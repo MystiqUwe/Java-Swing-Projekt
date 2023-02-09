@@ -1,24 +1,17 @@
 package server;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import ablesebogen.Util;
 import client.DataCreator;
 
 
@@ -402,9 +395,31 @@ public class SQLDatabase extends AbstractDatabase{
 		return result;
 	}
 
+	
+	protected static AbstractDatabase loadJSON(String file) {
+		SQLDatabase db=SQLDatabase.startDatabase();
+		AbstractDatabase jdb=JsonDatabase.loadJSON(file);
+		
+		
+		for (Kunde k:jdb.getKundenListe()) {
+			db.addKunde(k);
+		}
+		
+		for (Ablesung abl:jdb.getAblesungListe()) {
+			db.addAblesung(abl);
+		}
+		
+		return db;
+	}
+		
+	@Override
+	protected void saveJSON(String file) {
+		saveJSON(file, new JsonDatabase(getKundenListe(), getAblesungListe()));
+	}
+	
 	public static void main(String[] args) {
 		SQLDatabase.startDatabase().createDatabase();
-		Server.startServer("http://localhost:8081/rest", true,true);
+		Server.startServer("http://localhost:8081/rest", false,true,false);
 		DataCreator.main(null);
 		Server.stopServer(false);
 	}

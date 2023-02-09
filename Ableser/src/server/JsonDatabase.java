@@ -178,4 +178,10 @@ public class JsonDatabase extends AbstractDatabase {
 
 		return ausgabe;
 	}
+
+	@Override
+	protected void saveJSON(String file) {
+		saveJSON(file, this);
+		
+	}
 }

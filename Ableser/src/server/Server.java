@@ -15,7 +15,6 @@ import lombok.Getter;
 
 public class Server {
 
-	private static ObjectMapper obMap = new ObjectMapper();
 	private static final String SERVERFILE = "target/ServerSave.json";
 	private static HttpServer server = null;
 
@@ -24,10 +23,18 @@ public class Server {
 	private static boolean serverReady = false;
 
 	public static void startServer(String url, boolean loadFromFile) {
-		startServer(url,loadFromFile,true);
+		startServer(url,loadFromFile,true,true);
 	}
 	
-	public static void startServer(String url, boolean loadFromFile, boolean useSQLDatabase) {
+	/*
+	 * Normales startServer, mit bevorzugten Parametern
+	 */
+	public static void startServer(String url) {
+		startServer(url,false,true,false);
+		
+	}
+	
+	public static void startServer(String url, boolean loadFromFile, boolean useSQLDatabase, boolean wipeDatabase) {
 		if (server != null) {
 			System.out.println("Server läuft bereits unter: " + server.getAddress());
 			return;
@@ -38,16 +45,20 @@ public class Server {
 		System.out.println("Server starten unter: " + url);
 
 		if (useSQLDatabase) {
-			if (!loadFromFile) {
+			if (wipeDatabase) {
 				SQLDatabase.wipeDatabase();
 			}
-			serverData=SQLDatabase.startDatabase();
+			if (loadFromFile) {
+				serverData=SQLDatabase.loadJSON(SERVERFILE);
+			} else  {
+				serverData=SQLDatabase.startDatabase();
+			}
 			if (serverData==null) {
 				return; //Verbindungsfehler
 			}
 		} else {
 			if (loadFromFile) {
-				serverData = loadJSON(SERVERFILE);
+				serverData = JsonDatabase.loadJSON(SERVERFILE);
 			} else {
 				serverData = new JsonDatabase();
 			}
@@ -72,8 +83,7 @@ public class Server {
 		server = null;
 
 		if (saveToFile) {
-			SQLDatabase.wipeDatabase();
-			saveJSON(SERVERFILE);
+			serverData.saveJSON(SERVERFILE);
 		}
 		System.out.println("Server angehalten");
 	}
@@ -82,44 +92,10 @@ public class Server {
 		return serverData;
 	}
 
-	private static JsonDatabase loadJSON(String file) {
-		final File f = new File(file);
-		if (f.exists()) {
-			try {
-				obMap.registerModule(new JavaTimeModule());
-				JsonDatabase db = obMap.readValue(f, JsonDatabase.class);
-
-				System.out.format("Datei %s gelesen\n", file);
-
-				return db;
-			} catch (final Exception e) {
-				e.printStackTrace();
-				// ignore
-			}
-		}
-		return new JsonDatabase();
-
-	}
-
-	private static void saveJSON(String file) {
-		try {
-
-			// DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			// obMap.setDateFormat(df);
-			obMap.registerModule(new JavaTimeModule());
-			obMap.writerWithDefaultPrettyPrinter().writeValue(new File(file), serverData);
-
-			System.out.format("Datei %s erzeugt\n", file);
-		} catch (final IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-
-	}
 
 	public static void main(String[] args) {
 		//startServer("http://localhost:8081/rest", true);
-		startServer("http://localhost:8081/rest", true,true);
+		startServer("http://localhost:8081/rest");
 		/*
 		 * Kunde k1=new Kunde("Heinz", "Müller"); Kunde k2=new Kunde("Max","Meier");
 		 * serverData.addKunde(k1); serverData.addKunde(k2); serverData.addAblesung(new

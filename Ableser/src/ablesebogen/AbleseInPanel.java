@@ -219,6 +219,7 @@ public class AbleseInPanel extends JAblesebogenPanel {
 			return false;
 		}
 
+		zA=null;
 		AbleseEntry newEntry = new AbleseEntry(null, kn, zA, zN, selectedDate, neuE, zStand, kom);
 		boolean success;
 		if (curEntry == null) {

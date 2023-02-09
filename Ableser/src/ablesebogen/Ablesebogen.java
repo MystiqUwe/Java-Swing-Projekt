@@ -168,7 +168,7 @@ public class Ablesebogen extends JFrame {
 	 */
 	public static void main(String[] args) {
 		String url = "http://localhost:8081/rest";
-		Server.startServer(url, true, false);
+		Server.startServer(url, true, true);
 		new Ablesebogen(url);
 		new Ablesebogen(url);
 	}

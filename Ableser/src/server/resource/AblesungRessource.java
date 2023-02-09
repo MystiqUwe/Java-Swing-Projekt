@@ -83,6 +83,7 @@ public class AblesungRessource {
 			return Response.status(Response.Status.NOT_FOUND).entity("Ablesung nicht gefunden")
 					.type(MediaType.TEXT_PLAIN).build();
 		}
+		//abl.removeKunde();
 		return Response.status(Response.Status.OK).entity(abl).build();
 	}
 

@@ -20,7 +20,7 @@ public class DataCreator {
 		
 		for (int i=0;i<20;i++) {
 			int num=(int) (Math.random()*kVornamen.length);
-			System.out.println();
+			//System.out.println();
 			Kunde k=new Kunde("Kunde "+i,kVornamen[num] );
 			kList.add(k);
 		}

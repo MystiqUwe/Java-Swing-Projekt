@@ -24,7 +24,7 @@ public class Server {
 	private static boolean serverReady = false;
 
 	public static void startServer(String url, boolean loadFromFile) {
-		startServer(url,loadFromFile,false);
+		startServer(url,loadFromFile,true);
 	}
 	
 	public static void startServer(String url, boolean loadFromFile, boolean useSQLDatabase) {
@@ -38,6 +38,9 @@ public class Server {
 		System.out.println("Server starten unter: " + url);
 
 		if (useSQLDatabase) {
+			if (!loadFromFile) {
+				SQLDatabase.wipeDatabase();
+			}
 			serverData=SQLDatabase.startDatabase();
 			if (serverData==null) {
 				return; //Verbindungsfehler
@@ -49,6 +52,7 @@ public class Server {
 				serverData = new JsonDatabase();
 			}
 			((JsonDatabase)serverData).init();
+			serverReady = true;
 		}
 		serverReady = true;
 
@@ -68,6 +72,7 @@ public class Server {
 		server = null;
 
 		if (saveToFile) {
+			SQLDatabase.wipeDatabase();
 			saveJSON(SERVERFILE);
 		}
 		System.out.println("Server angehalten");

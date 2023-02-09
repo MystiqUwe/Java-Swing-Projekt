@@ -119,6 +119,9 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		});
 		toFilterOutButton.addActionListener(e -> {
 			Kunde selectedItem = (Kunde) kundenNummer.getSelectedItem();
+			if (selectedItem==null) {
+				return;
+			}
 			baseFrame.openPage(Ablesebogen.ABLESUNG_OUT, selectedItem.getId());
 		});
 

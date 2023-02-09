@@ -175,7 +175,6 @@ public class AbleseInPanel extends JAblesebogenPanel {
 			kundenNummer.setSelectedItem(null);
 			clear();
 		}
-		kundenNummer.requestFocusInWindow();
 		return true;
 	}
 
@@ -291,6 +290,12 @@ public class AbleseInPanel extends JAblesebogenPanel {
 
 		curEntry = null;
 		kundenNummer.requestFocus();
+	}
+
+	@Override
+	public void afterActivate(Object eOpts) {
+		this.kundenNummer.requestFocus();
+		
 	}
 
 }

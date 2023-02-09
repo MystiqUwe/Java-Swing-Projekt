@@ -178,25 +178,28 @@ public class Ablesebogen extends JFrame {
 	}
 
 	public void openPage(String page, Object eOpts) {
-		boolean open = false;
+		JAblesebogenPanel newPanel;
 		switch (page) {
 		case ABLESUNG_OUT:
-			open = outLayout.activate(eOpts);
+			newPanel = outLayout;
 			break;
 		case ABLESUNG_IN:
-			open = inLayout.activate(eOpts);
+			newPanel = inLayout;
 			break;
 		case KUNDE_OUT:
-			open = outLayoutKunde.activate(eOpts);
+			newPanel = outLayoutKunde;
 			break;
 		case KUNDE_IN:
-			open = inLayoutKunde.activate(eOpts);
+			newPanel = inLayoutKunde;
 			break;
 		default:
-
+			return;
 		}
+		boolean open=newPanel.activate(eOpts);
+		
 		if (open) {
 			((CardLayout) getContentPane().getLayout()).show(getContentPane(), page);
+			newPanel.afterActivate(eOpts);
 		}
 	}
 

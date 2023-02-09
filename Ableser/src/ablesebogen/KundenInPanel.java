@@ -16,7 +16,7 @@ import server.Kunde;
 public class KundenInPanel extends JAblesebogenPanel {
 
 	private Kunde toEdit;
-	private JTextField nameField;
+	public JTextField nameField;
 	private JTextField vornameField;
 
 	public KundenInPanel(Ablesebogen bFrame) {
@@ -113,8 +113,6 @@ public class KundenInPanel extends JAblesebogenPanel {
 	}
 
 	public boolean activate(Object eOpts) {
-		nameField.requestFocus();
-
 		if (eOpts instanceof Kunde) {
 			Kunde k = (Kunde) eOpts;
 			baseFrame.setTitle(k.getId() + " editieren");
@@ -125,6 +123,11 @@ public class KundenInPanel extends JAblesebogenPanel {
 			clear();
 		}
 		return true;
+	}
+
+	@Override
+	public void afterActivate(Object eOpts) {
+		this.nameField.requestFocus();
 	}
 
 }

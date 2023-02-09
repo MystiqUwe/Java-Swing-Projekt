@@ -94,4 +94,8 @@ public class KundeOutPanel extends JAblesebogenPanel {
 		refresh();
 		return true;
 	}
+
+	@Override
+	public void afterActivate(Object eOpts) {
+	}
 }

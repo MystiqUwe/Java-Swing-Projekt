@@ -143,4 +143,9 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 
 		return true;
 	}
+
+	@Override
+	public void afterActivate(Object eOpts) {
+		return;
+	}
 }

@@ -19,5 +19,7 @@ public abstract class JAblesebogenPanel extends JPanel {
 	 * @return Ob die Seite geöffnet werden soll
 	 */
 	public abstract boolean activate(Object eOpts);
+	
+	public abstract void afterActivate(Object eOpts);
 
 }

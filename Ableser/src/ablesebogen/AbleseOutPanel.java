@@ -136,6 +136,7 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 			openTable((UUID) eOpts);
 			baseFrame.setTitle("Ablesungen für " + eOpts.toString());
 		} else {
+			((DefaultRowSorter<AbleseTableModel, Integer>) sorter).setRowFilter(null);
 			baseFrame.setTitle("Übersichtsliste Ablesungen");
 		}
 		refresh();

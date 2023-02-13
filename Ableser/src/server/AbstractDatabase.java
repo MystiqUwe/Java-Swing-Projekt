@@ -14,7 +14,7 @@ public abstract class AbstractDatabase{
 
 	public abstract ArrayList<Kunde> getKundenListe();
 	public abstract ArrayList<Ablesung> getAblesungListe();
-
+	
 	public abstract OPERATION_RESULT addKunde(Kunde k);
 	public abstract Kunde getKunde(UUID id);
 	public abstract OPERATION_RESULT updateKunde(Kunde kunde);
@@ -74,6 +74,14 @@ public abstract class AbstractDatabase{
 			e.printStackTrace();
 			System.exit(1);
 		}
-
 	}
+	
+	//Zaehlerarten
+	public abstract ArrayList<Zaehlerart> getZaehlerartListe();
+	public abstract Zaehlerart addZaehlerart(Zaehlerart za);
+	public abstract OPERATION_RESULT updateZaehlerart(Zaehlerart za);
+	public abstract Zaehlerart deleteZaehlerart(int id);
+	public abstract Zaehlerart getZaehlerart(int id);//*/
+	
+	
 }

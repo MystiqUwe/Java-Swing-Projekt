@@ -1,84 +1,980 @@
 {
   "kundenListe" : [ {
-    "id" : "9ab0a280-0d70-4cf4-a74e-3dfa3cdf7794",
-    "name" : "A",
-    "vorname" : "a"
+    "id" : "10c3ea8c-ba06-486f-86c6-18d4aed2813e",
+    "name" : "Kunde 1",
+    "vorname" : "Moritz"
   }, {
-    "id" : "ad91e6bb-385f-442e-8e9d-dc2a03a97467",
-    "name" : "B",
-    "vorname" : "b"
+    "id" : "c42256d2-6980-4189-ab87-1e35e8bf90b3",
+    "name" : "Kunde 5",
+    "vorname" : "Lena"
+  }, {
+    "id" : "66d875f2-5984-4ed4-a290-24a0b9afbf46",
+    "name" : "545",
+    "vorname" : "5555"
+  }, {
+    "id" : "d55a2854-f158-4980-8abf-29b9713057ff",
+    "name" : "Kunde 8",
+    "vorname" : "Hannah"
+  }, {
+    "id" : "52d91256-5285-43e8-ab2c-29faf648a667",
+    "name" : "Kunde 12",
+    "vorname" : "Lara"
+  }, {
+    "id" : "653d8373-add0-421c-8d31-31bbcc01f780",
+    "name" : "Kunde 19",
+    "vorname" : "felix"
+  }, {
+    "id" : "a54afe76-cee6-43f6-b802-4c6002b7c99c",
+    "name" : "Kunde 18",
+    "vorname" : "Lara"
+  }, {
+    "id" : "46c94497-939d-4294-8031-4e313a4613c2",
+    "name" : "Kunde 2",
+    "vorname" : "felix"
+  }, {
+    "id" : "c4409196-3e72-4778-a530-584c160c32a2",
+    "name" : "Kunde 9",
+    "vorname" : "Max"
+  }, {
+    "id" : "81441aa1-7fdb-4074-aa40-7ef4bbb6c6dc",
+    "name" : "Kunde 16",
+    "vorname" : "Luca"
+  }, {
+    "id" : "37e5ef9e-33a0-45d0-a1ee-7f87fb729e2f",
+    "name" : "Kunde 15",
+    "vorname" : "Julia"
+  }, {
+    "id" : "79e6d14d-aee9-4e1d-8491-7febc829426b",
+    "name" : "Kunde 6",
+    "vorname" : "Luca"
+  }, {
+    "id" : "9670297c-3970-4653-adb0-8ac2c9631912",
+    "name" : "Kunde 0",
+    "vorname" : "Emily"
+  }, {
+    "id" : "de27a9ba-4764-4a37-8821-b16b04559ada",
+    "name" : "Kunde 14",
+    "vorname" : "Luisa"
+  }, {
+    "id" : "30529a9b-2b0f-416f-9384-b64252435333",
+    "name" : "hhh",
+    "vorname" : "hh"
+  }, {
+    "id" : "5b2e2e02-3556-4ee8-9d23-cb9b768d6d1b",
+    "name" : "Kunde 13",
+    "vorname" : "felix"
+  }, {
+    "id" : "09ec36f1-b239-4e44-bcad-cf8a115b6c99",
+    "name" : "Kunde 11",
+    "vorname" : "felix"
+  }, {
+    "id" : "639ee1a5-f206-4078-b7bf-d798b036d30d",
+    "name" : "efdcv",
+    "vorname" : "dfgdfg"
+  }, {
+    "id" : "d465da84-2c13-4be4-9350-dfc0db492c76",
+    "name" : "Kunde 17",
+    "vorname" : "Samuel"
+  }, {
+    "id" : "5343e854-b6a9-4a41-bba2-eb2b237f18de",
+    "name" : "Kunde 3",
+    "vorname" : "Emilia"
+  }, {
+    "id" : "d7e54e5c-92be-4b8a-9d68-ed8ffa944ecf",
+    "name" : "Kunde 10",
+    "vorname" : "Emma"
+  }, {
+    "id" : "69f2ef71-b4b6-4839-97f2-f012e1ed67e1",
+    "name" : "Kunde 4",
+    "vorname" : "Leon"
+  }, {
+    "id" : "8babb241-1a0f-4934-a67e-f4535ba00de1",
+    "name" : "Kunde 7",
+    "vorname" : "Max"
+  }, {
+    "id" : "95abc79a-c779-48c5-b3f3-fa8072dd99a1",
+    "name" : "hhhh",
+    "vorname" : "b55"
   } ],
   "ablesungListe" : [ {
-    "id" : "91c0bdcc-c9c8-4e58-a889-302e067aa1c3",
-    "zaehlernummer" : "1",
-    "datum" : "2022-01-01",
-    "kommentar" : "test",
+    "id" : "a922f3c5-4677-4229-9ee7-00561e623b3a",
+    "zaehlernummer" : "17",
+    "datum" : "2001-12-11",
+    "kommentar" : "AUTO2",
     "neuEingebaut" : false,
-    "zaehlerstand" : 0,
-    "kundenId" : "ad91e6bb-385f-442e-8e9d-dc2a03a97467"
+    "zaehlerstand" : 52659,
+    "kundenId" : "8babb241-1a0f-4934-a67e-f4535ba00de1"
   }, {
-    "id" : "b5d15aee-fe23-4b65-9a09-3377c8724893",
-    "zaehlernummer" : "1",
-    "datum" : "2022-08-01",
-    "kommentar" : "test",
+    "id" : "dbbb8f8c-1156-44f7-9ed6-02550ac4940f",
+    "zaehlernummer" : "47",
+    "datum" : "2009-08-24",
+    "kommentar" : "AUTO2",
     "neuEingebaut" : false,
-    "zaehlerstand" : 0,
-    "kundenId" : "ad91e6bb-385f-442e-8e9d-dc2a03a97467"
+    "zaehlerstand" : 28470,
+    "kundenId" : "8babb241-1a0f-4934-a67e-f4535ba00de1"
   }, {
-    "id" : "534e1522-9ad7-4cfb-b1c8-5d4dc5ef9900",
+    "id" : "ba365954-a91b-4dc0-ab00-0452e8980593",
+    "zaehlernummer" : "58",
+    "datum" : "2011-02-19",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 6253,
+    "kundenId" : "81441aa1-7fdb-4074-aa40-7ef4bbb6c6dc"
+  }, {
+    "id" : "b626558b-6ea3-40cb-b6c6-068a4812e9a0",
+    "zaehlernummer" : "78",
+    "datum" : "2008-02-19",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 97656,
+    "kundenId" : "52d91256-5285-43e8-ab2c-29faf648a667"
+  }, {
+    "id" : "90f5e596-0bdf-4bd4-9baa-08f9dc920151",
+    "zaehlernummer" : "0",
+    "datum" : "2000-12-03",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 70346,
+    "kundenId" : "de27a9ba-4764-4a37-8821-b16b04559ada"
+  }, {
+    "id" : "5a7a2ed3-9f6d-469f-bc3d-0991d4db6e21",
+    "zaehlernummer" : "93",
+    "datum" : "2020-08-29",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 18628,
+    "kundenId" : "52d91256-5285-43e8-ab2c-29faf648a667"
+  }, {
+    "id" : "c530a337-d511-46b5-8ef3-0c78d8f41250",
+    "zaehlernummer" : "28",
+    "datum" : "2011-05-02",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 81585,
+    "kundenId" : "d465da84-2c13-4be4-9350-dfc0db492c76"
+  }, {
+    "id" : "647b0e14-f57e-4b25-8e51-15501b860b49",
+    "zaehlernummer" : "3",
+    "datum" : "2010-05-29",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 77364,
+    "kundenId" : "d465da84-2c13-4be4-9350-dfc0db492c76"
+  }, {
+    "id" : "e3388622-65e5-4ba5-bd33-1af1cb9469cc",
+    "zaehlernummer" : "42",
+    "datum" : "2009-02-12",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 16613,
+    "kundenId" : "66d875f2-5984-4ed4-a290-24a0b9afbf46"
+  }, {
+    "id" : "99c75950-0224-48db-9bcd-1c341675d0b2",
+    "zaehlernummer" : "29",
+    "datum" : "2009-11-08",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 68704,
+    "kundenId" : "5b2e2e02-3556-4ee8-9d23-cb9b768d6d1b"
+  }, {
+    "id" : "524e4ef1-0360-45b4-bf61-22356b7af18e",
+    "zaehlernummer" : "64",
+    "datum" : "2014-08-24",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 8434,
+    "kundenId" : "95abc79a-c779-48c5-b3f3-fa8072dd99a1"
+  }, {
+    "id" : "65230331-4e40-4dce-ad50-26fe3deab432",
+    "zaehlernummer" : "4",
+    "datum" : "2002-05-26",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 40642,
+    "kundenId" : "d55a2854-f158-4980-8abf-29b9713057ff"
+  }, {
+    "id" : "e27a2ef8-d12d-4cb1-b62d-27c8e382319d",
+    "zaehlernummer" : "16",
+    "datum" : "2007-01-24",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 75325,
+    "kundenId" : "37e5ef9e-33a0-45d0-a1ee-7f87fb729e2f"
+  }, {
+    "id" : "8e552190-cd47-4d55-aad3-2c81148c0b87",
+    "zaehlernummer" : "75",
+    "datum" : "2007-07-24",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 18141,
+    "kundenId" : "653d8373-add0-421c-8d31-31bbcc01f780"
+  }, {
+    "id" : "54c4c9b6-6e79-4020-a7b9-31527b070213",
+    "zaehlernummer" : "49",
+    "datum" : "2014-10-27",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 4229,
+    "kundenId" : "c42256d2-6980-4189-ab87-1e35e8bf90b3"
+  }, {
+    "id" : "fc10466b-9d84-4e9c-af61-3a988b48e606",
+    "zaehlernummer" : "27",
+    "datum" : "2000-02-18",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 87796,
+    "kundenId" : "5343e854-b6a9-4a41-bba2-eb2b237f18de"
+  }, {
+    "id" : "c62fb8df-be53-40a0-a14f-3db8950c770c",
+    "zaehlernummer" : "1",
+    "datum" : "2015-10-17",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 57582,
+    "kundenId" : "639ee1a5-f206-4078-b7bf-d798b036d30d"
+  }, {
+    "id" : "cd1e9372-fe36-4277-b6d7-3f78177a3b9c",
+    "zaehlernummer" : "59",
+    "datum" : "2016-10-06",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 3430,
+    "kundenId" : "653d8373-add0-421c-8d31-31bbcc01f780"
+  }, {
+    "id" : "7ef901ae-6628-4894-8ac1-434ae51828ac",
+    "zaehlernummer" : "15",
+    "datum" : "2016-07-17",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 6142,
+    "kundenId" : "46c94497-939d-4294-8031-4e313a4613c2"
+  }, {
+    "id" : "1cf6ba09-f265-4bc3-883b-44a660478041",
+    "zaehlernummer" : "83",
+    "datum" : "2008-12-09",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 91721,
+    "kundenId" : "9670297c-3970-4653-adb0-8ac2c9631912"
+  }, {
+    "id" : "cf3bcdbd-cac7-411f-b2ac-44da85d000c9",
     "zaehlernummer" : "1",
     "datum" : "2022-12-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "9ab0a280-0d70-4cf4-a74e-3dfa3cdf7794"
+    "kundenId" : "95abc79a-c779-48c5-b3f3-fa8072dd99a1"
   }, {
-    "id" : "4229abb3-e297-4983-a4c6-693033abc09d",
+    "id" : "0f586bcc-6839-4624-a802-465ac7f4b17c",
+    "zaehlernummer" : "57",
+    "datum" : "2020-08-23",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 37237,
+    "kundenId" : "d55a2854-f158-4980-8abf-29b9713057ff"
+  }, {
+    "id" : "544603b5-728a-429f-9d30-47c41047636f",
+    "zaehlernummer" : "14",
+    "datum" : "2008-07-07",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 9071,
+    "kundenId" : "66d875f2-5984-4ed4-a290-24a0b9afbf46"
+  }, {
+    "id" : "9b9bded6-518f-4bed-ac5b-4befcf110504",
+    "zaehlernummer" : "60",
+    "datum" : "2012-05-29",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 88462,
+    "kundenId" : "d55a2854-f158-4980-8abf-29b9713057ff"
+  }, {
+    "id" : "9dd86d4d-9238-4b4b-b7c8-4ddafaa4b8e5",
+    "zaehlernummer" : "8",
+    "datum" : "2003-09-08",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 46820,
+    "kundenId" : "81441aa1-7fdb-4074-aa40-7ef4bbb6c6dc"
+  }, {
+    "id" : "2d83ebcf-1972-4163-8716-4de08643c890",
+    "zaehlernummer" : "56",
+    "datum" : "2004-12-27",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 96137,
+    "kundenId" : "d55a2854-f158-4980-8abf-29b9713057ff"
+  }, {
+    "id" : "417bd71b-96d5-47d1-a4cb-518c02b274aa",
+    "zaehlernummer" : "39",
+    "datum" : "2012-06-27",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 53131,
+    "kundenId" : "30529a9b-2b0f-416f-9384-b64252435333"
+  }, {
+    "id" : "ecebe268-00e8-4677-9e29-54d920b43bdf",
+    "zaehlernummer" : "98",
+    "datum" : "2011-04-07",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 29439,
+    "kundenId" : "8babb241-1a0f-4934-a67e-f4535ba00de1"
+  }, {
+    "id" : "f28919c3-0b23-43a2-8e75-57077c7288b3",
+    "zaehlernummer" : "66",
+    "datum" : "2012-07-23",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 87559,
+    "kundenId" : "95abc79a-c779-48c5-b3f3-fa8072dd99a1"
+  }, {
+    "id" : "200388c1-2ae6-4f28-9ecc-588adc60cb0d",
+    "zaehlernummer" : "80",
+    "datum" : "2005-01-16",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 40804,
+    "kundenId" : "69f2ef71-b4b6-4839-97f2-f012e1ed67e1"
+  }, {
+    "id" : "5324682e-02b9-4e31-9898-592b93c5ae5a",
+    "zaehlernummer" : "95",
+    "datum" : "2002-11-11",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 66036,
+    "kundenId" : "a54afe76-cee6-43f6-b802-4c6002b7c99c"
+  }, {
+    "id" : "18dec830-2a32-42f3-bf11-59c51ac331f5",
     "zaehlernummer" : "1",
     "datum" : "2022-04-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "ad91e6bb-385f-442e-8e9d-dc2a03a97467"
+    "kundenId" : "66d875f2-5984-4ed4-a290-24a0b9afbf46"
   }, {
-    "id" : "c554e306-686a-40a0-8419-6e5593fc5894",
+    "id" : "31f0c613-dba1-453d-a4cf-5a37a21adc71",
+    "zaehlernummer" : "37",
+    "datum" : "2015-02-16",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 14276,
+    "kundenId" : "5343e854-b6a9-4a41-bba2-eb2b237f18de"
+  }, {
+    "id" : "a050ca7c-99be-4cf0-bccf-5c6ed2c0e448",
+    "zaehlernummer" : "96",
+    "datum" : "2009-12-17",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 48233,
+    "kundenId" : "9670297c-3970-4653-adb0-8ac2c9631912"
+  }, {
+    "id" : "f046e6b1-05c8-4538-9dcf-5d2a666fe37a",
+    "zaehlernummer" : "9",
+    "datum" : "2010-09-15",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 4745,
+    "kundenId" : "d465da84-2c13-4be4-9350-dfc0db492c76"
+  }, {
+    "id" : "8b9f8861-cf22-4245-b5cc-5d84c8c4c1b7",
+    "zaehlernummer" : "34",
+    "datum" : "2002-01-08",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 84479,
+    "kundenId" : "d7e54e5c-92be-4b8a-9d68-ed8ffa944ecf"
+  }, {
+    "id" : "1e293336-4285-4fe2-bacf-5e0c4ae4c56f",
+    "zaehlernummer" : "67",
+    "datum" : "2004-03-12",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 68593,
+    "kundenId" : "81441aa1-7fdb-4074-aa40-7ef4bbb6c6dc"
+  }, {
+    "id" : "f843ae24-5db5-4bbd-9f79-5e5113f46576",
+    "zaehlernummer" : "68",
+    "datum" : "2005-12-23",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 61286,
+    "kundenId" : "09ec36f1-b239-4e44-bcad-cf8a115b6c99"
+  }, {
+    "id" : "50af41e4-8c97-4769-abb3-6214980cc615",
     "zaehlernummer" : "1",
     "datum" : "2022-04-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "9ab0a280-0d70-4cf4-a74e-3dfa3cdf7794"
+    "kundenId" : "95abc79a-c779-48c5-b3f3-fa8072dd99a1"
   }, {
-    "id" : "f5d554d9-e93a-41e2-9452-aca60ef0bc55",
+    "id" : "7d34c3fd-8fbd-4b4a-8398-65270797317c",
+    "zaehlernummer" : "45",
+    "datum" : "2016-12-24",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 50064,
+    "kundenId" : "c4409196-3e72-4778-a530-584c160c32a2"
+  }, {
+    "id" : "a342be8f-8a0b-49d8-b3db-674be9a12ca6",
+    "zaehlernummer" : "54",
+    "datum" : "2020-06-21",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 23299,
+    "kundenId" : "a54afe76-cee6-43f6-b802-4c6002b7c99c"
+  }, {
+    "id" : "ad387774-df50-4614-82ab-67a34d6ecb02",
+    "zaehlernummer" : "74",
+    "datum" : "2005-01-08",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 7133,
+    "kundenId" : "10c3ea8c-ba06-486f-86c6-18d4aed2813e"
+  }, {
+    "id" : "149e3451-84e8-4525-9a00-69af4c218cc6",
+    "zaehlernummer" : "63",
+    "datum" : "2002-10-07",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 10955,
+    "kundenId" : "639ee1a5-f206-4078-b7bf-d798b036d30d"
+  }, {
+    "id" : "8fe26827-8928-4e26-84bb-6da5ccb9f03c",
+    "zaehlernummer" : "40",
+    "datum" : "2001-04-03",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 75785,
+    "kundenId" : "8babb241-1a0f-4934-a67e-f4535ba00de1"
+  }, {
+    "id" : "a6c664da-fbcd-4184-96e3-6fdfa986b137",
+    "zaehlernummer" : "7",
+    "datum" : "2011-06-11",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 83166,
+    "kundenId" : "30529a9b-2b0f-416f-9384-b64252435333"
+  }, {
+    "id" : "d3b239a4-89f2-4a6e-986f-712bb792f1c7",
+    "zaehlernummer" : "35",
+    "datum" : "2003-08-04",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 54947,
+    "kundenId" : "52d91256-5285-43e8-ab2c-29faf648a667"
+  }, {
+    "id" : "db2b9dad-cc79-4b9b-9124-72679c0e99ef",
+    "zaehlernummer" : "2",
+    "datum" : "2008-11-03",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 60144,
+    "kundenId" : "95abc79a-c779-48c5-b3f3-fa8072dd99a1"
+  }, {
+    "id" : "2b32894f-223d-435c-a849-7394b2e6277b",
+    "zaehlernummer" : "46",
+    "datum" : "2017-01-16",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 92494,
+    "kundenId" : "52d91256-5285-43e8-ab2c-29faf648a667"
+  }, {
+    "id" : "808c7c90-4305-4fb1-86c1-7a73ec3eebb8",
+    "zaehlernummer" : "25",
+    "datum" : "2008-12-17",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 98101,
+    "kundenId" : "69f2ef71-b4b6-4839-97f2-f012e1ed67e1"
+  }, {
+    "id" : "6df47d80-f878-4c0f-9d76-7ad193eebd8b",
+    "zaehlernummer" : "33",
+    "datum" : "2018-07-06",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 40703,
+    "kundenId" : "d465da84-2c13-4be4-9350-dfc0db492c76"
+  }, {
+    "id" : "8791869e-237f-40ba-80f0-7c6736787e26",
+    "zaehlernummer" : "24",
+    "datum" : "2012-07-27",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 85397,
+    "kundenId" : "9670297c-3970-4653-adb0-8ac2c9631912"
+  }, {
+    "id" : "749d4869-06ad-457c-b680-869c288a5d82",
+    "zaehlernummer" : "77",
+    "datum" : "2012-11-25",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 67693,
+    "kundenId" : "5b2e2e02-3556-4ee8-9d23-cb9b768d6d1b"
+  }, {
+    "id" : "fb9c8051-c656-46b3-9458-8976b305940f",
+    "zaehlernummer" : "84",
+    "datum" : "2021-12-10",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 28896,
+    "kundenId" : "09ec36f1-b239-4e44-bcad-cf8a115b6c99"
+  }, {
+    "id" : "d541670f-ed6a-4f2b-bc92-8bf4de1714d3",
+    "zaehlernummer" : "50",
+    "datum" : "2004-07-02",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 8582,
+    "kundenId" : "653d8373-add0-421c-8d31-31bbcc01f780"
+  }, {
+    "id" : "b1564abd-e4f7-4cf4-8201-8f345f702018",
+    "zaehlernummer" : "",
+    "datum" : "2023-02-09",
+    "kommentar" : "",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 44,
+    "kundenId" : "66d875f2-5984-4ed4-a290-24a0b9afbf46"
+  }, {
+    "id" : "707e0217-c678-4319-9320-92861dc5e939",
+    "zaehlernummer" : "62",
+    "datum" : "2016-03-16",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 51935,
+    "kundenId" : "8babb241-1a0f-4934-a67e-f4535ba00de1"
+  }, {
+    "id" : "d688aeb9-69c9-4ad4-87e3-92a01bcd6f16",
+    "zaehlernummer" : "13",
+    "datum" : "2009-09-11",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 14499,
+    "kundenId" : "30529a9b-2b0f-416f-9384-b64252435333"
+  }, {
+    "id" : "b6515d9c-b69e-46c6-ab81-94fdc8af443e",
+    "zaehlernummer" : "76",
+    "datum" : "2005-11-30",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 75356,
+    "kundenId" : "66d875f2-5984-4ed4-a290-24a0b9afbf46"
+  }, {
+    "id" : "d4d8166d-caea-45e0-b8c9-95234f7af127",
+    "zaehlernummer" : "52",
+    "datum" : "2002-03-18",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 88799,
+    "kundenId" : "d465da84-2c13-4be4-9350-dfc0db492c76"
+  }, {
+    "id" : "b8630ac1-1425-4cbc-823f-98cb2f35a139",
+    "zaehlernummer" : "53",
+    "datum" : "2015-03-15",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 56613,
+    "kundenId" : "09ec36f1-b239-4e44-bcad-cf8a115b6c99"
+  }, {
+    "id" : "ef3f9a58-b1e3-4fc1-b72e-9931db225eed",
+    "zaehlernummer" : "72",
+    "datum" : "2017-04-03",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 7621,
+    "kundenId" : "69f2ef71-b4b6-4839-97f2-f012e1ed67e1"
+  }, {
+    "id" : "28bfc906-4882-4bf9-aa13-9e7490504a12",
+    "zaehlernummer" : "94",
+    "datum" : "2020-10-07",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 21206,
+    "kundenId" : "69f2ef71-b4b6-4839-97f2-f012e1ed67e1"
+  }, {
+    "id" : "59b919ff-c7e5-4931-9eba-a04a2d08397a",
+    "zaehlernummer" : "88",
+    "datum" : "2016-10-04",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 82544,
+    "kundenId" : "81441aa1-7fdb-4074-aa40-7ef4bbb6c6dc"
+  }, {
+    "id" : "698649ee-fe0e-4949-8730-a0b5b3b35409",
+    "zaehlernummer" : "70",
+    "datum" : "2004-08-12",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 25045,
+    "kundenId" : "8babb241-1a0f-4934-a67e-f4535ba00de1"
+  }, {
+    "id" : "d336c7c2-049f-48fd-8af2-a13ba60a22f0",
+    "zaehlernummer" : "44",
+    "datum" : "2000-03-12",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 48476,
+    "kundenId" : "46c94497-939d-4294-8031-4e313a4613c2"
+  }, {
+    "id" : "e2f100b2-062d-41e5-9e30-a294e87f28a0",
+    "zaehlernummer" : "81",
+    "datum" : "2008-12-28",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 85081,
+    "kundenId" : "5b2e2e02-3556-4ee8-9d23-cb9b768d6d1b"
+  }, {
+    "id" : "5b9eae1f-f96e-491f-81d5-a43f8b3063e0",
+    "zaehlernummer" : "85",
+    "datum" : "2009-07-30",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 97670,
+    "kundenId" : "c42256d2-6980-4189-ab87-1e35e8bf90b3"
+  }, {
+    "id" : "3992edf7-b009-41bf-8ce7-a7c410bd8443",
+    "zaehlernummer" : "97",
+    "datum" : "2006-08-14",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 49110,
+    "kundenId" : "c42256d2-6980-4189-ab87-1e35e8bf90b3"
+  }, {
+    "id" : "20bb5f89-ca02-4c36-b30d-a9c6b45e17c2",
+    "zaehlernummer" : "65",
+    "datum" : "2019-12-31",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 99585,
+    "kundenId" : "8babb241-1a0f-4934-a67e-f4535ba00de1"
+  }, {
+    "id" : "fc042750-74a3-41d6-bb7b-aa971f239a89",
+    "zaehlernummer" : "82",
+    "datum" : "2009-10-12",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 65932,
+    "kundenId" : "81441aa1-7fdb-4074-aa40-7ef4bbb6c6dc"
+  }, {
+    "id" : "4c50d626-8715-413a-ad77-ab8d22da6876",
+    "zaehlernummer" : "48",
+    "datum" : "2015-07-17",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 62699,
+    "kundenId" : "09ec36f1-b239-4e44-bcad-cf8a115b6c99"
+  }, {
+    "id" : "5099c164-1b77-4790-b981-adac41c61d7f",
+    "zaehlernummer" : "89",
+    "datum" : "2017-02-13",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 53326,
+    "kundenId" : "95abc79a-c779-48c5-b3f3-fa8072dd99a1"
+  }, {
+    "id" : "68e919c1-a4fb-4656-a4a1-b09d871ffb10",
+    "zaehlernummer" : "69",
+    "datum" : "2018-04-11",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 20638,
+    "kundenId" : "653d8373-add0-421c-8d31-31bbcc01f780"
+  }, {
+    "id" : "1b09055f-b069-441a-b256-b454f0994104",
+    "zaehlernummer" : "55",
+    "datum" : "2004-06-19",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 20756,
+    "kundenId" : "5b2e2e02-3556-4ee8-9d23-cb9b768d6d1b"
+  }, {
+    "id" : "9e96f119-3cf6-4b66-8807-bcef126b88c2",
+    "zaehlernummer" : "20",
+    "datum" : "2007-07-07",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 65764,
+    "kundenId" : "653d8373-add0-421c-8d31-31bbcc01f780"
+  }, {
+    "id" : "3e4862e4-2c64-40fc-a847-bd37547671a1",
+    "zaehlernummer" : "21",
+    "datum" : "2014-09-01",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 86300,
+    "kundenId" : "5b2e2e02-3556-4ee8-9d23-cb9b768d6d1b"
+  }, {
+    "id" : "64d914e0-e22d-492d-bd50-c1e9f338ebd2",
+    "zaehlernummer" : "61",
+    "datum" : "2015-10-24",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 71958,
+    "kundenId" : "10c3ea8c-ba06-486f-86c6-18d4aed2813e"
+  }, {
+    "id" : "0014b4bb-930b-411f-859e-c635e0da88a9",
+    "zaehlernummer" : "36",
+    "datum" : "2000-04-30",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 57051,
+    "kundenId" : "37e5ef9e-33a0-45d0-a1ee-7f87fb729e2f"
+  }, {
+    "id" : "7d733035-09cc-430f-919f-c6ee6217f62c",
+    "zaehlernummer" : "11",
+    "datum" : "2004-07-10",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 46291,
+    "kundenId" : "30529a9b-2b0f-416f-9384-b64252435333"
+  }, {
+    "id" : "3730b594-ec06-45de-bb0d-c9462144092d",
+    "zaehlernummer" : "92",
+    "datum" : "2016-08-26",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 51147,
+    "kundenId" : "52d91256-5285-43e8-ab2c-29faf648a667"
+  }, {
+    "id" : "5b70a64c-828c-4d2a-aa69-ca726200b4b5",
     "zaehlernummer" : "1",
     "datum" : "2022-08-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "9ab0a280-0d70-4cf4-a74e-3dfa3cdf7794"
+    "kundenId" : "95abc79a-c779-48c5-b3f3-fa8072dd99a1"
   }, {
-    "id" : "aad268e1-842f-4c78-ac42-b1949d6dcf27",
+    "id" : "b98ddf0e-f8ed-4a17-9430-cae3181061a3",
+    "zaehlernummer" : "86",
+    "datum" : "2002-10-08",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 15314,
+    "kundenId" : "d7e54e5c-92be-4b8a-9d68-ed8ffa944ecf"
+  }, {
+    "id" : "2d9311ae-8db2-4070-bf6e-cc53f3ca0772",
+    "zaehlernummer" : "6",
+    "datum" : "2015-07-03",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 62306,
+    "kundenId" : "5343e854-b6a9-4a41-bba2-eb2b237f18de"
+  }, {
+    "id" : "09063d73-4226-47f5-a044-d204942aed19",
+    "zaehlernummer" : "73",
+    "datum" : "2010-10-28",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 27748,
+    "kundenId" : "09ec36f1-b239-4e44-bcad-cf8a115b6c99"
+  }, {
+    "id" : "eb2ffaad-ee0a-4037-9b15-d21f338eb3ed",
+    "zaehlernummer" : "31",
+    "datum" : "2012-01-06",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 88675,
+    "kundenId" : "81441aa1-7fdb-4074-aa40-7ef4bbb6c6dc"
+  }, {
+    "id" : "57952290-a837-46a4-bdbd-d3aba7a306bb",
+    "zaehlernummer" : "1",
+    "datum" : "2022-01-01",
+    "kommentar" : "test",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 0,
+    "kundenId" : "95abc79a-c779-48c5-b3f3-fa8072dd99a1"
+  }, {
+    "id" : "3ecf308b-bc43-4d62-a27d-d69b308a89cc",
+    "zaehlernummer" : "38",
+    "datum" : "2015-05-31",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 64138,
+    "kundenId" : "09ec36f1-b239-4e44-bcad-cf8a115b6c99"
+  }, {
+    "id" : "e2489c18-e816-4320-b40e-d710d622e3ed",
+    "zaehlernummer" : "18",
+    "datum" : "2021-01-05",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 83820,
+    "kundenId" : "c4409196-3e72-4778-a530-584c160c32a2"
+  }, {
+    "id" : "a10e396a-03ce-4383-980b-d86b8c3a3ee4",
+    "zaehlernummer" : "5",
+    "datum" : "2017-03-27",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 21223,
+    "kundenId" : "5343e854-b6a9-4a41-bba2-eb2b237f18de"
+  }, {
+    "id" : "3bed46ed-b9ae-4731-868c-d9e0e10be146",
     "zaehlernummer" : "1",
     "datum" : "2019-08-01",
     "kommentar" : "ablesungen",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "9ab0a280-0d70-4cf4-a74e-3dfa3cdf7794"
+    "kundenId" : "66d875f2-5984-4ed4-a290-24a0b9afbf46"
   }, {
-    "id" : "2663a37b-6a17-4616-a2d2-d8e603a9382d",
+    "id" : "0de5def6-9e3a-40fd-a0ac-e0103ffb3546",
+    "zaehlernummer" : "51",
+    "datum" : "2000-02-10",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 92918,
+    "kundenId" : "639ee1a5-f206-4078-b7bf-d798b036d30d"
+  }, {
+    "id" : "58007146-f5cf-480b-bbcc-e0a01aebac3f",
+    "zaehlernummer" : "19",
+    "datum" : "2021-04-05",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 75404,
+    "kundenId" : "46c94497-939d-4294-8031-4e313a4613c2"
+  }, {
+    "id" : "f22be0e9-37f1-4641-8e25-e1648d8ac0e1",
+    "zaehlernummer" : "43",
+    "datum" : "2001-11-13",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 44481,
+    "kundenId" : "d465da84-2c13-4be4-9350-dfc0db492c76"
+  }, {
+    "id" : "3dd25956-b1aa-47b2-a50a-e39c6404997d",
+    "zaehlernummer" : "26",
+    "datum" : "2010-01-02",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 78753,
+    "kundenId" : "69f2ef71-b4b6-4839-97f2-f012e1ed67e1"
+  }, {
+    "id" : "9a41f934-eb7b-47d4-a711-e42b2207488c",
+    "zaehlernummer" : "12",
+    "datum" : "2014-11-11",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 54017,
+    "kundenId" : "de27a9ba-4764-4a37-8821-b16b04559ada"
+  }, {
+    "id" : "3a844d12-ddc5-4f5f-9a44-e693e53ee90f",
     "zaehlernummer" : "1",
-    "datum" : "2022-12-01",
+    "datum" : "2022-08-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "ad91e6bb-385f-442e-8e9d-dc2a03a97467"
+    "kundenId" : "66d875f2-5984-4ed4-a290-24a0b9afbf46"
   }, {
-    "id" : "b25055dc-8490-4094-832e-f2f5846ed0b9",
+    "id" : "0ebbdcb2-d095-4232-81e9-e86db5f77234",
+    "zaehlernummer" : "90",
+    "datum" : "2020-09-26",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 5869,
+    "kundenId" : "de27a9ba-4764-4a37-8821-b16b04559ada"
+  }, {
+    "id" : "4d6cae01-04f2-4aa6-8769-ea51687b2f43",
+    "zaehlernummer" : "23",
+    "datum" : "2019-07-25",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 93685,
+    "kundenId" : "95abc79a-c779-48c5-b3f3-fa8072dd99a1"
+  }, {
+    "id" : "5bd963dd-f070-4017-8a51-ec68a5cd7d8d",
+    "zaehlernummer" : "10",
+    "datum" : "2000-10-20",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 32244,
+    "kundenId" : "09ec36f1-b239-4e44-bcad-cf8a115b6c99"
+  }, {
+    "id" : "18e8a9ef-2ac6-4c2d-bc74-ed5ad6b148ce",
+    "zaehlernummer" : "32",
+    "datum" : "2010-04-05",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 40378,
+    "kundenId" : "653d8373-add0-421c-8d31-31bbcc01f780"
+  }, {
+    "id" : "2e9d11dc-7894-4e3a-b358-eefbc2c653a2",
+    "zaehlernummer" : "79",
+    "datum" : "2003-12-01",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 19997,
+    "kundenId" : "639ee1a5-f206-4078-b7bf-d798b036d30d"
+  }, {
+    "id" : "42d0fd05-b2cb-4250-9fa8-ef8db6343e22",
     "zaehlernummer" : "1",
     "datum" : "2022-01-01",
     "kommentar" : "test",
     "neuEingebaut" : false,
     "zaehlerstand" : 0,
-    "kundenId" : "9ab0a280-0d70-4cf4-a74e-3dfa3cdf7794"
+    "kundenId" : "66d875f2-5984-4ed4-a290-24a0b9afbf46"
+  }, {
+    "id" : "81c3c73a-28b8-4738-961a-f060d032ac1d",
+    "zaehlernummer" : "99",
+    "datum" : "2005-03-04",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 30652,
+    "kundenId" : "de27a9ba-4764-4a37-8821-b16b04559ada"
+  }, {
+    "id" : "da043185-1e6f-40d1-b3c8-f1ca625fed0f",
+    "zaehlernummer" : "1",
+    "datum" : "2022-12-01",
+    "kommentar" : "test",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 0,
+    "kundenId" : "30529a9b-2b0f-416f-9384-b64252435333"
+  }, {
+    "id" : "1c4f24d3-f3a9-4181-b296-f3a7fdad64cf",
+    "zaehlernummer" : "71",
+    "datum" : "2002-12-05",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 90190,
+    "kundenId" : "a54afe76-cee6-43f6-b802-4c6002b7c99c"
+  }, {
+    "id" : "66f7370d-5038-4dba-84d9-f7a28c9745d4",
+    "zaehlernummer" : "91",
+    "datum" : "2016-09-16",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 36646,
+    "kundenId" : "81441aa1-7fdb-4074-aa40-7ef4bbb6c6dc"
+  }, {
+    "id" : "1bae8499-1629-4019-98c9-f87c75eba547",
+    "zaehlernummer" : "41",
+    "datum" : "2005-12-14",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 24460,
+    "kundenId" : "30529a9b-2b0f-416f-9384-b64252435333"
+  }, {
+    "id" : "59887f0c-fbf1-4fef-9b76-fc66a3063524",
+    "zaehlernummer" : "30",
+    "datum" : "2019-12-18",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 61973,
+    "kundenId" : "653d8373-add0-421c-8d31-31bbcc01f780"
+  }, {
+    "id" : "1df8a94b-a9d3-4d17-a5a3-fe7bf16a2cc2",
+    "zaehlernummer" : "87",
+    "datum" : "2000-07-08",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 17573,
+    "kundenId" : "09ec36f1-b239-4e44-bcad-cf8a115b6c99"
+  }, {
+    "id" : "2eb4bd84-2636-44dd-9b3c-ff59dd611cb2",
+    "zaehlernummer" : "22",
+    "datum" : "2013-03-31",
+    "kommentar" : "AUTO2",
+    "neuEingebaut" : false,
+    "zaehlerstand" : 21746,
+    "kundenId" : "8babb241-1a0f-4934-a67e-f4535ba00de1"
   } ]
 }

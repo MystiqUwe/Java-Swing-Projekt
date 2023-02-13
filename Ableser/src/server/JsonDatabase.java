@@ -20,6 +20,9 @@ public class JsonDatabase extends AbstractDatabase {
 	@Getter
 	private ArrayList<Ablesung> ablesungListe;
 
+	@Getter
+	private ArrayList<Zaehlerart> zaehlerartListe;
+
 	public JsonDatabase() {
 		super();
 		kundenListe = new ArrayList<Kunde>();
@@ -184,4 +187,48 @@ public class JsonDatabase extends AbstractDatabase {
 		saveJSON(file, this);
 		
 	}
+
+
+	@Override
+	public Zaehlerart addZaehlerart(Zaehlerart za) {
+		if (za==null) {
+			return null;
+		}
+		zaehlerartListe.add(za);
+		return za;
+	}
+
+	@Override
+	public OPERATION_RESULT updateZaehlerart(Zaehlerart za) {
+		if (za==null) {
+			return OPERATION_RESULT.Zaehlerart_NOT_FOUND;
+		}
+		Zaehlerart oldZa=getZaehlerart(za.getId());
+		if (oldZa==null) {
+			return OPERATION_RESULT.Zaehlerart_NOT_FOUND;
+		}
+		
+		return null;
+	}
+
+	@Override
+	public Zaehlerart deleteZaehlerart(int id) {
+		Zaehlerart za=getZaehlerart(id);
+		if (za!=null) {
+			zaehlerartListe.remove(za);
+		}
+		return za;
+	}
+
+	@Override
+	public Zaehlerart getZaehlerart(int id) {
+		for (Zaehlerart za:zaehlerartListe) {
+			if (za.getId()==id) {
+				return za;
+			}
+		}
+		return null;
+	}
+	
+	
 }

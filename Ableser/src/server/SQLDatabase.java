@@ -51,6 +51,7 @@ public class SQLDatabase extends AbstractDatabase{
 			Statement st=con.createStatement();
 			st.executeUpdate("DROP TABLE IF EXISTS ablesungen;");
 			st.executeUpdate("DROP TABLE IF EXISTS kunden;");
+			st.executeUpdate("DROP TABLE IF EXISTS zaehlerarten");
 			
 			st.executeUpdate("CREATE TABLE kunden"
 					+ "(id UUID PRIMARY KEY,"
@@ -59,6 +60,16 @@ public class SQLDatabase extends AbstractDatabase{
 					+ "ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 			
 			System.out.println("Created Kunden");
+			
+			st.executeUpdate("CREATE TABLE zaehlerarten"
+					+ "(id INTEGER PRIMARY KEY auto_increment,"
+					+ "name VARCHAR(50),"
+					+ "warnvalue INTEGER)"
+					+ "ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+			
+			System.out.println("Created Zaehlerarten");
+			
+			
 			st.executeUpdate("CREATE TABLE ablesungen"
 					+ "(id UUID PRIMARY KEY,"
 					+ "zaehlernummer VARCHAR(50),"
@@ -67,6 +78,8 @@ public class SQLDatabase extends AbstractDatabase{
 					+ "kommentar VARCHAR(255),"
 					+ "neuEingebaut BOOLEAN,"
 					+ "zaehlerstand INTEGER,"
+					+ "zID Integer,"
+					+ "CONSTRAINT zaehlerarten_fk FOREIGN KEY (zID) REFERENCES zaehlerarten(id) ON DELETE SET NULL ON UPDATE CASCADE,"
 					+ "CONSTRAINT kunden_fk FOREIGN KEY (kID) REFERENCES kunden(id) ON DELETE SET NULL ON UPDATE CASCADE)"
 					+ "ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 			System.out.println("Created Ablesungen");
@@ -188,9 +201,7 @@ public class SQLDatabase extends AbstractDatabase{
 	public OPERATION_RESULT addKunde(Kunde k) {
 		try {
 			final PreparedStatement st=con.prepareStatement("INSERT INTO kunden values (?,?,?);");
-			st.setString(1, k.getId().toString());
-			st.setString(2, k.getName());
-			st.setString(3, k.getVorname());
+			prepareKunde(st, k);
 			st.execute();
 		} catch (SQLException e) {
 			System.out.println("Datenbankfehler bei addKunde - "+e.getMessage());
@@ -422,5 +433,120 @@ public class SQLDatabase extends AbstractDatabase{
 		Server.startServer("http://localhost:8081/rest", false,true,false);
 		DataCreator.main(null);
 		Server.stopServer(false);
+	}
+
+	
+	//*********Zählerarten***********//
+	
+	private void prepareZaehlerart(PreparedStatement st ,Zaehlerart za) throws SQLException {
+		prepareZaehlerart(st, za, 0);
+	}
+
+	private void prepareZaehlerart(PreparedStatement st, Zaehlerart za, int off) throws SQLException {
+		if (off>=0) st.setInt(1+off, za.getId());
+		st.setString(2+off, za.getName());
+		st.setInt(3+off, za.getWarnValue());
+	}
+
+	private Zaehlerart zaehlerartFromResult(ResultSet rs) throws SQLException {
+		return zaehlerartFromResult(rs,0);
+	}
+
+	private Zaehlerart zaehlerartFromResult(ResultSet rs, int off) throws SQLException {
+    	return new Zaehlerart(
+    			rs.getInt(1+off),
+    			rs.getString(2+off),
+    			rs.getInt(3+off)
+    	);		    	
+	}
+
+	@Override
+	public ArrayList<Zaehlerart> getZaehlerartListe() {
+		ArrayList<Zaehlerart> result=new ArrayList<Zaehlerart>();
+		try {
+			final Statement st=con.createStatement();
+			final ResultSet rs=st.executeQuery("Select id,name,warnvalue from zaehlerarten");
+		    while(rs.next()) {
+		    	result.add(zaehlerartFromResult(rs));
+		    }
+		} catch (SQLException e) {
+			System.out.println("Datenbankfehler bei getZaehlerartListe - "+e.getMessage());
+			return result;
+		}
+		return result;	
+	}
+
+	@Override
+	public Zaehlerart addZaehlerart(Zaehlerart za) {
+		if (za==null) {
+			return null;
+		}		
+		try { 
+			final PreparedStatement st=con.prepareStatement(
+					"insert into zaehlerarten(name,warnvalue) values (?,?) returning id,name,warnvalue;");
+			prepareZaehlerart(st, za, -1);
+			final ResultSet rs=st.executeQuery();
+		    if (rs.next()) { //Wurde ein Datensatz gefunden?
+		    	return zaehlerartFromResult(rs);
+		    } else {
+		    	return null;
+		    }
+		} catch (SQLException e) {
+			
+			System.out.println("Datenbankfehler bei addZaehlerart - "+e.getMessage());
+			return null;
+		}
+	}
+
+	@Override
+	public OPERATION_RESULT updateZaehlerart(Zaehlerart za) {
+		try {
+			final PreparedStatement st=con.prepareStatement("UPDATE zaehlerarten SET name=?, warnvalue=? where id=?;");
+			prepareZaehlerart(st, za,-1);
+			st.setInt(3, za.getId());
+			final int rowCount=st.executeUpdate();
+		    if (rowCount>0) { //Wurde ein Datensatz gefunden?
+		    	return OPERATION_RESULT.SUCCESS; 	
+		    } else {
+		    	return OPERATION_RESULT.Zaehlerart_NOT_FOUND;
+		    }
+		} catch (SQLException e) {
+			System.out.println("Datenbankfehler bei updateZaehlerart - "+e.getMessage());
+			return OPERATION_RESULT.INTERNAL_ERROR;
+		}
+	}
+
+	@Override
+	public Zaehlerart deleteZaehlerart(int id) {
+		try {
+			final PreparedStatement st=con.prepareStatement("DELETE FROM zaehlerarten where id=? returning id,name,warnvalue;");
+			st.setInt(1, id);
+			final ResultSet rs=st.executeQuery();
+		    if (rs.next()) { //Wurde ein Datensatz gefunden?
+		    	return zaehlerartFromResult(rs);
+		    } else {
+		    	return null;
+		    }
+		} catch (SQLException e) {			
+			System.out.println("Datenbankfehler bei deleteZaehlerart - "+e.getMessage());
+			return null;
+		}
+	}
+
+	@Override
+	public Zaehlerart getZaehlerart(int id) {
+		try {
+			final PreparedStatement st=con.prepareStatement("Select id,name,warnvalue from zaehlerarten where id=?;");
+			st.setInt(1, id);
+			final ResultSet rs=st.executeQuery();
+		    if (rs.next()) { //Wurde ein Datensatz gefunden?
+		    	return zaehlerartFromResult(rs); 	
+		    } else {
+		    	return null;
+		    }
+		} catch (SQLException e) {
+			System.out.println("Datenbankfehler bei getZaehlerart - "+e.getMessage());
+			return null;
+		}
 	}
 }

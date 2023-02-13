@@ -30,6 +30,12 @@ public class Server {
 		
 	}
 	
+	/**
+	 * @param url URL auf dem der server gestartet werden soll
+	 * @param loadFromFile soll die Serverdatei eingelesen werden 
+	 * @param useSQLDatabase SQL Datenbank, oder nur persistierung in eine Datei
+	 * @param wipeDatabase **nur für SQL** soll die Datenbank vor dem Start geleert werden 
+	 */
 	public static void startServer(String url, boolean loadFromFile, boolean useSQLDatabase, boolean wipeDatabase) {
 		if (server != null) {
 			System.out.println("Server läuft bereits unter: " + server.getAddress());

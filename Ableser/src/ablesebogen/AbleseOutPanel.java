@@ -104,41 +104,18 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 		tableModel.fireTableDataChanged();
 	}
 
-	/**
-	 * Öffnet die Liste, mit einem Filterparameter, es werden nur die Daten
-	 * angezeigt bei denen die Kundennummer mit diesem Filter beginnt
-	 * 
-	 * @param filter
-	 */
-	private void openTable(UUID filter) {
-		RowFilter<AbleseTableModel, Object> rf = null;
-		try {
-			rf = RowFilter.regexFilter(filter.toString(), 0);
-		} catch (java.util.regex.PatternSyntaxException e) {
-			return;
-		}
-		tableModel.fireTableDataChanged();
-		ArrayList<RowSorter.SortKey> sortList = new ArrayList<RowSorter.SortKey>();
-		sortList.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
-		sortList.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
-		sortList.add(new RowSorter.SortKey(3, SortOrder.ASCENDING));
-		sorter.setSortKeys(sortList);
-		((DefaultRowSorter<AbleseTableModel, Integer>) sorter).setRowFilter(rf);
-	}
-
 	@Override
 	public boolean activate(Object eOpts) {
-		if (tableModel.getRowCount() < 1) {
+		/*if (tableModel.getRowCount() < 1) {
 			Util.errorMessage("Liste konnte nicht angezeigt werden");
 			return false;
-		}
+		}*/
 		if (eOpts instanceof UUID) {
-			openTable((UUID) eOpts);
-			baseFrame.setTitle("Ablesungen für " + eOpts.toString());
+			filter(eOpts.toString());
 		} else {
 			((DefaultRowSorter<AbleseTableModel, Integer>) sorter).setRowFilter(null);
-			baseFrame.setTitle("Übersichtsliste Ablesungen");
 		}
+		baseFrame.setTitle("Übersichtsliste Ablesungen");
 		refresh();
 
 		return true;
@@ -146,6 +123,25 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 
 	@Override
 	public void afterActivate(Object eOpts) {
+		baseFrame.getFilterArea().setText(eOpts.toString());
 		return;
+	}
+
+	@Override
+	public boolean showFilter() {
+		return true;
+	}
+
+	@Override
+	public void filter(String filter) {
+		RowFilter<AbleseTableModel, Object> rf = null;
+		try {
+			rf = RowFilter.regexFilter("^"+filter, 0);
+		} catch (java.util.regex.PatternSyntaxException e) {
+			return;
+		}
+		tableModel.fireTableDataChanged();
+		((DefaultRowSorter<AbleseTableModel, Integer>) sorter).setRowFilter(rf);
+		
 	}
 }

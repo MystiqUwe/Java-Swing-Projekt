@@ -130,4 +130,13 @@ public class KundenInPanel extends JAblesebogenPanel {
 		this.nameField.requestFocus();
 	}
 
+	@Override
+	public boolean showFilter() {
+		return false;
+	}
+
+	@Override
+	public void filter(String filter) {
+		//NOOP
+	}
 }

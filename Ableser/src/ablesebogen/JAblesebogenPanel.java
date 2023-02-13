@@ -21,5 +21,9 @@ public abstract class JAblesebogenPanel extends JPanel {
 	public abstract boolean activate(Object eOpts);
 	
 	public abstract void afterActivate(Object eOpts);
+	
+	public abstract boolean showFilter();
+	
+	public abstract void filter(String filter);
 
 }

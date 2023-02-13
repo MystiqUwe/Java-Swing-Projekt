@@ -6,10 +6,12 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.DefaultRowSorter;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.table.TableRowSorter;
 
@@ -97,5 +99,23 @@ public class KundeOutPanel extends JAblesebogenPanel {
 
 	@Override
 	public void afterActivate(Object eOpts) {
+	}
+
+	@Override
+	public boolean showFilter() {
+		return true;
+	}
+
+	@Override
+	public void filter(String filter) {
+		RowFilter<KundeTableModel, Object> rf = null;
+		try {
+			rf = RowFilter.regexFilter("^"+filter, 0);
+		} catch (java.util.regex.PatternSyntaxException e) {
+			return;
+		}
+		tableModel.fireTableDataChanged();
+		((DefaultRowSorter<KundeTableModel, Integer>) sorter).setRowFilter(rf);
+		
 	}
 }

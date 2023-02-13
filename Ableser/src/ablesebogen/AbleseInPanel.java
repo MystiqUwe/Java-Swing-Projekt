@@ -298,4 +298,14 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		
 	}
 
+	@Override
+	public boolean showFilter() {
+		return false;
+	}
+
+	@Override
+	public void filter(String filter) {
+		//NOOP
+	}
+
 }

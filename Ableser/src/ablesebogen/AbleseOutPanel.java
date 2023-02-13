@@ -113,7 +113,7 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 		if (eOpts instanceof UUID) {
 			filter(eOpts.toString());
 		} else {
-			((DefaultRowSorter<AbleseTableModel, Integer>) sorter).setRowFilter(null);
+			filter(baseFrame.getFilter());
 		}
 		baseFrame.setTitle("Übersichtsliste Ablesungen");
 		refresh();
@@ -123,8 +123,9 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 
 	@Override
 	public void afterActivate(Object eOpts) {
-		baseFrame.getFilterArea().setText(eOpts.toString());
-		return;
+		if (eOpts instanceof UUID) {
+			baseFrame.setFilter(eOpts.toString());
+		}
 	}
 
 	@Override
@@ -138,6 +139,8 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 		try {
 			rf = RowFilter.regexFilter("^"+filter, 0);
 		} catch (java.util.regex.PatternSyntaxException e) {
+			((DefaultRowSorter<AbleseTableModel, Integer>) sorter).setRowFilter(null);
+			tableModel.fireTableDataChanged();
 			return;
 		}
 		tableModel.fireTableDataChanged();

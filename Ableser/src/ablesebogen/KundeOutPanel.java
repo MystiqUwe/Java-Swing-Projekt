@@ -87,12 +87,13 @@ public class KundeOutPanel extends JAblesebogenPanel {
 
 	@Override
 	public boolean activate(Object eOpts) {
-		if (tableModel.getRowCount() < 1) {
+		/*if (tableModel.getRowCount() < 1) {
 			Util.errorMessage("Liste konnte nicht angezeigt werden");
 			return false;
-		}
+		}*/
 
 		baseFrame.setTitle("Übersichtsliste Kunden");
+		filter(baseFrame.getFilter());
 		refresh();
 		return true;
 	}

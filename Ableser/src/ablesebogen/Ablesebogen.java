@@ -50,7 +50,6 @@ public class Ablesebogen extends JFrame {
 	public final static String KUNDE_IN = "kIn";
 	public final static String KUNDE_OUT = "kOut";
 
-	@Getter
 	private JTextField filterArea;
 	
 	public Ablesebogen(String baseUrl) {
@@ -167,7 +166,7 @@ public class Ablesebogen extends JFrame {
 		mb.add(Box.createHorizontalGlue());
 		
 		
-		filterArea=new JTextField("FILTER...");		
+		filterArea=new JTextField("");		
 		//TODO Filtertext
 		//ta.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		
@@ -179,7 +178,7 @@ public class Ablesebogen extends JFrame {
 			
 			@Override
 			public void keyReleased(KeyEvent e) {
-				System.out.println(filterArea.getText());
+				//System.out.println(filterArea.getText());
 				activePanel.filter(filterArea.getText());
 			}
 			
@@ -194,6 +193,13 @@ public class Ablesebogen extends JFrame {
 
 		
 	}
+
+	public String getFilter() {
+		return filterArea.getText();
+	};
+	public void setFilter(String filter) {
+		filterArea.setText(filter);
+	};
 
 	public void exit() {
 		// liste.exportJson(); Kein Lokaler Speicher mehr
@@ -214,6 +220,7 @@ public class Ablesebogen extends JFrame {
 	public void openPage(String page) {
 		openPage(page, null);
 	}
+	
 
 	public void openPage(String page, Object eOpts) {
 		JAblesebogenPanel newPanel;

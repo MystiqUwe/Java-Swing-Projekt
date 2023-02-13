@@ -21,6 +21,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
+import javax.swing.border.EmptyBorder;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
@@ -94,6 +95,7 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		panel.add(new JLabel("Kommentar"));
 		panel.add(kommentar);
 
+		panel.setBorder(new EmptyBorder(0, 10, 0, 10));
 		// untere Leiste
 		JButton saveButton = new JButton("Speichern");
 		JButton toOutButton = new JButton("Liste Anzeigen");
@@ -171,6 +173,8 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		//kundenNummer.requestFocusInWindow();
 		if (eOpts instanceof AbleseEntry) {
 			loadWithValue((AbleseEntry) eOpts);
+		} else if (eOpts instanceof Kunde) {
+			kundenNummer.setSelectedItem((Kunde) eOpts);			
 		} else {
 			kundenNummer.setSelectedItem(null);
 			clear();

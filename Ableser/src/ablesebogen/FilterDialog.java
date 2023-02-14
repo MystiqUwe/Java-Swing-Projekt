@@ -1,17 +1,22 @@
 package ablesebogen;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dialog.ModalityType;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
@@ -21,8 +26,8 @@ import server.Kunde;
 
 public class FilterDialog {
 	private static final int WIDTH = 400;
-	private static final int HEIGHT = 400;
-	private static final int ROWS = 7;
+	private static final int HEIGHT = 130;
+	private static final int ROWS = 3;
 	private static final int COLUMNS = 2;
 
 	private final JDialog dialog;
@@ -31,19 +36,18 @@ public class FilterDialog {
 	private final JDatePickerImpl endDatePicker;
 	private final JButton filterButton;
 
+	private Kunde allKunde;
 	public FilterDialog(Kunde[] kunden, Ablesebogen baseFrame) {
+		allKunde=new Kunde("alle","Alle");
+		
 		dialog = new JDialog();
-		dialog.setLayout(new GridLayout(ROWS, COLUMNS));
+		dialog.setLayout(new BorderLayout());
+		
+		JPanel grid=new JPanel(new GridLayout(ROWS, COLUMNS));
 
-		Kunde[] kArray=new Kunde[kunden.length+1];
+		dialog.add(grid,BorderLayout.CENTER);
 		
-		kArray[0]=new Kunde("Alle","alle");
-		//kArray[0].setId(null);
-		for (int i = 1; i < kArray.length; i++) {
-			kArray[i]=kunden[i-1];
-		}
-		
-		kundenNummer = new JComboBox<>(kArray);
+		kundenNummer = new JComboBox<>(this.addAllKunden(kunden));
 		UtilDateModel startDateModel = new UtilDateModel();
 		startDateModel.setDate(LocalDate.now().getYear()-2, 0, 1);
 		startDateModel.setSelected(true);
@@ -58,13 +62,14 @@ public class FilterDialog {
 		endDatePicker.setTextEditable(true);
 
 		dialog.setTitle("Filter: ");
-		dialog.add(new JLabel("ID: "));
-		dialog.add(kundenNummer);
-		dialog.add(new JLabel("Start Datum:"));
-		dialog.add(startDatePicker);
-		dialog.add(new JLabel("End Datum:"));
-		dialog.add(endDatePicker);
-		dialog.add(filterButton);
+		grid.add(new JLabel("ID: "));
+		grid.add(kundenNummer);
+		grid.add(new JLabel("Start Datum:"));
+		grid.add(startDatePicker);
+		grid.add(new JLabel("End Datum:"));
+		grid.add(endDatePicker);
+		
+		dialog.add(filterButton, BorderLayout.SOUTH);
 
 		filterButton.addActionListener(e -> {
 			Kunde selectedItem = (Kunde) kundenNummer.getSelectedItem();
@@ -72,7 +77,7 @@ public class FilterDialog {
 			LocalDate endDate = Util.dateToLocalDate((Date) endDatePicker.getModel().getValue());
 			ArrayList<String[]> queryParam = new ArrayList<String[]>();
 
-			if (!kArray[0].equals( selectedItem)) {
+			if (!allKunde.equals( selectedItem)) {
 				queryParam.add(Util.createPair("kunde", selectedItem.getId().toString()));
 			}			
 			//queryParam.add(Util.createPair("kunde", selectedItem.getId().toString()));
@@ -89,7 +94,7 @@ public class FilterDialog {
 				if (value == null) {
 					return new JLabel("");
 				}
-				if (kArray[0].equals(value)) {
+				if (allKunde.equals(value)) {
 					return new JLabel("Alle Kunden");
 				}
 				String nameundvorname = (value.getName() + ", " + value.getVorname() + " -> "
@@ -102,8 +107,40 @@ public class FilterDialog {
 			}
 		});
 
+		baseFrame.getKundenListe().addChangeListener(e -> {
+			Object k=kundenNummer.getSelectedItem();
+			
+			DefaultComboBoxModel<Kunde> model = new DefaultComboBoxModel<Kunde>(addAllKunden(e.toArray(new Kunde[0])));
+			kundenNummer.setModel(model);
+			
+			if ((k!=null) && ((e.indexOf(k)>=0)|| k.equals(allKunde))) {
+				kundenNummer.setSelectedItem(k);
+			} else {
+				kundenNummer.setSelectedItem(null);
+			}
+			return true;
+		});
+		
 		dialog.setSize(WIDTH, HEIGHT);
-		dialog.setModal(true);
+		dialog.setModalityType(ModalityType.MODELESS);
+		
+		
+//		dialog.setLocation();
+		Point baseLocation=baseFrame.getLocation();
+		dialog.setLocation((int)baseLocation.getX(), (int)baseLocation.getY()+baseFrame.getHeight());
+		
+		
 		dialog.setVisible(true);
+	}
+	
+	private Kunde[] addAllKunden(Kunde[] oldKunden ) {
+		Kunde[] kArray=new Kunde[oldKunden.length+1];
+		
+		kArray[0]=allKunde;
+		//kArray[0].setId(null);
+		for (int i = 1; i < kArray.length; i++) {
+			kArray[i]=oldKunden[i-1];
+		}
+		return kArray;
 	}
 }

@@ -96,6 +96,7 @@ public class KundenInPanel extends JAblesebogenPanel {
 		});
 		deleteButton.addActionListener(e -> {
 			if (baseFrame.getKundenListe().remove(toEdit)) {
+				baseFrame.getListe().deleteKunde(toEdit);
 				clear();
 			}
 		});

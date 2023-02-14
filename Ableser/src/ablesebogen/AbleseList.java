@@ -21,6 +21,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import lombok.Getter;
 import lombok.Setter;
+import server.Kunde;
 
 //Wrapper für die verwendete Liste, außerdem verantwortlich für den Export/Import mit den Methoden "export<Dateiformat>()
 public class AbleseList {
@@ -177,20 +178,17 @@ public class AbleseList {
 			return null;
 		}
 		AbleseEntry closest = null;
-		LocalDate date = LocalDate.now();
-		long closestDiff = Long.MAX_VALUE;
+		//long closestDiff = Long.MAX_VALUE;
 		if(this.getListe().size() > 0) {
-		for(AbleseEntry obj : this.getListe()) {
-			if(obj.getKundenNummer()!=null) { 
-			if(obj.getKundenNummer().equals(kNummer) && obj.getZaelernummer().equals(zNummer)) {
-				long diff = Math.abs(date.toEpochDay() - obj.getDatum().toEpochDay());
-				if(diff < closestDiff) {
-				closest = obj;
-				closestDiff = diff;
+			for(AbleseEntry obj : this.getListe()) {
+				if(obj.getKundenNummer()!=null) { 
+					if(obj.getKundenNummer().equals(kNummer) && obj.getZaelernummer().equals(zNummer)) {
+						if (closest==null || obj.getDatum().isAfter(closest.getDatum())) {
+							closest=obj;
+						}
+					}
 				}
 			}
-		}
-		}
 		}
 		return closest;
 		//return this.stream().filter((e) -> e.getKundenNummer().equals(kNummer) &&  e.getZaelernummer().equals(zNummer));
@@ -265,6 +263,15 @@ public class AbleseList {
 				return ChangedState.doSave;
 			} else {
 				return ChangedState.noSave;
+			}
+		}
+	}
+	
+	public void deleteKunde(Kunde k) {
+		UUID kId=k.getId();
+		for (AbleseEntry e:liste) {
+			if (kId.equals(e.getKundenNummer())) {
+				e.setKundenNummer(null);
 			}
 		}
 	}

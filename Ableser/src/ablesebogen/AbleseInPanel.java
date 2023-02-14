@@ -215,10 +215,16 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		UUID kn = selectedItem.getId(); // kundenNummer.getSelectedItem().toString();
 		
 		String zA = zaelerArt.getSelectedItem().toString();
-
+		
 		String zN = zaelernummer.getText();
+		if (zN.length()<1) {
+			Util.errorMessage("Zählernummer darn nicht leer sein");
+			zaelernummer.requestFocus();
+		}
+		
 		LocalDate selectedDate = Util.dateToLocalDate((Date) datePicker.getModel().getValue());
 
+		
 		boolean neuE = neuEingebaut.isSelected();// neuEingebaut.getText();
 
 		int zStand = 0;

@@ -48,6 +48,8 @@ public class AbleseInPanel extends JAblesebogenPanel {
 	private JPanel panel;
 	private JPanel buttonPanel;
 
+	private JButton toFilterOutButton;
+	
 	// Für den Plausibilitätscheck
 	HashMap<String, Integer> DEFAULT_WERTE = new HashMap<String, Integer>();
 	private final String[] DEFAULT_ZAELERART = { "Gas", "Strom", "Heizung", "Wasser" };
@@ -100,7 +102,7 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		JButton saveButton = new JButton("Speichern");
 		JButton toOutButton = new JButton("Liste Anzeigen");
 		JButton deleteButton = new JButton("Löschen");
-		JButton toFilterOutButton = new JButton("Für diesen Kunden");
+		toFilterOutButton = new JButton("Für diesen Kunden");
 
 		buttonPanel.add(saveButton);
 		buttonPanel.add(deleteButton);
@@ -147,12 +149,22 @@ public class AbleseInPanel extends JAblesebogenPanel {
 
 		// Kunden Änderungen mitbekommen
 		baseFrame.getKundenListe().addChangeListener(e -> {
-
+			Object k=kundenNummer.getSelectedItem();
+			
 			DefaultComboBoxModel<Kunde> model = new DefaultComboBoxModel<Kunde>(e.toArray(new Kunde[0]));
 			kundenNummer.setModel(model);
+			
+			if ((k!=null) && (e.indexOf(k)>=0)) {
+				kundenNummer.setSelectedItem(k);
+			} else {
+				kundenNummer.setSelectedItem(null);
+			}
 			return true;
 		});
 
+		kundenNummer.addActionListener(e -> {
+			toFilterOutButton.setEnabled(kundenNummer.getSelectedItem()!=null);
+		});
 		// Enter zur Navigation
 		ArrayList<JComponent> tabOrder = new ArrayList<>();
 		tabOrder.add(kundenNummer);
@@ -174,9 +186,14 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		if (eOpts instanceof AbleseEntry) {
 			loadWithValue((AbleseEntry) eOpts);
 		} else if (eOpts instanceof Kunde) {
-			kundenNummer.setSelectedItem((Kunde) eOpts);			
+			kundenNummer.setSelectedItem( eOpts);			
 		} else {
-			kundenNummer.setSelectedItem(null);
+			try {
+				UUID kid=UUID.fromString(baseFrame.getFilter());
+				kundenNummer.setSelectedItem(baseFrame.getKundenListe().getById(kid));
+			} catch (Exception e) {
+				kundenNummer.setSelectedItem(null);
+			}
 			clear();
 		}
 		return true;
@@ -320,4 +337,5 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		//NOOP
 	}
 
+	
 }

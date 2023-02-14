@@ -221,7 +221,7 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		String kom = kommentar.getText();
 
 		// #009 Plausibilitätsprüfung
-		if (!Plausicheck(zA, zStand)) {
+		if (!Plausicheck(zA, zStand, kn, zN)) {
 			return false;
 		}
 
@@ -246,14 +246,22 @@ public class AbleseInPanel extends JAblesebogenPanel {
 	 * 
 	 * @param zA
 	 * @param zStand
+	 * @param zN
 	 * @return int
 	 */
-	public boolean Plausicheck(String zA, int zStand) {
+	public boolean Plausicheck(String zA, int zStand, UUID kn, String zN) {
 		if (zStand > DEFAULT_WERTE.get(zA)) {
 			return Util.optionMessage("Werte ungewöhnlich trotzdem Speichern?");
 		}
+		AbleseEntry lastAB = baseFrame.getListe().getLast(kn, zN);
+		System.out.println(lastAB.getZaelerstand());
+		if(lastAB.getZaelerstand() > zStand) {
+			return Util.optionMessage("Zählerstand kleiner als zuvor, trotzdem Speichern?");
+		} 
+
 		return true;
 	}
+
 
 	/**
 	 * Öffnet einen Datensatz zum editieren

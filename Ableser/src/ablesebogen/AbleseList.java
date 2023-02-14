@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -168,6 +170,28 @@ public class AbleseList {
 		final StringBuilder buf = new StringBuilder();
 		liste.stream().forEach(en -> buf.append(en.toString()));
 		return buf.toString();
+	}
+	
+	/**
+	 * @param kNummer
+	 * @param zNummer
+	 * @return AbleseEntry
+	 */
+	public  AbleseEntry getLast(UUID kNummer, String zNummer) {
+		AbleseEntry closest = null;
+		LocalDate date = LocalDate.now();
+		long closestDiff = Long.MAX_VALUE;
+		for(AbleseEntry obj : this.getListe()) {
+			if(obj.getKundenNummer().equals(kNummer) && obj.getZaelernummer().equals(zNummer)) {
+				long diff = Math.abs(date.toEpochDay() - obj.getDatum().toEpochDay());
+				if(diff < closestDiff) {
+				closest = obj;
+				closestDiff = diff;
+				}
+			}
+		}
+		return closest;
+		//return this.stream().filter((e) -> e.getKundenNummer().equals(kNummer) &&  e.getZaelernummer().equals(zNummer));
 	}
 
 	/**

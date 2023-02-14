@@ -188,9 +188,7 @@ public class SQLDatabase extends AbstractDatabase{
 	public OPERATION_RESULT addKunde(Kunde k) {
 		try {
 			final PreparedStatement st=con.prepareStatement("INSERT INTO kunden values (?,?,?);");
-			st.setString(1, k.getId().toString());
-			st.setString(2, k.getName());
-			st.setString(3, k.getVorname());
+			prepareKunde(st, k);
 			st.execute();
 		} catch (SQLException e) {
 			System.out.println("Datenbankfehler bei addKunde - "+e.getMessage());

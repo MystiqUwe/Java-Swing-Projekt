@@ -16,7 +16,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import server.Ablesung;
 import server.Kunde;
-import server.OPERATION_RESULT;
 import server.Server;
 
 @Path("hausverwaltung/kunden")

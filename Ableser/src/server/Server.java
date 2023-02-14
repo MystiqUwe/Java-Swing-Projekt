@@ -1,14 +1,10 @@
 package server;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sun.net.httpserver.HttpServer;
 
 import lombok.Getter;

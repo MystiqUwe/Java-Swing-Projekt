@@ -273,18 +273,19 @@ public class AbleseInPanel extends JAblesebogenPanel {
 	 * @return int
 	 */
 	public boolean Plausicheck(String zA, int zStand, UUID kn, String zN) {
-		if (zStand > DEFAULT_WERTE.get(zA)) {
-			return Util.optionMessage("Werte ungewöhnlich trotzdem Speichern?");
-		}
 		try {
-		AbleseEntry lastAB = baseFrame.getListe().getLast(kn, zN);
-		System.out.println(lastAB.getZaelerstand());
-		if(lastAB.getZaelerstand() > zStand) {
-			return Util.optionMessage("Zählerstand kleiner als zuvor, trotzdem Speichern?");
-		} 
+			AbleseEntry lastAB = baseFrame.getListe().getLast(kn, zN);
+			System.out.println(lastAB.getZaelerstand());
+			if(lastAB.getZaelerstand() > zStand) {
+				return Util.optionMessage("Zählerstand kleiner als zuvor, trotzdem Speichern?");
+			}
+			if (zStand > (DEFAULT_WERTE.get(zA)+lastAB.getZaelerstand())) {
+				return Util.optionMessage("Werte ungewöhnlich trotzdem Speichern?");
+			}
+			
 		} catch(Exception ex) {
 			return true;
-					}
+		}
 		
 		return true;
 	}

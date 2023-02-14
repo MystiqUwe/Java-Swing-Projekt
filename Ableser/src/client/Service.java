@@ -1,6 +1,7 @@
 package client;
 
 import java.util.ArrayList;
+
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;

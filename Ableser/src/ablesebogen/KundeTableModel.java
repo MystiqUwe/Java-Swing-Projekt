@@ -11,7 +11,7 @@ import lombok.Getter;
 @SuppressWarnings("serial")
 public class KundeTableModel extends AbstractTableModel {
 
-	private String[] columnNames = { "Id", "Name", "Vorname" };
+	private String[] columnNames = { "Kundennummer", "Name", "Vorname" };
 
 	@Getter
 	private KundeList myList;

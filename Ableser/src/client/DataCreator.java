@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import ablesebogen.AbleseEntry;
 import ablesebogen.AbleseList;
-import ablesebogen.Ablesebogen;
 import ablesebogen.KundeList;
 import server.Kunde;
 

@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.swing.DefaultRowSorter;
@@ -15,7 +14,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.RowSorter;
-import javax.swing.SortOrder;
 import javax.swing.table.TableRowSorter;
 
 /*Eine Übersichtsliste von AbleseEntrys "outLayout"

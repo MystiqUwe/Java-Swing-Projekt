@@ -25,11 +25,6 @@ import lombok.Setter;
 //Wrapper für die verwendete Liste, außerdem verantwortlich für den Export/Import mit den Methoden "export<Dateiformat>()
 public class AbleseList {
 
-	private static ObjectMapper obMap = new ObjectMapper();
-	private static final String FILE = "target/Ablesewerte.json";
-	private static final String XMLFILE = "target/Ablesewerte.xml";
-	private static final String CSVFILE = "target/Ablesewerte.csv";
-
 	@Getter
 	@Setter
 	private ArrayList<AbleseEntry> liste = new ArrayList<AbleseEntry>();
@@ -201,86 +196,6 @@ public class AbleseList {
 		//return this.stream().filter((e) -> e.getKundenNummer().equals(kNummer) &&  e.getZaelernummer().equals(zNummer));
 	}
 
-	/**
-	 * @return AbleseList
-	 */
-	public static AbleseList importJson(Service service) {
-		final File f = new File(FILE);
-		if (f.exists()) {
-			try {
-				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-				obMap.setDateFormat(df);
-
-				AbleseList list = obMap.readValue(new File(FILE), AbleseList.class);
-
-				System.out.format("Datei %s gelesen\n", FILE);
-				return list;
-
-			} catch (final Exception e) {
-				e.printStackTrace();
-				// ignore
-			}
-		}
-		return new AbleseList(null);
-	}
-
-	public void exportJson() {
-		try {
-
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			obMap.setDateFormat(df);
-			obMap.writerWithDefaultPrettyPrinter().writeValue(new File(FILE), this);
-
-			System.out.format("Datei %s erzeugt\n", FILE);
-		} catch (final Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
-
-	public void exportXML() {
-		try {
-			XmlMapper xmlMapper = new XmlMapper();
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			xmlMapper.setDateFormat(df);
-
-			xmlMapper.writerWithDefaultPrettyPrinter().writeValue(new File(XMLFILE), this);
-			System.out.format("Datei %s erzeugt\n", XMLFILE);
-		} catch (final Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
-
-	public void exportCSV() {
-		try {
-			final BufferedWriter out = new BufferedWriter(new FileWriter(CSVFILE, StandardCharsets.UTF_8));
-			for (final AbleseEntry entry : liste) {
-				out.write(entry.getId().toString());
-				out.write(";");
-				out.write(entry.getKundenNummer().toString());
-				out.write(";");
-				out.write(entry.getZaelerArt());
-				out.write(";");
-				out.write("" + entry.getZaelernummer());
-				out.write(";");
-				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-				out.write(df.format(entry.getDatum()));
-				out.write(";");
-				out.write("" + entry.getNeuEingebaut());
-				out.write(";");
-				out.write("" + entry.getZaelerstand());
-				out.write(";");
-				out.write(entry.getKommentar());
-				out.write("\n");
-			}
-			out.close();
-			System.out.format("Datei %s erzeugt\n", CSVFILE);
-		} catch (final IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
 
 	public boolean refresh() {
 		Response res = service.get(Service.endpointAblesungClientStart);

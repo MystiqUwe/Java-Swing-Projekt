@@ -25,10 +25,6 @@ import server.Kunde;
 
 //Wrapper für die verwendete Liste, außerdem verantwortlich für den Export/Import mit den Methoden "export<Dateiformat>()
 public class KundeList {
-	private static ObjectMapper obMap = new ObjectMapper();
-	private static final String FILE = "target/Ablesewerte.json";
-	private static final String XMLFILE = "target/Ablesewerte.xml";
-	private static final String CSVFILE = "target/Ablesewerte.csv";
 	@Getter
 	private ArrayList<Kunde> liste = new ArrayList<Kunde>();
 
@@ -193,69 +189,6 @@ public class KundeList {
 		return buf.toString();
 	}
 
-	/**
-	 * @return Kundenl
-	 */
-	public static KundeList importJson(Service service) {
-		final File f = new File(FILE);
-		if (f.exists()) {
-			try {
-				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-				obMap.setDateFormat(df);
-
-				KundeList list = obMap.readValue(new File(FILE), KundeList.class);
-				System.out.format("Datei %s gelesen\n", FILE);
-				return list;
-
-			} catch (final Exception e) {
-				e.printStackTrace();
-				// ignore
-			}
-		}
-		return new KundeList(service);
-	}
-
-	public void exportJson() {
-		try {
-
-			obMap.writerWithDefaultPrettyPrinter().writeValue(new File(FILE), this);
-
-			System.out.format("Datei %s erzeugt\n", FILE);
-		} catch (final Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
-
-	public void exportXML() {
-		try {
-			XmlMapper xmlMapper = new XmlMapper();
-			xmlMapper.writerWithDefaultPrettyPrinter().writeValue(new File(XMLFILE), this);
-			System.out.format("Datei %s erzeugt\n", XMLFILE);
-		} catch (final Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
-
-	public void exportCSV() {
-		try {
-			final BufferedWriter out = new BufferedWriter(new FileWriter(CSVFILE, StandardCharsets.UTF_8));
-			for (final Kunde k : liste) {
-				out.write(k.getId().toString());
-				out.write(";");
-				out.write(k.getName());
-				out.write(";");
-				out.write(k.getVorname());
-				out.write("\n");
-			}
-			out.close();
-			System.out.format("Datei %s erzeugt\n", CSVFILE);
-		} catch (final IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
 
 	public boolean refresh() {
 		Response res = service.get(Service.endpointKunden);

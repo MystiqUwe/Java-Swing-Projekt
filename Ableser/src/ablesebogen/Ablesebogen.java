@@ -21,6 +21,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import client.ClientSave;
 import client.Service;
 import lombok.Getter;
 import server.Server;
@@ -142,17 +143,17 @@ public class Ablesebogen extends JFrame {
 
 		subMenuJSON.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				liste.exportJson();
+				new ClientSave(kundenListe,liste,getFilter()).exportJson();
 			}
 		});
 		subMenuXML.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				liste.exportXML();
+				new ClientSave(kundenListe,liste,getFilter()).exportXML();
 			}
 		});
 		subMenuCSV.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				liste.exportCSV();
+				new ClientSave(kundenListe,liste,getFilter()).exportCSV();
 			}
 		});
 		menu.add(subReload);

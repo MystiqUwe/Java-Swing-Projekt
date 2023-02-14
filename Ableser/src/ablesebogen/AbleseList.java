@@ -178,10 +178,15 @@ public class AbleseList {
 	 * @return AbleseEntry
 	 */
 	public  AbleseEntry getLast(UUID kNummer, String zNummer) {
+		if (kNummer==null) {
+			return null;
+		}
 		AbleseEntry closest = null;
 		LocalDate date = LocalDate.now();
 		long closestDiff = Long.MAX_VALUE;
+		if(this.getListe().size() > 0) {
 		for(AbleseEntry obj : this.getListe()) {
+			if(obj.getKundenNummer()!=null) { 
 			if(obj.getKundenNummer().equals(kNummer) && obj.getZaelernummer().equals(zNummer)) {
 				long diff = Math.abs(date.toEpochDay() - obj.getDatum().toEpochDay());
 				if(diff < closestDiff) {
@@ -189,6 +194,8 @@ public class AbleseList {
 				closestDiff = diff;
 				}
 			}
+		}
+		}
 		}
 		return closest;
 		//return this.stream().filter((e) -> e.getKundenNummer().equals(kNummer) &&  e.getZaelernummer().equals(zNummer));

@@ -1,6 +1,7 @@
 package ablesebogen;
 
 import java.awt.CardLayout;
+import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -13,9 +14,11 @@ import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import client.ClientSave;

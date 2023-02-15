@@ -135,10 +135,8 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 	public void filter(String filter) {
 		RowFilter<AbleseTableModel, Object> rf = null;
 		try {
-			rf = RowFilter.regexFilter("(?i)^"+filter);
+			rf = RowFilter.regexFilter("^"+filter, 0);
 		} catch (java.util.regex.PatternSyntaxException e) {
-			((DefaultRowSorter<AbleseTableModel, Integer>) sorter).setRowFilter(null);
-			tableModel.fireTableDataChanged();
 			return;
 		}
 		tableModel.fireTableDataChanged();

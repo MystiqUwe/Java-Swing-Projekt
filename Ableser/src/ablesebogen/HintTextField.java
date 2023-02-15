@@ -49,4 +49,11 @@ class HintTextField extends JTextField implements FocusListener {
 	public String getText() {
 		return showingHint ? "" : super.getText();
 	}
+	
+	@Override
+	public void setText(String text) {
+		super.setText(text);
+		setshowingHint(text.length()<1);
+	}
+	
 }

@@ -111,8 +111,9 @@ public class KundeOutPanel extends JAblesebogenPanel {
 	public void filter(String filter) {
 		RowFilter<KundeTableModel, Object> rf = null;
 		try {
-			rf = RowFilter.regexFilter("^"+filter, 0);
+			rf = RowFilter.regexFilter("(?i)^"+filter);
 		} catch (java.util.regex.PatternSyntaxException e) {
+			//System.err.println("Filter failed");
 			return;
 		}
 		tableModel.fireTableDataChanged();

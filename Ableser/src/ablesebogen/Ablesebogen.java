@@ -164,7 +164,7 @@ public class Ablesebogen extends JFrame {
 		mb.add(Box.createHorizontalGlue());
 		
 		
-		filterArea=new HintTextField("Kundennummer filtern...");		
+		filterArea=new HintTextField("Filtern...");		
 		//TODO Filtertext
 		//ta.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		

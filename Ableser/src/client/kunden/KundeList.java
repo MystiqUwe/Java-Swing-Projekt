@@ -1,4 +1,4 @@
-package ablesebogen;
+package client.kunden;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import client.Service;
+import client.Util;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;

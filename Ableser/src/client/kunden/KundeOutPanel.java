@@ -1,4 +1,4 @@
-package ablesebogen;
+package client.kunden;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -14,6 +14,9 @@ import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.table.TableRowSorter;
+
+import client.Ablesebogen;
+import client.JAblesebogenPanel;
 
 @SuppressWarnings("serial")
 public class KundeOutPanel extends JAblesebogenPanel {

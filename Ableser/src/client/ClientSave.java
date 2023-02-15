@@ -16,10 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import ablesebogen.AbleseEntry;
-import ablesebogen.AbleseList;
-import ablesebogen.KundeList;
-import ablesebogen.Util;
+import client.ablesungen.AbleseEntry;
+import client.ablesungen.AbleseList;
+import client.kunden.KundeList;
 import lombok.Getter;
 import server.Kunde;
 

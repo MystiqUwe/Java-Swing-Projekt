@@ -1,4 +1,4 @@
-package ablesebogen;
+package client.ablesungen;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -23,6 +23,9 @@ import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 
+import client.Ablesebogen;
+import client.JAblesebogenPanel;
+import client.Util;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;

@@ -1,4 +1,4 @@
-package ablesebogen;
+package client.ablesungen;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -15,6 +15,10 @@ import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.table.TableRowSorter;
+
+import client.Ablesebogen;
+import client.JAblesebogenPanel;
+import client.Util;
 
 /*Eine Übersichtsliste von AbleseEntrys "outLayout"
  * -Ein Button in der Fußleiste um einen neuen Datensatz anzulegen

@@ -1,4 +1,4 @@
-package ablesebogen;
+package client;
 
 import java.awt.LayoutManager;
 

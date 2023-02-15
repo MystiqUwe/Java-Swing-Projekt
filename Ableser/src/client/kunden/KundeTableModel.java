@@ -1,4 +1,4 @@
-package ablesebogen;
+package client.kunden;
 
 import java.util.UUID;
 

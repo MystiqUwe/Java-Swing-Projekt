@@ -1,4 +1,4 @@
-package ablesebogen;
+package client;
 
 import java.awt.CardLayout;
 import java.awt.ComponentOrientation;
@@ -21,8 +21,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import client.ClientSave;
-import client.Service;
+import client.ablesungen.AbleseInPanel;
+import client.ablesungen.AbleseList;
+import client.ablesungen.AbleseOutPanel;
+import client.kunden.KundeList;
+import client.kunden.KundeOutPanel;
+import client.kunden.KundenInPanel;
 import lombok.Getter;
 import server.Server;
 

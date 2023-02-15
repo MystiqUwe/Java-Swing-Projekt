@@ -2,9 +2,9 @@ package client;
 
 import java.time.LocalDate;
 
-import ablesebogen.AbleseEntry;
-import ablesebogen.AbleseList;
-import ablesebogen.KundeList;
+import client.ablesungen.AbleseEntry;
+import client.ablesungen.AbleseList;
+import client.kunden.KundeList;
 import server.Kunde;
 
 public class DataCreator {

@@ -1,4 +1,4 @@
-package ablesebogen;
+package client.ablesungen;
 
 import java.time.LocalDate;
 import java.util.Objects;

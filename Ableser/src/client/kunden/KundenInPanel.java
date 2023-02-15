@@ -1,4 +1,4 @@
-package ablesebogen;
+package client.kunden;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -11,6 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import client.Ablesebogen;
+import client.JAblesebogenPanel;
+import client.Util;
 import server.Kunde;
 
 @SuppressWarnings("serial")

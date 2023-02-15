@@ -220,6 +220,7 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		if (zN.length()<1) {
 			Util.errorMessage("Zählernummer darn nicht leer sein");
 			zaelernummer.requestFocus();
+			return false;
 		}
 		
 		LocalDate selectedDate = Util.dateToLocalDate((Date) datePicker.getModel().getValue());

@@ -9,6 +9,7 @@ import client.Util;
 import client.zaehlerart.ZaehlerartList;
 import dataEntities.AbleseEntry;
 import dataEntities.Kunde;
+import dataEntities.Zaehlerart;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -274,4 +275,13 @@ public class AbleseList {
 		return zList.getNameById(zId);
 	}
 
+	public void deleteZaehlerart(Zaehlerart z) {
+		int zId=z.getId();
+		for (AbleseEntry e:liste) {
+			if (zId==e.getZId()) {
+				e.setZId(-1);
+			}
+		}
+		
+	}
 }

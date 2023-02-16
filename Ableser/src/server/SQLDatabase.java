@@ -140,7 +140,11 @@ public class SQLDatabase extends AbstractDatabase{
 		st.setString(5+off,a.getKommentar());
 		st.setBoolean(6+off,a.isNeuEingebaut());
 		st.setInt(7+off,a.getZaehlerstand().intValue());
-		st.setInt(8+off,a.getZId());
+		if (a.getZId()>0) {
+			st.setInt(8+off,a.getZId());
+		} else {
+			st.setString(8+off, null);
+		}
 	}
 
 	private Ablesung ablesungFromResult(ResultSet rs) throws SQLException {
@@ -403,6 +407,7 @@ public class SQLDatabase extends AbstractDatabase{
 			final ResultSet rs=st.executeQuery();
 		    while(rs.next()) {
 		    	result.add(ablesungFromResult(rs));
+		    	System.out.println(result.get(result.size()-1));
 		    }
 		} catch (SQLException e) {
 			System.out.println("Datenbankfehler bei getAblesungList - "+e.getMessage());

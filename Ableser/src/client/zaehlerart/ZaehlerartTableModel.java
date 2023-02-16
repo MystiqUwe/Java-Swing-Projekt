@@ -1,7 +1,5 @@
 package client.zaehlerart;
 
-import java.util.UUID;
-
 import javax.swing.table.AbstractTableModel;
 
 import lombok.Getter;

@@ -99,7 +99,7 @@ public class ZaehlerartenInPanel extends JAblesebogenPanel {
 		});
 		deleteButton.addActionListener(e -> {
 			if (baseFrame.getZaehlerartenListe().remove(toEdit)) {
-				//baseFrame.getListe().deleteKunde(toEdit);TODO
+				baseFrame.getListe().deleteZaehlerart(toEdit);
 				clear();
 			}
 		});

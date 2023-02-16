@@ -153,7 +153,7 @@ public class Ablesebogen extends JFrame {
 		contextMenu.add(toKunden);
 		contextMenu.add(toZaehlerart);
 		mb.add(contextMenu);
-
+//TODO
 		JMenu menu = new JMenu("Ex-/Import");
 
 		JMenuItem subReload = new JMenuItem("Daten neuladen");

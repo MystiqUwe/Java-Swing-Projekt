@@ -5,6 +5,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import dataEntities.Ablesung;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -16,7 +17,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import server.Ablesung;
 import server.Server;
 
 @Path("hausverwaltung/ablesungen")

@@ -6,12 +6,14 @@ import java.util.stream.Stream;
 
 import client.Service;
 import client.Util;
+import client.zaehlerart.ZaehlerartList;
+import dataEntities.AbleseEntry;
+import dataEntities.Kunde;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import lombok.Getter;
 import lombok.Setter;
-import server.Kunde;
 
 //Wrapper für die verwendete Liste, außerdem verantwortlich für den Export/Import mit den Methoden "export<Dateiformat>()
 public class AbleseList {
@@ -21,9 +23,11 @@ public class AbleseList {
 	private ArrayList<AbleseEntry> liste = new ArrayList<AbleseEntry>();
 
 	private Service service;
-
-	public AbleseList(Service service) {
+	private ZaehlerartList zList;
+	
+	public AbleseList(Service service, ZaehlerartList zList) {
 		super();
+		this.zList=zList;
 		this.service = service;
 		liste = new ArrayList<>();
 		refresh();
@@ -71,10 +75,10 @@ public class AbleseList {
 			return false;
 		}
 		oldAbl.setKundenNummer(newAbl.getKundenNummer());
-		oldAbl.setZaelerArt(newAbl.getZaelerArt());
+		oldAbl.setZId(newAbl.getZId());
 		oldAbl.setZaelernummer(newAbl.getZaelernummer());
 		oldAbl.setDatum(newAbl.getDatum());
-		oldAbl.setNeuEingebaut(newAbl.getNeuEingebaut());
+		oldAbl.setNeuEingebaut(newAbl.isNeuEingebaut());
 		oldAbl.setZaelerstand(newAbl.getZaelerstand());
 		oldAbl.setKommentar(newAbl.getKommentar());
 
@@ -264,6 +268,10 @@ public class AbleseList {
 				e.setKundenNummer(null);
 			}
 		}
+	}
+	
+	public String getZaehlerartName(int zId) {
+		return zList.getNameById(zId);
 	}
 
 }

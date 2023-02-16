@@ -1,4 +1,4 @@
-package server;
+package dataEntities;
 
 import java.util.Objects;
 import java.util.UUID;

@@ -26,10 +26,12 @@ import javax.swing.border.EmptyBorder;
 import client.Ablesebogen;
 import client.JAblesebogenPanel;
 import client.Util;
+import dataEntities.AbleseEntry;
+import dataEntities.Kunde;
+import dataEntities.Zaehlerart;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
-import server.Kunde;
 
 @SuppressWarnings("serial")
 public class AbleseInPanel extends JAblesebogenPanel {
@@ -42,7 +44,7 @@ public class AbleseInPanel extends JAblesebogenPanel {
 	private JTextField zaelernummer;
 	private JTextField zaelerstand;
 	private JTextField kommentar;
-	private JComboBox<String> zaelerArt;
+	private JComboBox<Zaehlerart> zaelerArt;
 	private JCheckBox neuEingebaut;
 	private JDatePickerImpl datePicker;
 	private JDatePanelImpl datePanel;
@@ -53,17 +55,9 @@ public class AbleseInPanel extends JAblesebogenPanel {
 
 	private JButton toFilterOutButton;
 	
-	// Für den Plausibilitätscheck
-	HashMap<String, Integer> DEFAULT_WERTE = new HashMap<String, Integer>();
-	private final String[] DEFAULT_ZAELERART = { "Gas", "Strom", "Heizung", "Wasser" };
-
 	public AbleseInPanel(Ablesebogen bFrame) {
 		super(new BorderLayout());
 		baseFrame = bFrame;
-		DEFAULT_WERTE.put("Gas", 100000);
-		DEFAULT_WERTE.put("Strom", 200000);
-		DEFAULT_WERTE.put("Wasser", 300000);
-		DEFAULT_WERTE.put("Heizung", 400000);
 		curEntry = null;
 
 		// in Layout Komponenten
@@ -77,7 +71,7 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		datePanel = new JDatePanelImpl(model);
 
 		kundenNummer = new JComboBox<>(bFrame.getKundenListe().getArray()); // Holt die Auswahl für die ComboBox
-		zaelerArt = new JComboBox<String>(DEFAULT_ZAELERART);
+		zaelerArt = new JComboBox<Zaehlerart>(bFrame.getZaehlerartenListe().getArray());
 		zaelernummer = new JTextField();
 		datePicker = new JDatePickerImpl(datePanel);
 		datePicker.setTextEditable(true);
@@ -168,6 +162,39 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		kundenNummer.addActionListener(e -> {
 			toFilterOutButton.setEnabled(kundenNummer.getSelectedItem()!=null);
 		});
+		
+		zaelerArt.setRenderer(new ListCellRenderer<Zaehlerart>() {
+			@Override
+			public Component getListCellRendererComponent(JList<? extends Zaehlerart> list, Zaehlerart value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				if (value == null) {
+					return new JLabel("");
+				}
+				
+				JLabel label = new JLabel(value.getName());
+				if (isSelected) {
+					label.setIcon(new ImageIcon(getClass().getResource("check.png")));
+				}
+				return label;
+			}
+		});
+
+		// Kunden Änderungen mitbekommen
+		baseFrame.getZaehlerartenListe().addChangeListener(e -> {
+			Object z = zaelerArt.getSelectedItem();
+			
+			DefaultComboBoxModel<Zaehlerart> model = new DefaultComboBoxModel<Zaehlerart>(e.toArray(new Zaehlerart[0]));
+			zaelerArt.setModel(model);
+			
+			if ((z!=null) && (e.indexOf(z)>=0)) {
+				zaelerArt.setSelectedItem(z);
+			} else {
+				zaelerArt.setSelectedItem(null);
+			}
+			return true;
+		});
+
+		
 		// Enter zur Navigation
 		ArrayList<JComponent> tabOrder = new ArrayList<>();
 		tabOrder.add(kundenNummer);
@@ -217,12 +244,18 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		}
 		UUID kn = selectedItem.getId(); // kundenNummer.getSelectedItem().toString();
 		
-		String zA = zaelerArt.getSelectedItem().toString();
+		Zaehlerart zA = (Zaehlerart) zaelerArt.getSelectedItem();
+		if (zA==null) {
+			Util.errorMessage("Zählerart darf nicht leer sein");
+			return false;
+		}
+		
 		
 		String zN = zaelernummer.getText();
 		if (zN.length()<1) {
-			Util.errorMessage("Zählernummer darn nicht leer sein");
+			Util.errorMessage("Zählernummer darf nicht leer sein");
 			zaelernummer.requestFocus();
+			return false;
 		}
 		
 		LocalDate selectedDate = Util.dateToLocalDate((Date) datePicker.getModel().getValue());
@@ -252,7 +285,7 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		}
 
 		zA=null;
-		AbleseEntry newEntry = new AbleseEntry(null, kn, zA, zN, selectedDate, neuE, zStand, kom);
+		AbleseEntry newEntry = new AbleseEntry(null, kn, zA.getId(), zN, selectedDate, neuE, zStand, kom);
 		boolean success;
 		if (curEntry == null) {
 			success = baseFrame.getListe().add(newEntry);
@@ -275,14 +308,14 @@ public class AbleseInPanel extends JAblesebogenPanel {
 	 * @param zN
 	 * @return int
 	 */
-	public boolean Plausicheck(String zA, int zStand, UUID kn, String zN) {
+	public boolean Plausicheck(Zaehlerart zA, int zStand, UUID kn, String zN) {
 		try {
 			AbleseEntry lastAB = baseFrame.getListe().getLast(kn, zN);
 			System.out.println(lastAB.getZaelerstand());
 			if(lastAB.getZaelerstand() > zStand) {
 				return Util.optionMessage("Zählerstand kleiner als zuvor, trotzdem Speichern?");
-			}
-			if (zStand > (DEFAULT_WERTE.get(zA)+lastAB.getZaelerstand())) {
+			}			
+			if (zStand > (zA.getWarnValue()+lastAB.getZaelerstand())) {
 				return Util.optionMessage("Werte ungewöhnlich trotzdem Speichern?");
 			}
 			
@@ -306,10 +339,11 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		Kunde kunde = baseFrame.getKundenListe().getById(entry.getKundenNummer());
 
 		kundenNummer.setSelectedItem(kunde);
+		zaelerArt.setSelectedItem(baseFrame.getZaehlerartenListe().getById(entry.getZId()));
 		// zaelerArt.setSelectedItem(entry.getZaelerArt());
 		zaelernummer.setText(entry.getZaelernummer());
 		model.setValue(Date.from(entry.getDatum().atStartOfDay().toInstant(ZoneOffset.UTC)));
-		neuEingebaut.setSelected(entry.getNeuEingebaut());
+		neuEingebaut.setSelected(entry.isNeuEingebaut());
 		zaelerstand.setText(Integer.toString(entry.getZaelerstand()));
 		kommentar.setText(entry.getKommentar());
 

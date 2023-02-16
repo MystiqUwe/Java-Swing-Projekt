@@ -16,41 +16,46 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import client.ablesungen.AbleseEntry;
 import client.ablesungen.AbleseList;
 import client.kunden.KundeList;
+import client.zaehlerart.ZaehlerartList;
+import dataEntities.AbleseEntry;
+import dataEntities.Kunde;
+import dataEntities.Zaehlerart;
 import lombok.Getter;
-import server.Kunde;
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
+@Getter
 public class ClientSave {
 	private static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	private static final String FILE = "target/Ablesewerte.json";
 	private static final String XMLFILE = "target/Ablesewerte.xml";
 	private static final String CSVFILE = "target/Ablesewerte.csv";
 
-	@Getter
 	private ArrayList<Kunde> kundenListe;
+	
+	private ArrayList<Zaehlerart> zaehlerArtListe;
 
-	@Getter
 	private ArrayList<AbleseEntry> ablesungListe;
 	
-	public ClientSave(ArrayList<Kunde> kList, ArrayList<AbleseEntry> aList) {
+	public ClientSave(ArrayList<Kunde> kList, ArrayList<Zaehlerart> zList, ArrayList<AbleseEntry> aList) {
 		super();
 		this.kundenListe = kList;
+		this.zaehlerArtListe = zList;
 		this.ablesungListe = aList;
 		
 		
 	}
 	
-	public ClientSave(KundeList kList, AbleseList aList) {
-		this(kList.getListe(),aList.getListe());
+	public ClientSave(KundeList kList, ZaehlerartList zList, AbleseList aList) {
+		this(kList.getListe(),zList.getListe(),aList.getListe());
 	}
 
-	public ClientSave(KundeList kList, AbleseList aList,String filter) {
-		this(kList,aList);
+	public ClientSave(KundeList kList, ZaehlerartList zList, AbleseList aList,String filter) {
+		this(kList, zList, aList);
 		if (filter!=null) {
 			this.kundenListe=new ArrayList<Kunde>(kList.stream().filter(e -> e.getId().toString().startsWith(filter)).collect(Collectors.toList()));
+			this.zaehlerArtListe=zList.getListe();//TODO
 			this.ablesungListe=new ArrayList<AbleseEntry>(aList.stream().filter(e -> {
 				if (e.getKundenNummer()!=null) {
 					return e.getKundenNummer().toString().startsWith(filter);
@@ -115,15 +120,13 @@ public class ClientSave {
 					out.write(entry.getKundenNummer().toString());
 				}
 				out.write(";");
-				if (entry.getZaelerArt()!=null) {
-					out.write(entry.getZaelerArt());
-				}
+				out.write(entry.getZId());
 				out.write(";");
 				out.write("" + entry.getZaelernummer());
 				out.write(";");
 				out.write(entry.getDatum().toString());
 				out.write(";");
-				out.write("" + entry.getNeuEingebaut());
+				out.write("" + entry.isNeuEingebaut());
 				out.write(";");
 				out.write("" + entry.getZaelerstand());
 				out.write(";");
@@ -161,7 +164,7 @@ public class ClientSave {
 				// ignore
 			}
 		}
-		return new AbleseList(null);
+		return new AbleseList(null,null);
 	}
 
 }

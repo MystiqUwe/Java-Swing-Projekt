@@ -1,4 +1,4 @@
-package server;
+package dataEntities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,5 +23,11 @@ public class Zaehlerart {
 		this.warnValue=warnV;
 		
 	}
+
+	@Override
+	public String toString() {
+		return "Zaehlerart [id=" + id + ", name=" + name + ", warnValue=" + warnValue + "]";
+	}
 		
+	
 }

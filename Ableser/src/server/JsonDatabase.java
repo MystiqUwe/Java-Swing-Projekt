@@ -9,6 +9,9 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
+import dataEntities.Ablesung;
+import dataEntities.Kunde;
+import dataEntities.Zaehlerart;
 import lombok.Getter;
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)

@@ -19,10 +19,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
+import dataEntities.Kunde;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
-import server.Kunde;
 
 public class FilterDialog {
 	private static final int WIDTH = 400;

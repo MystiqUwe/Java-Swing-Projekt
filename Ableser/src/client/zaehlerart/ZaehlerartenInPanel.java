@@ -1,4 +1,4 @@
-package client.kunden;
+package client.zaehlerart;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -14,19 +14,19 @@ import javax.swing.border.EmptyBorder;
 import client.Ablesebogen;
 import client.JAblesebogenPanel;
 import client.Util;
-import dataEntities.Kunde;
+import dataEntities.Zaehlerart;
 
 @SuppressWarnings("serial")
-public class KundenInPanel extends JAblesebogenPanel {
+public class ZaehlerartenInPanel extends JAblesebogenPanel {
 
-	private Kunde toEdit;
+	private Zaehlerart toEdit;
 	public JTextField nameField;
-	private JTextField vornameField;
+	private JTextField warnField;
 
 	private JButton toAllAblesungButton;
 	private JButton toNewAblesungButton;
 
-	public KundenInPanel(Ablesebogen bFrame) {
+	public ZaehlerartenInPanel(Ablesebogen bFrame) {
 		super(new BorderLayout());
 
 		this.baseFrame = bFrame;
@@ -37,13 +37,13 @@ public class KundenInPanel extends JAblesebogenPanel {
 		
 		
 		nameField = new JTextField();
-		vornameField = new JTextField();
+		warnField = new JTextField();
 
 		grid.add(new JLabel("Name"));
 		grid.add(nameField);
 		
-		grid.add(new JLabel("Vorname"));
-		grid.add(vornameField);
+		grid.add(new JLabel("Warnvalue"));
+		grid.add(warnField);
 
 		grid.add(new JLabel(""));
 		grid.add(new JLabel(""));
@@ -65,7 +65,7 @@ public class KundenInPanel extends JAblesebogenPanel {
 		
 		ArrayList<JComponent> tabOrder = new ArrayList<JComponent>();
 		tabOrder.add(nameField);
-		tabOrder.add(vornameField);
+		tabOrder.add(warnField);
 		Util.handleTabOrder(tabOrder, e -> {
 			return save();
 		});
@@ -95,17 +95,17 @@ public class KundenInPanel extends JAblesebogenPanel {
 		});
 
 		toOutButton.addActionListener(e -> {
-			baseFrame.openPage(Ablesebogen.KUNDE_OUT);
+			baseFrame.openPage(Ablesebogen.ZAEHLERART_OUT);
 		});
 		deleteButton.addActionListener(e -> {
-			if (baseFrame.getKundenListe().remove(toEdit)) {
-				baseFrame.getListe().deleteKunde(toEdit);
+			if (baseFrame.getZaehlerartenListe().remove(toEdit)) {
+				//baseFrame.getListe().deleteKunde(toEdit);TODO
 				clear();
 			}
 		});
 
 		toAllAblesungButton.addActionListener(e -> {
-			baseFrame.openPage(Ablesebogen.ABLESUNG_OUT, toEdit.getId());
+			baseFrame.openPage(Ablesebogen.ABLESUNG_OUT, toEdit.getName());
 		});
 		toNewAblesungButton.addActionListener(e -> {
 			baseFrame.openPage(Ablesebogen.ABLESUNG_IN, toEdit);
@@ -113,9 +113,9 @@ public class KundenInPanel extends JAblesebogenPanel {
 	}
 
 	public void clear() {
-		baseFrame.setTitle("Neuer Kunde");
+		baseFrame.setTitle("Neue Zählerart");
 		this.nameField.setText("");
-		this.vornameField.setText("");
+		this.warnField.setText("");
 		toEdit = null;
 		toAllAblesungButton.setEnabled(false);
 		toNewAblesungButton.setEnabled(false);
@@ -123,31 +123,39 @@ public class KundenInPanel extends JAblesebogenPanel {
 
 	public boolean save() {
 		String name = nameField.getText();
-		String vorname = vornameField.getText();
-
+		int warnValue=0;
+		
 		if (name.isBlank()) {
 			Util.errorMessage("Name darf nicht leer sein!");
 			nameField.requestFocus();
 			return false;
 		}
 
-		if (vorname.isBlank()) {
-			Util.errorMessage("Vorname darf nicht leer sein!");
-			vornameField.requestFocus();
-			return false;
+		if (warnField.getText().length()>0) {
+			try {
+				warnValue = Integer.parseInt(warnField.getText());
+				if (warnValue < 0) {
+					Util.errorMessage("Warnwert darf nicht Negativ sein");
+					warnField.requestFocus();
+					return false;
+				}
+			} catch (NumberFormatException ec2) {
+				Util.errorMessage("Warnwert nicht Nummerisch");
+				warnField.requestFocus();
+				return false;
+			}
 		}
-
-		Kunde toSave = new Kunde(name, vorname);
+		Zaehlerart toSave = new Zaehlerart(name, warnValue);
 
 		boolean success = false;
 		if (toEdit == null) {
 			// Neuer Datensatz
-			toSave.setId(null);
-			success = baseFrame.getKundenListe().add(toSave);
+			toSave.setId(0);
+			success = baseFrame.getZaehlerartenListe().add(toSave);
 		} else {
 			// Editieren
 			toSave.setId(toEdit.getId());
-			success = baseFrame.getKundenListe().update(toEdit, toSave);
+			success = baseFrame.getZaehlerartenListe().update(toEdit, toSave);
 
 		}
 
@@ -159,11 +167,11 @@ public class KundenInPanel extends JAblesebogenPanel {
 	}
 
 	public boolean activate(Object eOpts) {
-		if (eOpts instanceof Kunde) {
-			Kunde k = (Kunde) eOpts;
+		if (eOpts instanceof Zaehlerart) {
+			Zaehlerart k = (Zaehlerart) eOpts;
 			baseFrame.setTitle(k.getId() + " editieren");
 			this.nameField.setText(k.getName());
-			this.vornameField.setText(k.getVorname());
+			this.warnField.setText(""+k.getWarnValue());
 			toEdit = k;
 			toAllAblesungButton.setEnabled(true);
 			toNewAblesungButton.setEnabled(true);

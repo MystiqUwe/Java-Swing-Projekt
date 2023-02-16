@@ -17,6 +17,7 @@ public class Service {
 	public static final String endpointHausverwaltung = "/hausverwaltung";
 	public static final String endpointKunden = "kunden";
 	public static final String endpointAblesungen = "ablesungen";
+	public static final String endpointZaehlerarten = "zaehlerarten";
 	public static final String endpointAblesungClientStart = "ablesungenVorZweiJahrenHeute";
 
 	private final String baseUrl;

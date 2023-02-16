@@ -54,13 +54,14 @@ public class AbleseTableModel extends AbstractTableModel {
 		if (col == 0) {
 			temp = myList.get(row).getKundenNummer();
 		} else if (col == 1) {
-			temp = myList.get(row).getZaelerArt();
+			int zId= myList.get(row).getZId();
+			temp =myList.getZaehlerartName(zId);
 		} else if (col == 2) {
 			temp = myList.get(row).getZaelernummer();
 		} else if (col == 3) {
 			temp = myList.get(row).getDatum();
 		} else if (col == 4) {
-			temp = (myList.get(row).getNeuEingebaut() ? "Ja" : "Nein");
+			temp = (myList.get(row).isNeuEingebaut() ? "Ja" : "Nein");
 		} else if (col == 5) {
 			temp = myList.get(row).getZaelerstand();
 		} else if (col == 6) {

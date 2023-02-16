@@ -13,7 +13,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import server.Kunde;
+import dataEntities.Kunde;
 
 public class Util {
 

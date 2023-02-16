@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 
+import dataEntities.Ablesung;
+import dataEntities.Kunde;
+import dataEntities.Zaehlerart;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -14,11 +17,8 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import server.Ablesung;
-import server.Kunde;
 import server.OPERATION_RESULT;
 import server.Server;
-import server.Zaehlerart;
 
 @Path("hausverwaltung/zaehlerarten")
 public class ZaehlerartRessource {

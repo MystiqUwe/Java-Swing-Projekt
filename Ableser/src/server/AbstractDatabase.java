@@ -10,6 +10,10 @@ import java.util.UUID;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import dataEntities.Ablesung;
+import dataEntities.Kunde;
+import dataEntities.Zaehlerart;
+
 public abstract class AbstractDatabase{
 
 	public abstract ArrayList<Kunde> getKundenListe();

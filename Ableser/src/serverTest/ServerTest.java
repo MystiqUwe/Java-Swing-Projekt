@@ -24,6 +24,8 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import dataEntities.Ablesung;
+import dataEntities.Kunde;
 import jakarta.ws.rs.ProcessingException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -32,8 +34,6 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import server.Ablesung;
-import server.Kunde;
 import server.Server;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)

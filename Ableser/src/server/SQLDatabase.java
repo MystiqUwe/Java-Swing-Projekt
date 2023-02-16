@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import client.DataCreator;
+import dataEntities.Ablesung;
+import dataEntities.Kunde;
+import dataEntities.Zaehlerart;
 
 
 public class SQLDatabase extends AbstractDatabase{
@@ -137,6 +140,7 @@ public class SQLDatabase extends AbstractDatabase{
 		st.setString(5+off,a.getKommentar());
 		st.setBoolean(6+off,a.isNeuEingebaut());
 		st.setInt(7+off,a.getZaehlerstand().intValue());
+		st.setInt(8+off,a.getZId());
 	}
 
 	private Ablesung ablesungFromResult(ResultSet rs) throws SQLException {
@@ -157,7 +161,8 @@ public class SQLDatabase extends AbstractDatabase{
     			rs.getString(4+off),
     			rs.getBoolean(5+off),
     			rs.getInt(6+off),
-    			kID
+    			kID,
+    			rs.getInt(8+off)
     	);
     	//abl.updateKunde();
     	return abl;
@@ -186,7 +191,7 @@ public class SQLDatabase extends AbstractDatabase{
 		ArrayList<Ablesung> result=new ArrayList<Ablesung>();
 		try {
 			final Statement st=con.createStatement();
-			final ResultSet rs=st.executeQuery("Select id,zaehlernummer,datum,kommentar,neuEingebaut,zaehlerstand,kid from ablesungen;");
+			final ResultSet rs=st.executeQuery("Select id,zaehlernummer,datum,kommentar,neuEingebaut,zaehlerstand,kid,zid from ablesungen;");
 		    while(rs.next()) {
 		    	result.add(ablesungFromResult(rs));
 		    }
@@ -287,7 +292,7 @@ public class SQLDatabase extends AbstractDatabase{
 		}
 		try { 
 			final PreparedStatement st=con.prepareStatement(
-					"insert into ablesungen(id,zaehlernummer,datum,kID,kommentar,neuEingebaut,zaehlerstand) values (?,?,?,?,?,?,?);");
+					"insert into ablesungen(id,zaehlernummer,datum,kID,kommentar,neuEingebaut,zaehlerstand,zid) values (?,?,?,?,?,?,?,?);");
 			prepareAblesung(st, a);
 			st.execute();
 			return OPERATION_RESULT.SUCCESS;
@@ -306,7 +311,7 @@ public class SQLDatabase extends AbstractDatabase{
 	@Override
 	public Ablesung getAblesung(UUID id) {
 		try {
-			final PreparedStatement st=con.prepareStatement("Select id,zaehlernummer,datum,kommentar,neuEingebaut,zaehlerstand,kid from ablesungen where id=?");
+			final PreparedStatement st=con.prepareStatement("Select id,zaehlernummer,datum,kommentar,neuEingebaut,zaehlerstand,kid, zid from ablesungen where id=?");
 			st.setString(1, id.toString());
 			final ResultSet rs=st.executeQuery();
 		    if(rs.next()) {
@@ -326,7 +331,7 @@ public class SQLDatabase extends AbstractDatabase{
 			return OPERATION_RESULT.ABLESUNG_NOT_FOUND;
 		}
 		try {
-			final PreparedStatement st=con.prepareStatement("UPDATE ablesungen SET zaehlernummer=? ,datum=? ,kID=? ,kommentar=? ,neuEingebaut=? ,zaehlerstand=?  where id=?;");
+			final PreparedStatement st=con.prepareStatement("UPDATE ablesungen SET zaehlernummer=? ,datum=? ,kId=? ,kommentar=? ,neuEingebaut=? ,zaehlerstand=?, zId=?  where id=?;");
 			prepareAblesung(st, abNeu,-1);
 			st.setString(7, abNeu.getId().toString());
 			final int rowCount=st.executeUpdate();
@@ -347,7 +352,7 @@ public class SQLDatabase extends AbstractDatabase{
 	@Override
 	public Ablesung deleteAblesung(UUID id) {
 		try {
-			final PreparedStatement st=con.prepareStatement("DELETE FROM ablesungen where id=? returning id,zaehlernummer,datum,kommentar,neuEingebaut,zaehlerstand,kid;");
+			final PreparedStatement st=con.prepareStatement("DELETE FROM ablesungen where id=? returning id,zaehlernummer,datum,kommentar,neuEingebaut,zaehlerstand,kid,zid;");
 			st.setString(1, id.toString());
 			final ResultSet rs=st.executeQuery();
 		    if (rs.next()) { //Wurde ein Datensatz gefunden?
@@ -366,7 +371,7 @@ public class SQLDatabase extends AbstractDatabase{
 		//return getAblesungListe();
 		ArrayList<Ablesung> result=new ArrayList<Ablesung>();
 		try {
-			String query="Select id,zaehlernummer,datum,kommentar,neuEingebaut,zaehlerstand,kID from ablesungen"
+			String query="Select id,zaehlernummer,datum,kommentar,neuEingebaut,zaehlerstand,kID,zid from ablesungen"
 					+ " WHERE (ISNULL(?) OR kID=?)"
 					+ " AND (ISNULL(?) OR datum > ?)"
 					+ " AND (ISNULL(?) OR datum < ?);";
@@ -433,6 +438,7 @@ public class SQLDatabase extends AbstractDatabase{
 		Server.startServer("http://localhost:8081/rest", false,true,false);
 		DataCreator.main(null);
 		Server.stopServer(false);
+		System.exit(0);
 	}
 
 	

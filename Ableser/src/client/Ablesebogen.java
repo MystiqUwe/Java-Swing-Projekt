@@ -1,7 +1,6 @@
 package client;
 
 import java.awt.CardLayout;
-import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -14,11 +13,9 @@ import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import client.ablesungen.AbleseInPanel;
@@ -27,6 +24,9 @@ import client.ablesungen.AbleseOutPanel;
 import client.kunden.KundeList;
 import client.kunden.KundeOutPanel;
 import client.kunden.KundenInPanel;
+import client.zaehlerart.ZaehlerartList;
+import client.zaehlerart.ZaehlerartOutPanel;
+import client.zaehlerart.ZaehlerartenInPanel;
 import lombok.Getter;
 import server.Server;
 
@@ -38,7 +38,9 @@ public class Ablesebogen extends JFrame {
 	private KundeList kundenListe;
 	@Getter
 	private AbleseList liste; // Liste von allen Daten
-
+	@Getter
+	private ZaehlerartList zaehlerartenListe;
+	
 	// UI Panels
 	private JAblesebogenPanel activePanel; 
 	protected AbleseInPanel inLayout;
@@ -46,6 +48,9 @@ public class Ablesebogen extends JFrame {
 	protected KundeOutPanel outLayoutKunde;
 	protected KundenInPanel inLayoutKunde;
 
+	protected ZaehlerartenInPanel inLayoutZaehlerart;
+	protected ZaehlerartOutPanel outLayoutZaehlerart;
+	
 	@Getter
 	private Service service;
 	private String baseURL;
@@ -54,6 +59,8 @@ public class Ablesebogen extends JFrame {
 	public final static String ABLESUNG_OUT = "ablOut";
 	public final static String KUNDE_IN = "kIn";
 	public final static String KUNDE_OUT = "kOut";
+	public final static String ZAEHLERART_IN = "zIn";
+	public final static String ZAEHLERART_OUT = "zOut";
 
 	private JTextField filterArea;
 	
@@ -74,9 +81,10 @@ public class Ablesebogen extends JFrame {
 		this.baseURL = baseUrl;
 		service = new Service(baseURL);
 		// DATENIMPORT
-		this.liste = new AbleseList(service);
 		this.kundenListe = new KundeList(service);
-
+		this.zaehlerartenListe = new ZaehlerartList(service);
+		this.liste = new AbleseList(service,zaehlerartenListe);
+		
 		// Root Container
 		final Container con = getContentPane();
 		con.setLayout(new CardLayout());
@@ -92,6 +100,13 @@ public class Ablesebogen extends JFrame {
 
 		outLayoutKunde = new KundeOutPanel(this, kundenListe);
 		con.add(outLayoutKunde, KUNDE_OUT);
+
+		
+		inLayoutZaehlerart = new ZaehlerartenInPanel(this);
+		con.add(inLayoutZaehlerart, ZAEHLERART_IN);
+
+		outLayoutZaehlerart = new ZaehlerartOutPanel(this, zaehlerartenListe);
+		con.add(outLayoutZaehlerart, ZAEHLERART_OUT);
 
 		openPage(ABLESUNG_IN);
 		this.setVisible(true);
@@ -120,6 +135,7 @@ public class Ablesebogen extends JFrame {
 
 		JMenuItem toAblesung = new JMenuItem("Ablesungen");
 		JMenuItem toKunden = new JMenuItem("Kunden");
+		JMenuItem toZaehlerart = new JMenuItem("Zählerarten");
 
 		toAblesung.addActionListener(e -> {
 			openPage(ABLESUNG_OUT);
@@ -129,8 +145,13 @@ public class Ablesebogen extends JFrame {
 			openPage(KUNDE_OUT);
 		});
 
+		toZaehlerart.addActionListener(e -> {
+			openPage(ZAEHLERART_OUT);
+		});
+
 		contextMenu.add(toAblesung);
 		contextMenu.add(toKunden);
+		contextMenu.add(toZaehlerart);
 		mb.add(contextMenu);
 
 		JMenu menu = new JMenu("Ex-/Import");
@@ -147,17 +168,17 @@ public class Ablesebogen extends JFrame {
 
 		subMenuJSON.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				new ClientSave(kundenListe,liste,getFilter()).exportJson();
+				new ClientSave(kundenListe,zaehlerartenListe,liste,getFilter()).exportJson();
 			}
 		});
 		subMenuXML.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				new ClientSave(kundenListe,liste,getFilter()).exportXML();
+				new ClientSave(kundenListe,zaehlerartenListe,liste,getFilter()).exportXML();
 			}
 		});
 		subMenuCSV.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				new ClientSave(kundenListe,liste,getFilter()).exportCSV();
+				new ClientSave(kundenListe,zaehlerartenListe,liste,getFilter()).exportCSV();
 			}
 		});
 		menu.add(subReload);
@@ -242,8 +263,14 @@ public class Ablesebogen extends JFrame {
 		case KUNDE_IN:
 			newPanel = inLayoutKunde;
 			break;
-		default:
-			return;
+		case ZAEHLERART_OUT:
+			newPanel = outLayoutZaehlerart;
+			break;
+		case ZAEHLERART_IN:
+			newPanel = inLayoutZaehlerart;
+			break;
+			default:
+				return;
 		}
 		boolean open=newPanel.activate(eOpts);
 		

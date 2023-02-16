@@ -3,13 +3,13 @@ package server.resource;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import dataEntities.Ablesung;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import server.Ablesung;
 import server.Server;
 
 @Path("hausverwaltung")

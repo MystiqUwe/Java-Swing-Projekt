@@ -62,4 +62,11 @@ public class AbleseEntry {
 				&& Objects.equals(zaelernummer, other.zaelernummer) && zaelerstand == other.zaelerstand;
 	}
 
+	@Override
+	public String toString() {
+		return "AbleseEntry [id=" + id + ", kundenNummer=" + kundenNummer + ", zId=" + zId + ", zaelernummer="
+				+ zaelernummer + ", datum=" + datum + ", neuEingebaut=" + neuEingebaut + ", zaelerstand=" + zaelerstand
+				+ ", kommentar=" + kommentar + "]";
+	}
+
 }

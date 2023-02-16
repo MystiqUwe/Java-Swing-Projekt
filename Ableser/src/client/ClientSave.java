@@ -111,6 +111,19 @@ public class ClientSave {
 
 			}
 
+			out.write("zaehlerArtListe\n");
+			out.write("id;name;warnValue\n");
+
+			for (final Zaehlerart entry : zaehlerArtListe) {
+				out.write(""+entry.getId());
+				out.write(";");
+				out.write(entry.getName());
+				out.write(";");
+				out.write(""+entry.getWarnValue());
+				out.write("\n");
+
+			}
+			
 			out.write("ablesungListe\n");
 			out.write("id;kundenNummer;zaelerArt;zaehlernummer;datum;neuEingebaut;zaehlerstand;kommentar\n");
 			for (final AbleseEntry entry : ablesungListe) {

@@ -407,7 +407,7 @@ public class SQLDatabase extends AbstractDatabase{
 			final ResultSet rs=st.executeQuery();
 		    while(rs.next()) {
 		    	result.add(ablesungFromResult(rs));
-		    	System.out.println(result.get(result.size()-1));
+		    	//System.out.println(result.get(result.size()-1));
 		    }
 		} catch (SQLException e) {
 			System.out.println("Datenbankfehler bei getAblesungList - "+e.getMessage());

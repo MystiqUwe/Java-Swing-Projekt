@@ -333,7 +333,7 @@ public class SQLDatabase extends AbstractDatabase{
 		try {
 			final PreparedStatement st=con.prepareStatement("UPDATE ablesungen SET zaehlernummer=? ,datum=? ,kId=? ,kommentar=? ,neuEingebaut=? ,zaehlerstand=?, zId=?  where id=?;");
 			prepareAblesung(st, abNeu,-1);
-			st.setString(7, abNeu.getId().toString());
+			st.setString(8, abNeu.getId().toString());
 			final int rowCount=st.executeUpdate();
 		    if (rowCount>0) { //Wurde ein Datensatz gefunden?
 		    	return OPERATION_RESULT.SUCCESS; 	
@@ -344,7 +344,7 @@ public class SQLDatabase extends AbstractDatabase{
 			if (e.getErrorCode()==1452) {
 				return OPERATION_RESULT.KUNDE_NOT_FOUND;
 			}
-			System.out.println("Datenbankfehler bei updateAblesunge - "+e.getErrorCode()+": "+e.getMessage());
+			System.out.println("Datenbankfehler bei updateAblesung - "+e.getErrorCode()+": "+e.getMessage());
 			return OPERATION_RESULT.INTERNAL_ERROR;
 		}
 	}

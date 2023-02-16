@@ -1,5 +1,7 @@
 package dataEntities;
 
+import java.util.Objects;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +29,21 @@ public class Zaehlerart {
 	@Override
 	public String toString() {
 		return "Zaehlerart [id=" + id + ", name=" + name + ", warnValue=" + warnValue + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, warnValue);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		Zaehlerart other = (Zaehlerart) obj;
+		return id == other.id && Objects.equals(name, other.name) && warnValue == other.warnValue;
 	}
 		
 	

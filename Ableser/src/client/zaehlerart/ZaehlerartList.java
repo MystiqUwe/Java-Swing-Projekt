@@ -208,10 +208,10 @@ public class ZaehlerartList {
 		case 200:
 			Zaehlerart zServer = res.readEntity(Zaehlerart.class);
 			if (!z.equals(zServer)) {
-				/*System.out.println("DIFFTOOL");
-				System.out.println(k.toString());
-				System.out.println(kServer.toString());
-				System.out.println("--------");*/
+				System.out.println("DIFFTOOL");
+				System.out.println(z.toString());
+				System.out.println(zServer.toString());
+				System.out.println("--------");
 				if (Util.optionMessage("Zaehlerart hat sich geändert \nTrotzdem speichern?")) {
 					return ChangedState.doSave;
 				} else {

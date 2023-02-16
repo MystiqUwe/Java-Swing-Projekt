@@ -112,7 +112,7 @@ public class Ablesebogen extends JFrame {
 		this.setVisible(true);
 	}
 	
-	protected void loadData(ArrayList<String[]> filter) {
+	public void loadData(ArrayList<String[]> filter) {
 		kundenListe.refresh();
 		outLayoutKunde.refresh();
 		liste.refresh(filter);

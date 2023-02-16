@@ -1,4 +1,4 @@
-package client;
+package client.ablesungen;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -19,6 +19,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
+import client.Ablesebogen;
+import client.Util;
 import dataEntities.Kunde;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
@@ -94,12 +96,14 @@ public class FilterDialog {
 				if (value == null) {
 					return new JLabel("");
 				}
+				JLabel label;
 				if (allKunde.equals(value)) {
-					return new JLabel("Alle Kunden");
-				}
-				String nameundvorname = (value.getName() + ", " + value.getVorname() + " -> "
+					label = new JLabel("Alle Kunden");
+				} else {
+					String nameundvorname = (value.getName() + ", " + value.getVorname() + " -> "
 						+ value.getId().toString());
-				JLabel label = new JLabel(nameundvorname);
+					label = new JLabel(nameundvorname);
+				}
 				if (isSelected) {
 					label.setIcon(new ImageIcon(getClass().getResource("check.png")));
 				}

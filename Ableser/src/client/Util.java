@@ -13,6 +13,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import client.ablesungen.FilterDialog;
 import dataEntities.Kunde;
 
 public class Util {

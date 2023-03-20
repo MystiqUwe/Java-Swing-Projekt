@@ -18,7 +18,7 @@ import lombok.Getter;
 //Wrapper für die verwendete Liste, außerdem verantwortlich für den Export/Import mit den Methoden "export<Dateiformat>()
 public class KundeList {
 	@Getter
-	private ArrayList<Kunde> liste = new ArrayList<Kunde>();
+	private ArrayList<Kunde> liste = new ArrayList<>();
 
 	@JsonIgnore
 	private Service service;
@@ -30,7 +30,7 @@ public class KundeList {
 		super();
 		this.service = service;
 		liste = new ArrayList<>();
-		onChange = new ArrayList<Function<ArrayList<Kunde>, Boolean>>();
+		onChange = new ArrayList<>();
 		refresh();
 	}
 
@@ -209,11 +209,11 @@ public class KundeList {
 		case 200:
 			Kunde kServer = res.readEntity(Kunde.class);
 			if (!k.equals(kServer)) {
-				System.out.println("DIFFTOOL");
+				/*System.out.println("DIFFTOOL");
 				System.out.println(k.toString());
 				System.out.println(kServer.toString());
-				System.out.println("--------");
-				if (Util.optionMessage("Ablesung hat sich geändert \nTrotzdem speichern?")) {
+				System.out.println("--------");//*/
+				if (Util.optionMessage("Kunde hat sich geändert \nTrotzdem speichern?")) {
 					return ChangedState.doSave;
 				} else {
 					return ChangedState.noSave;
@@ -222,7 +222,7 @@ public class KundeList {
 			return ChangedState.doSave;
 		case 404:
 			if (Util.optionMessage(
-					"404 - Ablesung nicht gefunden, wurde die Ablesung gelöscht?\nTrotzdem speichern?")) {
+					"404 - Ablesung nicht gefunden, wurde der Kunde gelöscht?\nTrotzdem speichern?")) {
 				return ChangedState.addNew;
 			} else {
 				return ChangedState.noSave;

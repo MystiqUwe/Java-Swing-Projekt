@@ -61,7 +61,7 @@ public class ZaehlerartRessource {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Interner Serverfehler!")
 					.type(MediaType.TEXT_PLAIN).build();
 		}
-	
+
 	}
 
 	/**
@@ -72,13 +72,13 @@ public class ZaehlerartRessource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
 	public Response deleteZaehlerart(@PathParam("id") Integer param) {
-		
+
 		Zaehlerart za = Server.getServerData().deleteZaehlerart(param);
 		if (za == null) {
 			return Response.status(Response.Status.NOT_FOUND).entity("Zaehlerart konnte nicht gelöscht werden!")
 					.type(MediaType.TEXT_PLAIN).build();
 		}
-		 
+
 		return Response.status(Response.Status.OK).entity(za).build();
 
 	}

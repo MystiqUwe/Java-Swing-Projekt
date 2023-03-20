@@ -58,7 +58,7 @@ public class KundeOutPanel extends JAblesebogenPanel {
 		tableModel = new KundeTableModel(liste);
 		outList = new JTable(tableModel);
 		outList.setAutoCreateRowSorter(true);
-		sorter = new TableRowSorter<KundeTableModel>(tableModel);
+		sorter = new TableRowSorter<>(tableModel);
 		outList.setRowSorter(sorter);
 
 		JScrollPane scrollPane = new JScrollPane(outList);
@@ -121,6 +121,6 @@ public class KundeOutPanel extends JAblesebogenPanel {
 		}
 		tableModel.fireTableDataChanged();
 		((DefaultRowSorter<KundeTableModel, Integer>) sorter).setRowFilter(rf);
-		
+
 	}
 }

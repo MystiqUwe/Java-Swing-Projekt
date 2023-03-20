@@ -41,7 +41,7 @@ public class KundenRessource {
 			System.err.println("Interner Fehler beim Erstellen von "+kunde);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Interner Serverfehler!")
 					.type(MediaType.TEXT_PLAIN).build();
-						
+
 		}
 	}
 
@@ -68,7 +68,7 @@ public class KundenRessource {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Interner Serverfehler!")
 					.type(MediaType.TEXT_PLAIN).build();
 		}
-	
+
 	}
 
 	/**

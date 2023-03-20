@@ -58,7 +58,7 @@ public class ZaehlerartOutPanel extends JAblesebogenPanel {
 		tableModel = new ZaehlerartTableModel(liste);
 		outList = new JTable(tableModel);
 		outList.setAutoCreateRowSorter(true);
-		sorter = new TableRowSorter<ZaehlerartTableModel>(tableModel);
+		sorter = new TableRowSorter<>(tableModel);
 		outList.setRowSorter(sorter);
 
 		JScrollPane scrollPane = new JScrollPane(outList);
@@ -121,6 +121,6 @@ public class ZaehlerartOutPanel extends JAblesebogenPanel {
 		}
 		tableModel.fireTableDataChanged();
 		((DefaultRowSorter<ZaehlerartTableModel, Integer>) sorter).setRowFilter(rf);
-		
+
 	}
 }

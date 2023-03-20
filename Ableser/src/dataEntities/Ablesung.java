@@ -31,7 +31,7 @@ public class Ablesung {
 
 	private UUID kundenId;
 	private int zId;
-	
+
 	public Ablesung() {
 		this.id = UUID.randomUUID();
 		this.zaehlerstand=0;
@@ -94,19 +94,14 @@ public class Ablesung {
 				+ ", kundenId=" + kundenId + "]";
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Ablesung)) {
 			return false;
 		}
 		Ablesung abl = (Ablesung) obj;
 
-		if (!(getId().equals(abl.getId()))) {
-			return false;
-		}
-		if (!getZaehlernummer().equals(abl.getZaehlernummer())) {
-			return false;
-		}
-		if (!getDatum().equals(abl.getDatum())) {
+		if (!(getId().equals(abl.getId())) || !getZaehlernummer().equals(abl.getZaehlernummer()) || !getDatum().equals(abl.getDatum())) {
 			return false;
 		}
 		if (getKunde() == null) {

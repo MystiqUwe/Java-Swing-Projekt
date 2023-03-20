@@ -19,6 +19,7 @@ public class ZaehlerartTableModel extends AbstractTableModel {
 		this.myList = liste;
 	}
 
+	@Override
 	public int getColumnCount() {
 		return columnNames.length;
 	}
@@ -26,6 +27,7 @@ public class ZaehlerartTableModel extends AbstractTableModel {
 	/**
 	 * @return int
 	 */
+	@Override
 	public int getRowCount() {
 		int size;
 		if (myList.getListe() == null) {
@@ -39,6 +41,7 @@ public class ZaehlerartTableModel extends AbstractTableModel {
 	/**
 	 * @return int
 	 */
+	@Override
 	public Object getValueAt(int row, int col) {
 		Object temp = null;
 		if (col == 0) {
@@ -53,6 +56,7 @@ public class ZaehlerartTableModel extends AbstractTableModel {
 	 * @param col
 	 * @return String
 	 */
+	@Override
 	public String getColumnName(int col) {
 		return columnNames[col];
 	}
@@ -62,6 +66,7 @@ public class ZaehlerartTableModel extends AbstractTableModel {
 	 * @param col
 	 * @return Object
 	 */
+	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Class getColumnClass(int column) {
 		switch (column) {

@@ -23,9 +23,9 @@ import client.Util;
 /*Eine Übersichtsliste von AbleseEntrys "outLayout"
  * -Ein Button in der Fußleiste um einen neuen Datensatz anzulegen
  * -Doppelklick auf einen Datensatz um ihn zu bearbeiten
- * 
+ *
  *  Wenn keine Datensätze vorhanden sind kann die Liste nicht geöffnet werden
- *  
+ *
  *  openTable() öffnet die Liste, optional mit einem Filterparameter, dann werden nur die Daten
  *  angezeigt bei denen die Kundennummer mit diesem Filter beginnt
 */
@@ -75,7 +75,7 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 		tableModel = new AbleseTableModel(liste);
 		outList = new JTable(tableModel);
 		outList.setAutoCreateRowSorter(true);
-		sorter = new TableRowSorter<AbleseTableModel>(tableModel);
+		sorter = new TableRowSorter<>(tableModel);
 		outList.setRowSorter(sorter);
 
 		JScrollPane scrollPane = new JScrollPane(outList);
@@ -145,6 +145,6 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 		}
 		tableModel.fireTableDataChanged();
 		((DefaultRowSorter<AbleseTableModel, Integer>) sorter).setRowFilter(rf);
-		
+
 	}
 }

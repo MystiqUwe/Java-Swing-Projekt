@@ -51,9 +51,7 @@ public class AbleseEntry {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if ((obj == null) || (getClass() != obj.getClass()))
 			return false;
 		AbleseEntry other = (AbleseEntry) obj;
 		return Objects.equals(datum, other.datum) && Objects.equals(id, other.id)

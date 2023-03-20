@@ -17,7 +17,7 @@ import lombok.Getter;
 //Wrapper für die verwendete Liste, außerdem verantwortlich für den Export/Import mit den Methoden "export<Dateiformat>()
 public class ZaehlerartList {
 	@Getter
-	private ArrayList<Zaehlerart> liste = new ArrayList<Zaehlerart>();
+	private ArrayList<Zaehlerart> liste = new ArrayList<>();
 
 	@JsonIgnore
 	private Service service;
@@ -29,7 +29,7 @@ public class ZaehlerartList {
 		super();
 		this.service = service;
 		liste = new ArrayList<>();
-		onChange = new ArrayList<Function<ArrayList<Zaehlerart>, Boolean>>();
+		onChange = new ArrayList<>();
 		refresh();
 	}
 
@@ -249,7 +249,7 @@ public class ZaehlerartList {
 
 	public String getNameById(int id) {
 		Zaehlerart z=getById(id);
-		if (z!=null) {		
+		if (z!=null) {
 			return z.getName();
 		} else {
 			return "";

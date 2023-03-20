@@ -38,22 +38,22 @@ class HintTextField extends JTextField implements FocusListener {
 	private void setshowingHint(boolean h) {
 		showingHint=h;
 		if (h) {
-			this.setForeground(Color.gray);			
+			this.setForeground(Color.gray);
 		} else {
 			this.setForeground(Color.black);
 		}
-		
+
 	}
-	
+
 	@Override
 	public String getText() {
 		return showingHint ? "" : super.getText();
 	}
-	
+
 	@Override
 	public void setText(String text) {
 		super.setText(text);
 		setshowingHint(text.length()<1);
 	}
-	
+
 }

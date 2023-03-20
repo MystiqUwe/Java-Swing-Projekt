@@ -21,11 +21,11 @@ public class AbleseList {
 
 	@Getter
 	@Setter
-	private ArrayList<AbleseEntry> liste = new ArrayList<AbleseEntry>();
+	private ArrayList<AbleseEntry> liste = new ArrayList<>();
 
 	private Service service;
 	private ZaehlerartList zList;
-	
+
 	public AbleseList(Service service, ZaehlerartList zList) {
 		super();
 		this.zList=zList;
@@ -162,7 +162,7 @@ public class AbleseList {
 		liste.stream().forEach(en -> buf.append(en.toString()));
 		return buf.toString();
 	}
-	
+
 	/**
 	 * @param kNummer
 	 * @param zNummer
@@ -176,7 +176,7 @@ public class AbleseList {
 		//long closestDiff = Long.MAX_VALUE;
 		if(this.getListe().size() > 0) {
 			for(AbleseEntry obj : this.getListe()) {
-				if(obj.getKundenNummer()!=null) { 
+				if(obj.getKundenNummer()!=null) {
 					if(obj.getKundenNummer().equals(kNummer) && obj.getZaelernummer().equals(zNummer)) {
 						if (closest==null || obj.getDatum().isAfter(closest.getDatum())) {
 							closest=obj;
@@ -261,7 +261,7 @@ public class AbleseList {
 			}
 		}
 	}
-	
+
 	public void deleteKunde(Kunde k) {
 		UUID kId=k.getId();
 		for (AbleseEntry e:liste) {
@@ -270,7 +270,7 @@ public class AbleseList {
 			}
 		}
 	}
-	
+
 	public String getZaehlerartName(int zId) {
 		return zList.getNameById(zId);
 	}
@@ -282,6 +282,6 @@ public class AbleseList {
 				e.setZId(0);
 			}
 		}
-		
+
 	}
 }

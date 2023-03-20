@@ -33,20 +33,20 @@ public class ClientSave {
 	private static final String CSVFILE = "target/Ablesewerte.csv";
 
 	private ArrayList<Kunde> kundenListe;
-	
+
 	private ArrayList<Zaehlerart> zaehlerArtListe;
 
 	private ArrayList<AbleseEntry> ablesungListe;
-	
+
 	public ClientSave(ArrayList<Kunde> kList, ArrayList<Zaehlerart> zList, ArrayList<AbleseEntry> aList) {
 		super();
 		this.kundenListe = kList;
 		this.zaehlerArtListe = zList;
 		this.ablesungListe = aList;
-		
-		
+
+
 	}
-	
+
 	public ClientSave(KundeList kList, ZaehlerartList zList, AbleseList aList) {
 		this(kList.getListe(),zList.getListe(),aList.getListe());
 	}
@@ -54,9 +54,9 @@ public class ClientSave {
 	public ClientSave(KundeList kList, ZaehlerartList zList, AbleseList aList,String filter) {
 		this(kList, zList, aList);
 		if (filter!=null) {
-			this.kundenListe=new ArrayList<Kunde>(kList.stream().filter(e -> e.getId().toString().startsWith(filter)).collect(Collectors.toList()));
+			this.kundenListe=new ArrayList<>(kList.stream().filter(e -> e.getId().toString().startsWith(filter)).collect(Collectors.toList()));
 			this.zaehlerArtListe=zList.getListe();//TODO
-			this.ablesungListe=new ArrayList<AbleseEntry>(aList.stream().filter(e -> {
+			this.ablesungListe=new ArrayList<>(aList.stream().filter(e -> {
 				if (e.getKundenNummer()!=null) {
 					return e.getKundenNummer().toString().startsWith(filter);
 				} else {
@@ -123,7 +123,7 @@ public class ClientSave {
 				out.write("\n");
 
 			}
-			
+
 			out.write("ablesungListe\n");
 			out.write("id;kundenNummer;zaelerArt;zaehlernummer;datum;neuEingebaut;zaehlerstand;kommentar\n");
 			for (final AbleseEntry entry : ablesungListe) {
@@ -154,8 +154,8 @@ public class ClientSave {
 			//System.exit(1);
 		}
 	}
-	
-	
+
+
 	/**
 	 * @return AbleseList
 	 */

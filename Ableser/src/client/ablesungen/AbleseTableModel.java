@@ -74,6 +74,7 @@ public class AbleseTableModel extends AbstractTableModel {
 	 * @param col
 	 * @return String
 	 */
+	@Override
 	public String getColumnName(int col) {
 		return columnNames[col];
 	}

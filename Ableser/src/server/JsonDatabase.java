@@ -28,8 +28,8 @@ public class JsonDatabase extends AbstractDatabase {
 
 	public JsonDatabase() {
 		super();
-		kundenListe = new ArrayList<Kunde>();
-		ablesungListe = new ArrayList<Ablesung>();
+		kundenListe = new ArrayList<>();
+		ablesungListe = new ArrayList<>();
 	}
 
 	public JsonDatabase(ArrayList<Kunde> kundenListe, ArrayList<Ablesung> ablesungListe) {
@@ -63,7 +63,7 @@ public class JsonDatabase extends AbstractDatabase {
 		if (k == null) {
 			return OPERATION_RESULT.KUNDE_NOT_FOUND;
 		}
-		
+
 		int index = kundenListe.indexOf(k);
 		kundenListe.set(index, kunde);
 		return OPERATION_RESULT.SUCCESS;
@@ -81,7 +81,7 @@ public class JsonDatabase extends AbstractDatabase {
 		for (Ablesung a : aList) {
 			a.removeKunde();
 		}
-		Map<Kunde, ArrayList<Ablesung>> map = new HashMap<Kunde, ArrayList<Ablesung>>();
+		Map<Kunde, ArrayList<Ablesung>> map = new HashMap<>();
 		map.put(k, aList);
 		return map;
 	}
@@ -125,7 +125,7 @@ public class JsonDatabase extends AbstractDatabase {
 
 	/**
 	 * Aktualisiert eine Ablesung mit neuen Werten
-	 * 
+	 *
 	 * @param abNeu Die neue Ablesung - basierend auf der angegebenen id wird das
 	 *              alte Element gesucht
 	 * @return false falls das Update fehlgeschlagen ist
@@ -153,14 +153,14 @@ public class JsonDatabase extends AbstractDatabase {
 		return abl;
 	}
 
-	
+
 	public void init() {
 		ablesungListe.forEach(e -> e.updateKunde());
 	}
 
 	@Override
 	public ArrayList<Ablesung> getAblesungList(UUID kundenId, LocalDate sDate, LocalDate eDate) {
-		ArrayList<Ablesung> ausgabe = new ArrayList<Ablesung>();
+		ArrayList<Ablesung> ausgabe = new ArrayList<>();
 		for (Ablesung a : ablesungListe) {
 			if (kundenId != null) {
 				if (!kundenId.equals(a.getKundenId())) {
@@ -188,7 +188,7 @@ public class JsonDatabase extends AbstractDatabase {
 	@Override
 	protected void saveJSON(String file) {
 		saveJSON(file, this);
-		
+
 	}
 
 
@@ -210,7 +210,7 @@ public class JsonDatabase extends AbstractDatabase {
 		if (oldZa==null) {
 			return OPERATION_RESULT.Zaehlerart_NOT_FOUND;
 		}
-		
+
 		return null;
 	}
 
@@ -232,6 +232,6 @@ public class JsonDatabase extends AbstractDatabase {
 		}
 		return null;
 	}
-	
-	
+
+
 }

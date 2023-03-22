@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -125,6 +126,17 @@ public class FilterDialog {
 			return true;
 		});
 
+		try  {
+			UUID id=UUID.fromString(baseFrame.getFilter());
+			Kunde k=baseFrame.getKundenListe().getById(id);
+			if (k==null) {
+				k=allKunde;
+			}
+			kundenNummer.setSelectedItem(k);
+		} catch (IllegalArgumentException e) {
+			kundenNummer.setSelectedItem(allKunde);
+		}
+		
 		dialog.setSize(WIDTH, HEIGHT);
 		dialog.setModalityType(ModalityType.MODELESS);
 

@@ -7,6 +7,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import com.sun.net.httpserver.HttpServer;
 
+import jakarta.ws.rs.ProcessingException;
 import lombok.Getter;
 
 public class Server {
@@ -70,8 +71,13 @@ public class Server {
 		serverReady = true;
 
 		final ResourceConfig rc = new ResourceConfig().packages(pack);
-		server = JdkHttpServerFactory.createHttpServer(URI.create(url), rc);
-		System.out.println("Bereit für Anfragen....");
+		try {
+			server = JdkHttpServerFactory.createHttpServer(URI.create(url), rc);
+			System.out.println("Bereit für Anfragen....");
+		} catch (ProcessingException e) {
+			System.out.println("Fehler beim Erstellen des Servers -"+ e.getMessage());
+			serverReady=false;
+		}
 	}
 
 	public static void stopServer(boolean saveToFile) {
@@ -88,6 +94,8 @@ public class Server {
 			serverData.saveJSON(SERVERFILE);
 		}
 		System.out.println("Server angehalten");
+		
+		
 	}
 
 	public static AbstractDatabase getServerData() {

@@ -90,7 +90,6 @@ public class AbleseTableModel extends AbstractTableModel {
 		switch (column) {
 		case 0:
 			return UUID.class;
-		case 2:
 		case 5:
 			return Integer.class;
 		case 3:

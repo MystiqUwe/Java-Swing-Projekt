@@ -14,7 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.RowSorter;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.table.TableStringConverter;
 
 import client.Ablesebogen;
 import client.JAblesebogenPanel;
@@ -35,7 +37,7 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 	public Ablesebogen baseFrame;
 
 	private AbleseTableModel tableModel;
-	private RowSorter<AbleseTableModel> sorter;
+	private TableRowSorter<AbleseTableModel> sorter;
 	private JTable outList;
 
 	/*
@@ -76,6 +78,17 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 		outList = new JTable(tableModel);
 		outList.setAutoCreateRowSorter(true);
 		sorter = new TableRowSorter<>(tableModel);
+		sorter.setStringConverter(new TableStringConverter() {
+			
+			@Override
+			public String toString(TableModel model, int row, int column) {
+				if (model.getValueAt(row, column)!=null) {
+					return model.getValueAt(row, column).toString().toLowerCase();
+				} else {
+					return "";
+				}
+			}
+		});
 		outList.setRowSorter(sorter);
 
 		JScrollPane scrollPane = new JScrollPane(outList);
@@ -112,7 +125,8 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 			Util.errorMessage("Liste konnte nicht angezeigt werden");
 			return false;
 		}*/
-		if (eOpts instanceof UUID) {
+		if (eOpts != null) {
+			System.out.println(eOpts);
 			filter(eOpts.toString());
 		} else {
 			filter(baseFrame.getFilter());
@@ -125,7 +139,7 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 
 	@Override
 	public void afterActivate(Object eOpts) {
-		if (eOpts instanceof UUID) {
+		if (eOpts !=null) {
 			baseFrame.setFilter(eOpts.toString());
 		}
 	}
@@ -139,12 +153,12 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 	public void filter(String filter) {
 		RowFilter<AbleseTableModel, Object> rf = null;
 		try {
-			rf = RowFilter.regexFilter("^"+filter, 0);
+			rf = RowFilter.regexFilter("^"+filter.toLowerCase());
 		} catch (java.util.regex.PatternSyntaxException e) {
 			return;
 		}
 		tableModel.fireTableDataChanged();
-		((DefaultRowSorter<AbleseTableModel, Integer>) sorter).setRowFilter(rf);
+		sorter.setRowFilter(rf);
 
 	}
 }

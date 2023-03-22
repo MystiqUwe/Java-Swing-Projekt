@@ -45,7 +45,6 @@ public class AbleseList {
 			Util.errorMessage(res.getStatus() + " - " + res.readEntity(String.class));
 			return false;
 		}
-
 		AbleseEntry serverEntry = res.readEntity(AbleseEntry.class);
 
 		return liste.add(serverEntry);
@@ -128,6 +127,7 @@ public class AbleseList {
 		if (index < 0) {
 			return false;
 		}
+		Util.infoMessage("Löschen erfolgreich");
 		return remove(index) != null;
 	}
 

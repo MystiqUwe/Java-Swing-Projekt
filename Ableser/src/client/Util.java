@@ -59,6 +59,10 @@ public class Util {
 				JOptionPane.WARNING_MESSAGE);
 		return JOptionPane.OK_OPTION == result;
 	}
+	
+	public static void infoMessage(String message) {
+		JOptionPane.showMessageDialog(dialogFrame, message, "", JOptionPane.INFORMATION_MESSAGE);
+	}
 
 	public static void questionMessage(Kunde[] kunde, Ablesebogen baseFrame) {
 		new FilterDialog(kunde, baseFrame);

@@ -25,7 +25,8 @@ public class ZaehlerartenInPanel extends JAblesebogenPanel {
 
 	private JButton toAllAblesungButton;
 	private JButton toNewAblesungButton;
-
+	private JButton deleteButton;
+	
 	public ZaehlerartenInPanel(Ablesebogen bFrame) {
 		super(new BorderLayout());
 
@@ -58,7 +59,7 @@ public class ZaehlerartenInPanel extends JAblesebogenPanel {
 		grid.add(new JLabel(""));
 
 		toAllAblesungButton= new JButton("Ablesungen anzeigen");
-		toNewAblesungButton= new JButton("neue Ablesungen");
+		toNewAblesungButton= new JButton("neue Ablesung");
 
 //		grid.add(toAllAblesungButton);
 //		grid.add(toNewAblesungButton);
@@ -81,7 +82,7 @@ public class ZaehlerartenInPanel extends JAblesebogenPanel {
 
 		JButton saveButton = new JButton("Speichern");
 		JButton toOutButton = new JButton("Liste Anzeigen");
-		JButton deleteButton = new JButton("Löschen");
+		deleteButton = new JButton("Löschen");
 
 		buttonPanel.add(saveButton);
 		buttonPanel.add(deleteButton);
@@ -119,6 +120,7 @@ public class ZaehlerartenInPanel extends JAblesebogenPanel {
 		toEdit = null;
 		toAllAblesungButton.setEnabled(false);
 		toNewAblesungButton.setEnabled(false);
+		deleteButton.setEnabled(false);
 	}
 
 	public boolean save() {
@@ -176,6 +178,8 @@ public class ZaehlerartenInPanel extends JAblesebogenPanel {
 			toEdit = k;
 			toAllAblesungButton.setEnabled(true);
 			toNewAblesungButton.setEnabled(true);
+			deleteButton.setEnabled(true);
+
 		} else {
 			clear();
 		}

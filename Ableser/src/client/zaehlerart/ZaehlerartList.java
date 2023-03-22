@@ -141,6 +141,7 @@ public class ZaehlerartList {
 		}
 		if (remove(index) != null) {
 			callOnChanged();
+			Util.infoMessage("Löschen erfolgreich");
 			return true;
 		}
 		{

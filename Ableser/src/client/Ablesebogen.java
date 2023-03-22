@@ -196,9 +196,7 @@ public class Ablesebogen extends JFrame {
 
 
 		filterArea=new HintTextField("Filtern...");
-		//TODO Filtertext
-		//ta.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-
+		
 		filterArea.addKeyListener(new KeyListener() {
 
 			@Override

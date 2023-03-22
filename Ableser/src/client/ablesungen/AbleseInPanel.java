@@ -53,7 +53,10 @@ public class AbleseInPanel extends JAblesebogenPanel {
 	private JPanel buttonPanel;
 
 	private JButton toFilterOutButton;
-
+	JButton saveButton;
+	JButton toOutButton;
+	JButton deleteButton;
+	
 	public AbleseInPanel(Ablesebogen bFrame) {
 		super(new BorderLayout());
 		baseFrame = bFrame;
@@ -95,10 +98,10 @@ public class AbleseInPanel extends JAblesebogenPanel {
 
 		panel.setBorder(new EmptyBorder(0, 10, 0, 10));
 		// untere Leiste
-		JButton saveButton = new JButton("Speichern");
-		JButton toOutButton = new JButton("Liste Anzeigen");
-		JButton deleteButton = new JButton("Löschen");
-		toFilterOutButton = new JButton("Für diesen Kunden");
+		saveButton = new JButton("Speichern");
+		toOutButton = new JButton("Liste Anzeigen");
+		deleteButton = new JButton("Löschen");
+		toFilterOutButton = new JButton("Ablesungen dieses Kundens");
 
 		buttonPanel.add(saveButton);
 		buttonPanel.add(deleteButton);
@@ -216,6 +219,9 @@ public class AbleseInPanel extends JAblesebogenPanel {
 			loadWithValue((AbleseEntry) eOpts);
 		} else if (eOpts instanceof Kunde) {
 			kundenNummer.setSelectedItem( eOpts);
+			
+		} else if (eOpts instanceof Zaehlerart) {
+			zaelerArt.setSelectedItem(eOpts);
 		} else {
 			try {
 				UUID kid=UUID.fromString(baseFrame.getFilter());
@@ -307,18 +313,19 @@ public class AbleseInPanel extends JAblesebogenPanel {
 	 * @return int
 	 */
 	public boolean Plausicheck(Zaehlerart zA, int zStand, UUID kn, String zN) {
-		try {
-			AbleseEntry lastAB = baseFrame.getListe().getLast(kn, zN);
+		AbleseEntry lastAB = baseFrame.getListe().getLast(kn, zN);
+		
+		int oldStand=0;
+		
+		if (lastAB!=null) {
+			oldStand=lastAB.getZaelerstand();
 			System.out.println(lastAB.getZaelerstand());
-			if(lastAB.getZaelerstand() > zStand) {
-				return Util.optionMessage("Zählerstand kleiner als zuvor, trotzdem Speichern?");
-			}
-			if (zStand > (zA.getWarnValue()+lastAB.getZaelerstand())) {
-				return Util.optionMessage("Werte ungewöhnlich trotzdem Speichern?");
-			}
-
-		} catch(Exception ex) {
-			return true;
+		}
+		if(oldStand > zStand) {
+			return Util.optionMessage("Zählerstand kleiner als zuvor, trotzdem Speichern?");
+		}
+		if (zStand > (zA.getWarnValue()+oldStand)) {
+			return Util.optionMessage("Werte ungewöhnlich trotzdem Speichern?");
 		}
 
 		return true;
@@ -344,7 +351,7 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		neuEingebaut.setSelected(entry.isNeuEingebaut());
 		zaelerstand.setText(Integer.toString(entry.getZaelerstand()));
 		kommentar.setText(entry.getKommentar());
-
+		deleteButton.setEnabled(true);
 		curEntry = entry;
 	}
 
@@ -365,6 +372,8 @@ public class AbleseInPanel extends JAblesebogenPanel {
 
 		curEntry = null;
 		kundenNummer.requestFocus();
+		deleteButton.setEnabled(false);
+
 	}
 
 	@Override

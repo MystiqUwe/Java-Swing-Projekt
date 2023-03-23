@@ -89,7 +89,7 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		panel.add(zaelernummer);
 		panel.add(new JLabel("Datum"));
 		panel.add(datePicker);
-		panel.add(new JLabel("neu eingebaut"));
+		panel.add(new JLabel("Neu eingebaut"));
 		panel.add(neuEingebaut);
 		panel.add(new JLabel("Zählerstand"));
 		panel.add(zaelerstand);
@@ -219,8 +219,9 @@ public class AbleseInPanel extends JAblesebogenPanel {
 			loadWithValue((AbleseEntry) eOpts);
 		} else if (eOpts instanceof Kunde) {
 			kundenNummer.setSelectedItem( eOpts);
-			
+			zaelerArt.setSelectedItem(null);
 		} else if (eOpts instanceof Zaehlerart) {
+			kundenNummer.setSelectedItem(null);
 			zaelerArt.setSelectedItem(eOpts);
 		} else {
 			try {
@@ -229,6 +230,7 @@ public class AbleseInPanel extends JAblesebogenPanel {
 			} catch (Exception e) {
 				kundenNummer.setSelectedItem(null);
 			}
+			zaelerArt.setSelectedItem(null);
 			clear();
 		}
 		return true;

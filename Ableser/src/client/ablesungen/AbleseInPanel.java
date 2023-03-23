@@ -254,6 +254,7 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		Zaehlerart zA = (Zaehlerart) zaelerArt.getSelectedItem();
 		if (zA==null) {
 			Util.errorMessage("Zählerart darf nicht leer sein");
+			zaelerArt.requestFocus();
 			return false;
 		}
 

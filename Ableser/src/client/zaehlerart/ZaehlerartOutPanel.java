@@ -1,4 +1,4 @@
-package ablesebogen;
+package client.zaehlerart;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -15,18 +15,21 @@ import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.table.TableRowSorter;
 
-@SuppressWarnings("serial")
-public class KundeOutPanel extends JAblesebogenPanel {
+import client.Ablesebogen;
+import client.JAblesebogenPanel;
 
-	private KundeTableModel tableModel;
-	private RowSorter<KundeTableModel> sorter;
+@SuppressWarnings("serial")
+public class ZaehlerartOutPanel extends JAblesebogenPanel {
+
+	private ZaehlerartTableModel tableModel;
+	private RowSorter<ZaehlerartTableModel> sorter;
 	private JTable outList;
 
 	/*
 	 * bFrame: Basisframe in dem das Panel einfefügt wird, ein CardLayout liste: Die
 	 * anzuzeigende Liste
 	 */
-	public KundeOutPanel(Ablesebogen bFrame, KundeList liste) {
+	public ZaehlerartOutPanel(Ablesebogen bFrame, ZaehlerartList liste) {
 		super(new BorderLayout());
 		baseFrame = bFrame;
 		// out Layout Base Layout
@@ -46,16 +49,16 @@ public class KundeOutPanel extends JAblesebogenPanel {
 		editButton.addActionListener(e -> edit());
 
 		toInButton.addActionListener(e -> {
-			baseFrame.openPage(Ablesebogen.KUNDE_IN);
+			baseFrame.openPage(Ablesebogen.ZAEHLERART_IN);
 		});
 
 		// editButton.addActionListener(e-> edit());
 
 		// Tabelle
-		tableModel = new KundeTableModel(liste);
+		tableModel = new ZaehlerartTableModel(liste);
 		outList = new JTable(tableModel);
 		outList.setAutoCreateRowSorter(true);
-		sorter = new TableRowSorter<KundeTableModel>(tableModel);
+		sorter = new TableRowSorter<>(tableModel);
 		outList.setRowSorter(sorter);
 
 		JScrollPane scrollPane = new JScrollPane(outList);
@@ -82,7 +85,7 @@ public class KundeOutPanel extends JAblesebogenPanel {
 		int row = outList.getSelectedRow();
 		if (row < 0)
 			return;
-		baseFrame.openPage(Ablesebogen.KUNDE_IN, tableModel.getMyList().get(outList.convertRowIndexToModel(row)));
+		baseFrame.openPage(Ablesebogen.ZAEHLERART_IN, tableModel.getMyList().get(outList.convertRowIndexToModel(row)));
 	}
 
 	@Override
@@ -92,7 +95,7 @@ public class KundeOutPanel extends JAblesebogenPanel {
 			return false;
 		}*/
 
-		baseFrame.setTitle("Übersichtsliste Kunden");
+		baseFrame.setTitle("Übersichtsliste Zaehlerarten");
 		filter(baseFrame.getFilter());
 		refresh();
 		return true;
@@ -109,15 +112,15 @@ public class KundeOutPanel extends JAblesebogenPanel {
 
 	@Override
 	public void filter(String filter) {
-		RowFilter<KundeTableModel, Object> rf = null;
+		RowFilter<ZaehlerartTableModel, Object> rf = null;
 		try {
-			rf = RowFilter.regexFilter("(?i)^"+filter);
+			rf = RowFilter.regexFilter("(?i)^"+filter,0);
 		} catch (java.util.regex.PatternSyntaxException e) {
 			//System.err.println("Filter failed");
 			return;
 		}
 		tableModel.fireTableDataChanged();
-		((DefaultRowSorter<KundeTableModel, Integer>) sorter).setRowFilter(rf);
-		
+		((DefaultRowSorter<ZaehlerartTableModel, Integer>) sorter).setRowFilter(rf);
+
 	}
 }

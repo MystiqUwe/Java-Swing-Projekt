@@ -1,28 +1,34 @@
-package ablesebogen;
+package client.ablesungen;
 
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.stream.Stream;
 
 import client.Service;
+import client.Util;
+import client.zaehlerart.ZaehlerartList;
+import dataEntities.AbleseEntry;
+import dataEntities.Kunde;
+import dataEntities.Zaehlerart;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import lombok.Getter;
 import lombok.Setter;
-import server.Kunde;
 
 //Wrapper für die verwendete Liste, außerdem verantwortlich für den Export/Import mit den Methoden "export<Dateiformat>()
 public class AbleseList {
 
 	@Getter
 	@Setter
-	private ArrayList<AbleseEntry> liste = new ArrayList<AbleseEntry>();
+	private ArrayList<AbleseEntry> liste = new ArrayList<>();
 
 	private Service service;
+	private ZaehlerartList zList;
 
-	public AbleseList(Service service) {
+	public AbleseList(Service service, ZaehlerartList zList) {
 		super();
+		this.zList=zList;
 		this.service = service;
 		liste = new ArrayList<>();
 		refresh();
@@ -39,7 +45,6 @@ public class AbleseList {
 			Util.errorMessage(res.getStatus() + " - " + res.readEntity(String.class));
 			return false;
 		}
-
 		AbleseEntry serverEntry = res.readEntity(AbleseEntry.class);
 
 		return liste.add(serverEntry);
@@ -70,10 +75,10 @@ public class AbleseList {
 			return false;
 		}
 		oldAbl.setKundenNummer(newAbl.getKundenNummer());
-		oldAbl.setZaelerArt(newAbl.getZaelerArt());
+		oldAbl.setZId(newAbl.getZId());
 		oldAbl.setZaelernummer(newAbl.getZaelernummer());
 		oldAbl.setDatum(newAbl.getDatum());
-		oldAbl.setNeuEingebaut(newAbl.getNeuEingebaut());
+		oldAbl.setNeuEingebaut(newAbl.isNeuEingebaut());
 		oldAbl.setZaelerstand(newAbl.getZaelerstand());
 		oldAbl.setKommentar(newAbl.getKommentar());
 
@@ -122,6 +127,7 @@ public class AbleseList {
 		if (index < 0) {
 			return false;
 		}
+		Util.infoMessage("Löschen erfolgreich");
 		return remove(index) != null;
 	}
 
@@ -156,7 +162,7 @@ public class AbleseList {
 		liste.stream().forEach(en -> buf.append(en.toString()));
 		return buf.toString();
 	}
-	
+
 	/**
 	 * @param kNummer
 	 * @param zNummer
@@ -170,7 +176,7 @@ public class AbleseList {
 		//long closestDiff = Long.MAX_VALUE;
 		if(this.getListe().size() > 0) {
 			for(AbleseEntry obj : this.getListe()) {
-				if(obj.getKundenNummer()!=null) { 
+				if(obj.getKundenNummer()!=null) {
 					if(obj.getKundenNummer().equals(kNummer) && obj.getZaelernummer().equals(zNummer)) {
 						if (closest==null || obj.getDatum().isAfter(closest.getDatum())) {
 							closest=obj;
@@ -228,10 +234,10 @@ public class AbleseList {
 		case 200:
 			AbleseEntry ablServer = res.readEntity(AbleseEntry.class);
 			if (!abl.equals(ablServer)) {
-	/*			System.out.println("DIFFTOOL");
+				/*System.out.println("DIFFTOOL");
 				System.out.println(abl.toString());
 				System.out.println(ablServer.toString());
-				System.out.println("--------");*/
+				System.out.println("--------");//*/
 				if (Util.optionMessage("Ablesung hat sich geändert \nTrotzdem speichern?")) {
 					return ChangedState.doSave;
 				} else {
@@ -255,7 +261,7 @@ public class AbleseList {
 			}
 		}
 	}
-	
+
 	public void deleteKunde(Kunde k) {
 		UUID kId=k.getId();
 		for (AbleseEntry e:liste) {
@@ -265,4 +271,17 @@ public class AbleseList {
 		}
 	}
 
+	public String getZaehlerartName(int zId) {
+		return zList.getNameById(zId);
+	}
+
+	public void deleteZaehlerart(Zaehlerart z) {
+		int zId=z.getId();
+		for (AbleseEntry e:liste) {
+			if (zId==e.getZId()) {
+				e.setZId(0);
+			}
+		}
+
+	}
 }

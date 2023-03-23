@@ -7,6 +7,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import com.sun.net.httpserver.HttpServer;
 
+import jakarta.ws.rs.ProcessingException;
 import lombok.Getter;
 
 public class Server {
@@ -21,15 +22,21 @@ public class Server {
 	public static void startServer(String url, boolean loadFromFile) {
 		startServer(url,loadFromFile,true,true);
 	}
-	
+
 	/*
 	 * Normales startServer, mit bevorzugten Parametern
 	 */
 	public static void startServer(String url) {
 		startServer(url,false,true,false);
-		
+
 	}
-	
+
+	/**
+	 * @param url URL auf dem der server gestartet werden soll
+	 * @param loadFromFile soll die Serverdatei eingelesen werden
+	 * @param useSQLDatabase SQL Datenbank, oder nur persistierung in eine Datei
+	 * @param wipeDatabase **nur für SQL** soll die Datenbank vor dem Start geleert werden
+	 */
 	public static void startServer(String url, boolean loadFromFile, boolean useSQLDatabase, boolean wipeDatabase) {
 		if (server != null) {
 			System.out.println("Server läuft bereits unter: " + server.getAddress());
@@ -54,7 +61,7 @@ public class Server {
 			}
 		} else {
 			if (loadFromFile) {
-				serverData = JsonDatabase.loadJSON(SERVERFILE);
+				serverData = AbstractDatabase.loadJSON(SERVERFILE);
 			} else {
 				serverData = new JsonDatabase();
 			}
@@ -64,8 +71,13 @@ public class Server {
 		serverReady = true;
 
 		final ResourceConfig rc = new ResourceConfig().packages(pack);
-		server = JdkHttpServerFactory.createHttpServer(URI.create(url), rc);
-		System.out.println("Bereit für Anfragen....");
+		try {
+			server = JdkHttpServerFactory.createHttpServer(URI.create(url), rc);
+			System.out.println("Bereit für Anfragen....");
+		} catch (ProcessingException e) {
+			System.out.println("Fehler beim Erstellen des Servers -"+ e.getMessage());
+			serverReady=false;
+		}
 	}
 
 	public static void stopServer(boolean saveToFile) {
@@ -82,6 +94,8 @@ public class Server {
 			serverData.saveJSON(SERVERFILE);
 		}
 		System.out.println("Server angehalten");
+		
+		
 	}
 
 	public static AbstractDatabase getServerData() {

@@ -1,4 +1,4 @@
-package ablesebogen;
+package client.kunden;
 
 import java.util.UUID;
 
@@ -21,6 +21,7 @@ public class KundeTableModel extends AbstractTableModel {
 		this.myList = liste;
 	}
 
+	@Override
 	public int getColumnCount() {
 		return columnNames.length;
 	}
@@ -28,6 +29,7 @@ public class KundeTableModel extends AbstractTableModel {
 	/**
 	 * @return int
 	 */
+	@Override
 	public int getRowCount() {
 		int size;
 		if (myList.getListe() == null) {
@@ -41,6 +43,7 @@ public class KundeTableModel extends AbstractTableModel {
 	/**
 	 * @return int
 	 */
+	@Override
 	public Object getValueAt(int row, int col) {
 		Object temp = null;
 		if (col == 0) {
@@ -57,6 +60,7 @@ public class KundeTableModel extends AbstractTableModel {
 	 * @param col
 	 * @return String
 	 */
+	@Override
 	public String getColumnName(int col) {
 		return columnNames[col];
 	}
@@ -66,6 +70,7 @@ public class KundeTableModel extends AbstractTableModel {
 	 * @param col
 	 * @return Object
 	 */
+	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Class getColumnClass(int column) {
 		switch (column) {

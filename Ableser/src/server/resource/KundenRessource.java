@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 
+import dataEntities.Ablesung;
+import dataEntities.Kunde;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -14,8 +16,6 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import server.Ablesung;
-import server.Kunde;
 import server.Server;
 
 @Path("hausverwaltung/kunden")
@@ -41,7 +41,7 @@ public class KundenRessource {
 			System.err.println("Interner Fehler beim Erstellen von "+kunde);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Interner Serverfehler!")
 					.type(MediaType.TEXT_PLAIN).build();
-						
+
 		}
 	}
 
@@ -68,7 +68,7 @@ public class KundenRessource {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Interner Serverfehler!")
 					.type(MediaType.TEXT_PLAIN).build();
 		}
-	
+
 	}
 
 	/**

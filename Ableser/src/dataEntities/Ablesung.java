@@ -1,4 +1,4 @@
-package server;
+package dataEntities;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import server.Server;
 
 @AllArgsConstructor
 @Setter
@@ -29,6 +30,7 @@ public class Ablesung {
 	private Number zaehlerstand;
 
 	private UUID kundenId;
+	private int zId;
 
 	public Ablesung() {
 		this.id = UUID.randomUUID();
@@ -37,6 +39,11 @@ public class Ablesung {
 
 	public Ablesung(String zaehlernummer, LocalDate datum, Kunde kunde, String kommentar, boolean neuEingebaut,
 			Integer zaehlerstand) {
+		this(zaehlernummer,datum,kunde,kommentar,neuEingebaut,zaehlerstand,-1);
+	}
+
+	public Ablesung(String zaehlernummer, LocalDate datum, Kunde kunde, String kommentar, boolean neuEingebaut,
+			Integer zaehlerstand, int zId) {
 		this();
 		this.zaehlernummer = zaehlernummer;
 		this.datum = datum;
@@ -44,6 +51,7 @@ public class Ablesung {
 		this.kommentar = kommentar;
 		this.neuEingebaut = neuEingebaut;
 		this.zaehlerstand = zaehlerstand;
+		this.zId=zId;
 	}
 
 	public void setKunde(Kunde k) {
@@ -81,24 +89,19 @@ public class Ablesung {
 
 	@Override
 	public String toString() {
-		return "Ablesung [id=" + id + ", zaehlernummer=" + zaehlernummer + ", datum=" + datum + ", kunde=" + kunde
+		return "Ablesung [id=" + id + ",zaehlerart="+zId+", zaehlernummer=" + zaehlernummer + ", datum=" + datum + ", kunde=" + kunde
 				+ ", kommentar=" + kommentar + ", neuEingebaut=" + neuEingebaut + ", zaehlerstand=" + zaehlerstand
 				+ ", kundenId=" + kundenId + "]";
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Ablesung)) {
 			return false;
 		}
 		Ablesung abl = (Ablesung) obj;
 
-		if (!(getId().equals(abl.getId()))) {
-			return false;
-		}
-		if (!getZaehlernummer().equals(abl.getZaehlernummer())) {
-			return false;
-		}
-		if (!getDatum().equals(abl.getDatum())) {
+		if (!(getId().equals(abl.getId())) || !getZaehlernummer().equals(abl.getZaehlernummer()) || !getDatum().equals(abl.getDatum())) {
 			return false;
 		}
 		if (getKunde() == null) {

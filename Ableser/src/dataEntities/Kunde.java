@@ -1,4 +1,4 @@
-package server;
+package dataEntities;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -66,11 +66,7 @@ public class Kunde {
 			}
 		}
 
-		if (!this.name.equals(((Kunde) obj).getName())) {
-			return false;
-		}
-
-		if (!this.vorname.equals(((Kunde) obj).getVorname())) {
+		if (!this.name.equals(((Kunde) obj).getName()) || !this.vorname.equals(((Kunde) obj).getVorname())) {
 			return false;
 		}
 

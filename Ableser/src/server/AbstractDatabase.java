@@ -10,6 +10,10 @@ import java.util.UUID;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import dataEntities.Ablesung;
+import dataEntities.Kunde;
+import dataEntities.Zaehlerart;
+
 public abstract class AbstractDatabase{
 
 	public abstract ArrayList<Kunde> getKundenListe();
@@ -25,21 +29,21 @@ public abstract class AbstractDatabase{
 	public abstract Ablesung getAblesung(UUID id);
 	/**
 	 * Aktualisiert eine Ablesung mit neuen Werten
-	 * 
+	 *
 	 * @param abNeu Die neue Ablesung - basierend auf der angegebenen id wird das
 	 *              alte Element gesucht
 	 * @return false falls das Update fehlgeschlagen ist
 	 */
 	public abstract OPERATION_RESULT updateAblesung(Ablesung abNeu);
 	public abstract Ablesung deleteAblesung(UUID id);
-	
+
 	public ArrayList<Ablesung> getAblesungList(UUID kundenId) {
 		return getAblesungList(kundenId, null, null);
 	}
 	public abstract ArrayList<Ablesung> getAblesungList(UUID kundenId, LocalDate sDate, LocalDate eDate);
-	
+
 	private static ObjectMapper obMap = new ObjectMapper();
-	
+
 	protected static AbstractDatabase loadJSON(String file) {
 		final File f = new File(file);
 		if (f.exists()) {
@@ -60,7 +64,7 @@ public abstract class AbstractDatabase{
 	}
 
 	protected abstract void saveJSON(String file);
-		
+
 	protected void saveJSON(String file, JsonDatabase database) {
 		try {
 
@@ -74,6 +78,14 @@ public abstract class AbstractDatabase{
 			e.printStackTrace();
 			System.exit(1);
 		}
-
 	}
+
+	//Zaehlerarten
+	public abstract ArrayList<Zaehlerart> getZaehlerartListe();
+	public abstract Zaehlerart addZaehlerart(Zaehlerart za);
+	public abstract OPERATION_RESULT updateZaehlerart(Zaehlerart za);
+	public abstract Zaehlerart deleteZaehlerart(int id);
+	public abstract Zaehlerart getZaehlerart(int id);//*/
+
+
 }

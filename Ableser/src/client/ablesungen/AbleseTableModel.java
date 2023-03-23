@@ -1,4 +1,4 @@
-package ablesebogen;
+package client.ablesungen;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @SuppressWarnings("serial")
 public class AbleseTableModel extends AbstractTableModel {
 
-	private String[] columnNames = { "Kundennummer"/*, "Zählerart"*/, "Zählernummer", "Datum", "neu eingebaut",
+	private String[] columnNames = { "Kundennummer", "Zählerart", "Zählernummer", "Datum", "neu eingebaut",
 			"Zählerstand", "Kommentar" };
 	@Getter
 	@Setter
@@ -53,17 +53,18 @@ public class AbleseTableModel extends AbstractTableModel {
 		}
 		if (col == 0) {
 			temp = myList.get(row).getKundenNummer();
-		/*} else if (col == 1) {
-			temp = myList.get(row).getZaelerArt();*/
 		} else if (col == 1) {
-			temp = myList.get(row).getZaelernummer();
+			int zId= myList.get(row).getZId();
+			temp =myList.getZaehlerartName(zId);
 		} else if (col == 2) {
-			temp = myList.get(row).getDatum();
+			temp = myList.get(row).getZaelernummer();
 		} else if (col == 3) {
-			temp = (myList.get(row).getNeuEingebaut() ? "Ja" : "Nein");
+			temp = myList.get(row).getDatum();
 		} else if (col == 4) {
-			temp = myList.get(row).getZaelerstand();
+			temp = (myList.get(row).isNeuEingebaut() ? "Ja" : "Nein");
 		} else if (col == 5) {
+			temp = myList.get(row).getZaelerstand();
+		} else if (col == 6) {
 			temp = myList.get(row).getKommentar();
 		}
 		return temp;
@@ -73,6 +74,7 @@ public class AbleseTableModel extends AbstractTableModel {
 	 * @param col
 	 * @return String
 	 */
+	@Override
 	public String getColumnName(int col) {
 		return columnNames[col];
 	}
@@ -88,10 +90,9 @@ public class AbleseTableModel extends AbstractTableModel {
 		switch (column) {
 		case 0:
 			return UUID.class;
-		//case 1:
-		case 4:
+		case 5:
 			return Integer.class;
-		case 2:
+		case 3:
 			return LocalDate.class;
 		default:
 			return String.class;

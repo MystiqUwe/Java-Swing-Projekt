@@ -5,6 +5,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import dataEntities.Ablesung;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -16,7 +17,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import server.Ablesung;
 import server.Server;
 
 @Path("hausverwaltung/ablesungen")
@@ -28,10 +28,10 @@ public class AblesungRessource {
 	public Response createAblesung(Ablesung abl) {
 		if (!(abl instanceof Ablesung)) {
 			return Response.status(Response.Status.BAD_REQUEST).entity("Ungültige Ablesung").type(MediaType.TEXT_PLAIN)
-					.build();			
+					.build();
 		}
-		
-		
+
+
 		abl.setId(UUID.randomUUID());
 		switch(Server.getServerData().addAblesung(abl)) {
 		case SUCCESS:
@@ -49,15 +49,15 @@ public class AblesungRessource {
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response updateAblesung(Ablesung abl) {
 		if (abl instanceof Ablesung) {
-			
-			
+
+
 			switch(Server.getServerData().updateAblesung(abl)) {
 				case SUCCESS:
 					return Response.status(Response.Status.OK).entity("Erfolg").build();
 				case ABLESUNG_NOT_FOUND:
 					return Response.status(Response.Status.NOT_FOUND).entity("Ablesung nicht gefunden").build();
 				case KUNDE_NOT_FOUND:
-					return Response.status(Response.Status.NOT_FOUND).entity("Kunde nicht gefunden").build();					
+					return Response.status(Response.Status.NOT_FOUND).entity("Kunde nicht gefunden").build();
 				default:
 					System.err.println("Interner Fehler beim Erstellen von "+abl);
 					return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Interner Serverfehler!")

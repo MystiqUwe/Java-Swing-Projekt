@@ -1,35 +1,35 @@
-package ablesebogen;
+package client.zaehlerart;
 
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import client.Service;
+import client.Util;
+import dataEntities.Zaehlerart;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import lombok.Getter;
-import server.Kunde;
 
 //Wrapper für die verwendete Liste, außerdem verantwortlich für den Export/Import mit den Methoden "export<Dateiformat>()
-public class KundeList {
+public class ZaehlerartList {
 	@Getter
-	private ArrayList<Kunde> liste = new ArrayList<Kunde>();
+	private ArrayList<Zaehlerart> liste = new ArrayList<>();
 
 	@JsonIgnore
 	private Service service;
 
 	@JsonIgnore
-	private ArrayList<Function<ArrayList<Kunde>, Boolean>> onChange;
+	private ArrayList<Function<ArrayList<Zaehlerart>, Boolean>> onChange;
 
-	public KundeList(Service service) {
+	public ZaehlerartList(Service service) {
 		super();
 		this.service = service;
 		liste = new ArrayList<>();
-		onChange = new ArrayList<Function<ArrayList<Kunde>, Boolean>>();
+		onChange = new ArrayList<>();
 		refresh();
 	}
 
@@ -37,17 +37,17 @@ public class KundeList {
 	 * @param e
 	 * @return boolean
 	 */
-	public boolean add(Kunde e) {
-		Response res = service.post(Service.endpointKunden, e);
+	public boolean add(Zaehlerart e) {
+		Response res = service.post(Service.endpointZaehlerarten, e);
 
 		if (res.getStatus() != Status.CREATED.getStatusCode()) {
 			Util.errorMessage(res.getStatus() + " - " + res.readEntity(String.class));
 			return false;
 		}
 
-		Kunde serverKunde = res.readEntity(Kunde.class);
+		Zaehlerart serverZaehlerarten = res.readEntity(Zaehlerart.class);
 
-		if (liste.add(serverKunde)) {
+		if (liste.add(serverZaehlerarten)) {
 			callOnChanged();
 			return true;
 		} else {
@@ -59,70 +59,70 @@ public class KundeList {
 		liste.clear();
 	}
 
-	public boolean update(Kunde oldK, Kunde newK) {
+	public boolean update(Zaehlerart oldZ, Zaehlerart newZ) {
 
-		switch (checkChanged(oldK)) {
+		switch (checkChanged(oldZ)) {
 		case noSave:
 			return false;
 		case addNew:
-			liste.remove(oldK);
-			return add(newK);
+			liste.remove(oldZ);
+			return add(newZ);
 		case doSave:
 			break;
 		default:
 			break;
 		}
 
-		Response res = service.put(Service.endpointKunden, newK);
+		Response res = service.put(Service.endpointZaehlerarten, newZ);
 
 		if (res.getStatus() != Status.OK.getStatusCode()) {
 			Util.errorMessage(res.getStatus() + " - " + res.readEntity(String.class));
 			return false;
 		}
-		oldK.setName(newK.getName());
-		oldK.setVorname(newK.getVorname());
+		oldZ.setName(newZ.getName());
+		oldZ.setWarnValue(newZ.getWarnValue());
 		callOnChanged();
 		return true;
 	}
 
 	/**
 	 * @param index
-	 * @return Kunde
+	 * @return Zaehlerart
 	 */
-	public Kunde get(int index) {
+	public Zaehlerart get(int index) {
 		return liste.get(index);
 	}
 
-	public Kunde getById(UUID id) {
-		for (Kunde k : liste) {
-			if (k.getId().equals(id)) {
-				return k;
+	public Zaehlerart getById(int id) {
+		for (Zaehlerart z : liste) {
+			if (z.getId()==id) {
+				return z;
 			}
 		}
 		return null;
 	}
 
-	public Kunde[] getArray() {
-		return liste.toArray(new Kunde[0]);
+	public Zaehlerart[] getArray() {
+		return liste.toArray(new Zaehlerart[0]);
 	}
 
 	/**
-	 * @param Kunde
+	 * @param Zaehlerart
 	 * @return int
 	 */
-	public int indexOf(Kunde k) {
-		return liste.indexOf(k);
+	public int indexOf(Zaehlerart z) {
+		return liste.indexOf(z);
 	}
 
 	/**
 	 * @param Kunde
 	 * @return boolean
 	 */
-	public boolean remove(Kunde k) {
-		if (k == null) {
+	public boolean remove(Zaehlerart z) {
+		if (z == null) {
 			return false;
 		}
-		Response delRes = service.delete(Service.endpointKunden+"/" + k.getId().toString());
+		Response delRes = service.delete(Service.endpointZaehlerarten+"/" + z.getId());
 
 		if (delRes.getStatus() != Status.OK.getStatusCode()) {
 			if (delRes.getStatus() == Status.NOT_FOUND.getStatusCode()) {
@@ -135,12 +135,13 @@ public class KundeList {
 			}
 		}
 
-		int index = indexOf(k);
+		int index = indexOf(z);
 		if (index < 0) {
 			return false;
 		}
 		if (remove(index) != null) {
 			callOnChanged();
+			Util.infoMessage("Löschen erfolgreich");
 			return true;
 		}
 		{
@@ -150,9 +151,9 @@ public class KundeList {
 
 	/**
 	 * @param index
-	 * @return Kunde
+	 * @return Zaehlerart
 	 */
-	private Kunde remove(int index) {
+	private Zaehlerart remove(int index) {
 		return liste.remove(index);
 	}
 
@@ -166,7 +167,7 @@ public class KundeList {
 	/**
 	 * @return Stream<KundeList>
 	 */
-	public Stream<Kunde> stream() {
+	public Stream<Zaehlerart> stream() {
 		return liste.stream();
 	}
 
@@ -182,16 +183,16 @@ public class KundeList {
 
 
 	public boolean refresh() {
-		Response res = service.get(Service.endpointKunden);
+		Response res = service.get(Service.endpointZaehlerarten);
 
 		if (res.getStatus() != 200) {
 			System.out.println(
-					"Laden der Kunden fehlgeschlagen\n" + res.getStatus() + " - " + res.readEntity(String.class));
+					"Laden der Zaehlerarten fehlgeschlagen\n" + res.getStatus() + " - " + res.readEntity(String.class));
 			Util.errorMessage(res.readEntity(String.class));
 			return false;
 		}
 
-		liste = res.readEntity(new GenericType<ArrayList<Kunde>>() {
+		liste = res.readEntity(new GenericType<ArrayList<Zaehlerart>>() {
 		});
 		callOnChanged();
 		return true;
@@ -201,18 +202,18 @@ public class KundeList {
 		noSave, doSave, addNew;
 	}
 
-	private ChangedState checkChanged(Kunde k) {
-		Response res = service.get(Service.endpointKunden+"/" + k.getId().toString());
+	private ChangedState checkChanged(Zaehlerart z) {
+		Response res = service.get(Service.endpointZaehlerarten+"/" + z.getId());
 
 		switch (res.getStatus()) {
 		case 200:
-			Kunde kServer = res.readEntity(Kunde.class);
-			if (!k.equals(kServer)) {
-				System.out.println("DIFFTOOL");
-				System.out.println(k.toString());
-				System.out.println(kServer.toString());
-				System.out.println("--------");
-				if (Util.optionMessage("Ablesung hat sich geändert \nTrotzdem speichern?")) {
+			Zaehlerart zServer = res.readEntity(Zaehlerart.class);
+			if (!z.equals(zServer)) {
+				/*System.out.println("DIFFTOOL");
+				System.out.println(z.toString());
+				System.out.println(zServer.toString());
+				System.out.println("--------");//*/
+				if (Util.optionMessage("Zaehlerart hat sich geändert \nTrotzdem speichern?")) {
 					return ChangedState.doSave;
 				} else {
 					return ChangedState.noSave;
@@ -221,7 +222,7 @@ public class KundeList {
 			return ChangedState.doSave;
 		case 404:
 			if (Util.optionMessage(
-					"404 - Ablesung nicht gefunden, wurde die Ablesung gelöscht?\nTrotzdem speichern?")) {
+					"404 - Zaehlerart nicht gefunden, wurde die Zaehlerart gelöscht?\nTrotzdem speichern?")) {
 				return ChangedState.addNew;
 			} else {
 				return ChangedState.noSave;
@@ -236,15 +237,23 @@ public class KundeList {
 		}
 	}
 
-	public void addChangeListener(Function<ArrayList<Kunde>, Boolean> newF) {
+	public void addChangeListener(Function<ArrayList<Zaehlerart>, Boolean> newF) {
 
 		onChange.add(newF);
 	}
 
 	private void callOnChanged() {
-		for (Function<ArrayList<Kunde>, Boolean> f : onChange) {
+		for (Function<ArrayList<Zaehlerart>, Boolean> f : onChange) {
 			f.apply(liste);
 		}
 	}
 
+	public String getNameById(int id) {
+		Zaehlerart z=getById(id);
+		if (z!=null) {
+			return z.getName();
+		} else {
+			return "";
+		}
+	}
 }

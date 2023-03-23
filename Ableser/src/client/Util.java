@@ -1,4 +1,4 @@
-package ablesebogen;
+package client;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -13,7 +13,8 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import server.Kunde;
+import client.ablesungen.FilterDialog;
+import dataEntities.Kunde;
 
 public class Util {
 
@@ -57,6 +58,10 @@ public class Util {
 		int result = JOptionPane.showConfirmDialog(dialogFrame, message, "", JOptionPane.YES_NO_OPTION,
 				JOptionPane.WARNING_MESSAGE);
 		return JOptionPane.OK_OPTION == result;
+	}
+	
+	public static void infoMessage(String message) {
+		JOptionPane.showMessageDialog(dialogFrame, message, "", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public static void questionMessage(Kunde[] kunde, Ablesebogen baseFrame) {

@@ -1,11 +1,10 @@
-package ablesebogen;
+package client.kunden;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.UUID;
 
 import javax.swing.DefaultRowSorter;
 import javax.swing.JButton;
@@ -16,29 +15,21 @@ import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.table.TableRowSorter;
 
-/*Eine Übersichtsliste von AbleseEntrys "outLayout"
- * -Ein Button in der Fußleiste um einen neuen Datensatz anzulegen
- * -Doppelklick auf einen Datensatz um ihn zu bearbeiten
- * 
- *  Wenn keine Datensätze vorhanden sind kann die Liste nicht geöffnet werden
- *  
- *  openTable() öffnet die Liste, optional mit einem Filterparameter, dann werden nur die Daten
- *  angezeigt bei denen die Kundennummer mit diesem Filter beginnt
-*/
+import client.Ablesebogen;
+import client.JAblesebogenPanel;
+
 @SuppressWarnings("serial")
-public class AbleseOutPanel extends JAblesebogenPanel {
+public class KundeOutPanel extends JAblesebogenPanel {
 
-	public Ablesebogen baseFrame;
-
-	private AbleseTableModel tableModel;
-	private RowSorter<AbleseTableModel> sorter;
+	private KundeTableModel tableModel;
+	private RowSorter<KundeTableModel> sorter;
 	private JTable outList;
 
 	/*
 	 * bFrame: Basisframe in dem das Panel einfefügt wird, ein CardLayout liste: Die
 	 * anzuzeigende Liste
 	 */
-	public AbleseOutPanel(Ablesebogen bFrame, AbleseList liste) {
+	public KundeOutPanel(Ablesebogen bFrame, KundeList liste) {
 		super(new BorderLayout());
 		baseFrame = bFrame;
 		// out Layout Base Layout
@@ -51,27 +42,23 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 
 		JButton toInButton = new JButton("neuer Datensatz");
 		JButton editButton = new JButton("bearbeiten");
-		JButton filButton = new JButton("Filtern");
 
 		buttonPanel.add(toInButton);
-		buttonPanel.add(filButton);
 		buttonPanel.add(editButton);
-
-		toInButton.addActionListener(e -> {
-			baseFrame.openPage(Ablesebogen.ABLESUNG_IN);
-		});
-
-		filButton.addActionListener(e -> {
-			Util.questionMessage(baseFrame.getKundenListe().getArray(), baseFrame);
-		});
 
 		editButton.addActionListener(e -> edit());
 
+		toInButton.addActionListener(e -> {
+			baseFrame.openPage(Ablesebogen.KUNDE_IN);
+		});
+
+		// editButton.addActionListener(e-> edit());
+
 		// Tabelle
-		tableModel = new AbleseTableModel(liste);
+		tableModel = new KundeTableModel(liste);
 		outList = new JTable(tableModel);
 		outList.setAutoCreateRowSorter(true);
-		sorter = new TableRowSorter<AbleseTableModel>(tableModel);
+		sorter = new TableRowSorter<>(tableModel);
 		outList.setRowSorter(sorter);
 
 		JScrollPane scrollPane = new JScrollPane(outList);
@@ -90,16 +77,15 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 
 	}
 
+	public void refresh() {
+		tableModel.fireTableDataChanged();
+	}
+
 	private void edit() {
 		int row = outList.getSelectedRow();
 		if (row < 0)
 			return;
-		baseFrame.openPage(Ablesebogen.ABLESUNG_IN, tableModel.getMyList().get(outList.convertRowIndexToModel(row)));
-
-	}
-
-	public void refresh() {
-		tableModel.fireTableDataChanged();
+		baseFrame.openPage(Ablesebogen.KUNDE_IN, tableModel.getMyList().get(outList.convertRowIndexToModel(row)));
 	}
 
 	@Override
@@ -108,22 +94,15 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 			Util.errorMessage("Liste konnte nicht angezeigt werden");
 			return false;
 		}*/
-		if (eOpts instanceof UUID) {
-			filter(eOpts.toString());
-		} else {
-			filter(baseFrame.getFilter());
-		}
-		baseFrame.setTitle("Übersichtsliste Ablesungen");
-		refresh();
 
+		baseFrame.setTitle("Übersichtsliste Kunden");
+		filter(baseFrame.getFilter());
+		refresh();
 		return true;
 	}
 
 	@Override
 	public void afterActivate(Object eOpts) {
-		if (eOpts instanceof UUID) {
-			baseFrame.setFilter(eOpts.toString());
-		}
 	}
 
 	@Override
@@ -133,16 +112,15 @@ public class AbleseOutPanel extends JAblesebogenPanel {
 
 	@Override
 	public void filter(String filter) {
-		RowFilter<AbleseTableModel, Object> rf = null;
+		RowFilter<KundeTableModel, Object> rf = null;
 		try {
 			rf = RowFilter.regexFilter("(?i)^"+filter);
 		} catch (java.util.regex.PatternSyntaxException e) {
-			((DefaultRowSorter<AbleseTableModel, Integer>) sorter).setRowFilter(null);
-			tableModel.fireTableDataChanged();
+			//System.err.println("Filter failed");
 			return;
 		}
 		tableModel.fireTableDataChanged();
-		((DefaultRowSorter<AbleseTableModel, Integer>) sorter).setRowFilter(rf);
-		
+		((DefaultRowSorter<KundeTableModel, Integer>) sorter).setRowFilter(rf);
+
 	}
 }

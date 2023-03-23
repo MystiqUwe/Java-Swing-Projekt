@@ -1,4 +1,4 @@
-package ablesebogen;
+package client.kunden;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -11,7 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import server.Kunde;
+import client.Ablesebogen;
+import client.JAblesebogenPanel;
+import client.Util;
+import dataEntities.Kunde;
 
 @SuppressWarnings("serial")
 public class KundenInPanel extends JAblesebogenPanel {
@@ -22,6 +25,7 @@ public class KundenInPanel extends JAblesebogenPanel {
 
 	private JButton toAllAblesungButton;
 	private JButton toNewAblesungButton;
+	private JButton deleteButton;
 
 	public KundenInPanel(Ablesebogen bFrame) {
 		super(new BorderLayout());
@@ -31,14 +35,14 @@ public class KundenInPanel extends JAblesebogenPanel {
 		JPanel grid = new JPanel(new GridLayout(6, 2));
 		this.add(grid, BorderLayout.CENTER);
 		grid.setBorder(new EmptyBorder(0, 10, 0, 10));
-		
-		
+
+
 		nameField = new JTextField();
 		vornameField = new JTextField();
 
 		grid.add(new JLabel("Name"));
 		grid.add(nameField);
-		
+
 		grid.add(new JLabel("Vorname"));
 		grid.add(vornameField);
 
@@ -55,12 +59,12 @@ public class KundenInPanel extends JAblesebogenPanel {
 		grid.add(new JLabel(""));
 
 		toAllAblesungButton= new JButton("Ablesungen anzeigen");
-		toNewAblesungButton= new JButton("neue Ablesungen");
-	
+		toNewAblesungButton= new JButton("neue Ablesung");
+
 //		grid.add(toAllAblesungButton);
 //		grid.add(toNewAblesungButton);
-		
-		ArrayList<JComponent> tabOrder = new ArrayList<JComponent>();
+
+		ArrayList<JComponent> tabOrder = new ArrayList<>();
 		tabOrder.add(nameField);
 		tabOrder.add(vornameField);
 		Util.handleTabOrder(tabOrder, e -> {
@@ -71,15 +75,15 @@ public class KundenInPanel extends JAblesebogenPanel {
 		JPanel southPanel = new JPanel(new GridLayout(2, 1));
 		JPanel ablesungPanel = new JPanel(new GridLayout(1, 0));
 		JPanel buttonPanel = new JPanel(new GridLayout(1, 0));
-	
+
 		this.add(southPanel, BorderLayout.SOUTH);
 		southPanel.add(ablesungPanel);
 		southPanel.add(buttonPanel);
 
 		JButton saveButton = new JButton("Speichern");
 		JButton toOutButton = new JButton("Liste Anzeigen");
-		JButton deleteButton = new JButton("Löschen");
-		
+		deleteButton = new JButton("Löschen");
+
 		buttonPanel.add(saveButton);
 		buttonPanel.add(deleteButton);
 		buttonPanel.add(toOutButton);
@@ -116,6 +120,7 @@ public class KundenInPanel extends JAblesebogenPanel {
 		toEdit = null;
 		toAllAblesungButton.setEnabled(false);
 		toNewAblesungButton.setEnabled(false);
+		deleteButton.setEnabled(false);
 	}
 
 	public boolean save() {
@@ -155,6 +160,7 @@ public class KundenInPanel extends JAblesebogenPanel {
 
 	}
 
+	@Override
 	public boolean activate(Object eOpts) {
 		if (eOpts instanceof Kunde) {
 			Kunde k = (Kunde) eOpts;
@@ -164,6 +170,7 @@ public class KundenInPanel extends JAblesebogenPanel {
 			toEdit = k;
 			toAllAblesungButton.setEnabled(true);
 			toNewAblesungButton.setEnabled(true);
+			deleteButton.setEnabled(true);
 		} else {
 			clear();
 		}

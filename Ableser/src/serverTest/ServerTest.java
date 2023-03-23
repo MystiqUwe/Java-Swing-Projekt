@@ -24,6 +24,8 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import dataEntities.Ablesung;
+import dataEntities.Kunde;
 import jakarta.ws.rs.ProcessingException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -32,8 +34,6 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import server.Ablesung;
-import server.Kunde;
 import server.Server;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
@@ -51,7 +51,7 @@ class ServerTest {
 	private static final Kunde k1 = new Kunde("C", "c");
 	private static final Kunde k2_RangeTest = new Kunde("A", "a");
 	private static final Kunde k3_RangeTest = new Kunde("B", "b");
-	
+
 	private static final Ablesung crudTest = new Ablesung("1", LocalDate.of(2022, 8, 25), k2_RangeTest, "test", false, 100);
 
 	private static List<Kunde> kunden;
@@ -63,13 +63,13 @@ class ServerTest {
 		setUpKundenList();
 		Server.startServer(url, false);
 	}
-	
+
 	private static void setUpKundenList() {
 		kunden = new ArrayList<>();
 		kunden.add(k1);
 		kunden.add(k2_RangeTest);
 		kunden.add(k3_RangeTest);
-		
+
 	}
 
 	@AfterAll
@@ -133,7 +133,7 @@ class ServerTest {
 		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), re.getStatus());
 		assertFalse(re.readEntity(String.class).isBlank());
 	}
-	
+
 	@Test
 	void t03_updateExistingKunde() {
 		String newName = "Aa";
@@ -155,7 +155,7 @@ class ServerTest {
 				.put(Entity.entity(notInServer, MediaType.APPLICATION_JSON));
 		assertEquals(Response.Status.NOT_FOUND.getStatusCode(), re.getStatus());
 	}
-	
+
 	@Test
 	void t05_deleteKunde() {
 		String k1ID = k1.getId().toString();
@@ -216,7 +216,7 @@ class ServerTest {
 		assertFalse(re.readEntity(String.class).isBlank());
 	}
 
-	
+
 
 	@Test
 	void t10_createAblesungForKunden() {
@@ -248,7 +248,7 @@ class ServerTest {
 		String response = re.readEntity(String.class);
 		assertFalse(response.isBlank());
 	}
-	
+
 	@Test
 	void t12_createAblesungFailsIfAblesungIsNull() {
 		Response re = postNeueAblesung(null);
@@ -280,7 +280,7 @@ class ServerTest {
 		assertFalse(re.readEntity(String.class).isBlank());
 	}
 
-	
+
 
 	@Test
 	void t15_deleteAblesung() {
@@ -301,7 +301,7 @@ class ServerTest {
 		assertEquals(Response.Status.NOT_FOUND.getStatusCode(), re.getStatus());
 		assertFalse(re.readEntity(String.class).isBlank());
 	}
-	
+
 	@Test
 	void t17_getSingleAblesung() {
 		Ablesung toSearch = ablesungen.get(k2_RangeTest).get(0);
@@ -310,7 +310,7 @@ class ServerTest {
 		Ablesung result = re.readEntity(Ablesung.class);
 		assertEquals(toSearch, result);
 	}
-	
+
 	@Test
 	void t18_getSingleAblesungFailsForNonExistingAblesung() {
 		Response re = target.path(endpointAblesungen.concat("/").concat(crudTest.getId().toString())).request().accept(MediaType.APPLICATION_JSON).get();
@@ -326,7 +326,7 @@ class ServerTest {
 		for (List<Ablesung> l : ablesungen.values()) {
 			l.stream().filter(a -> a.getDatum().isAfter(LocalDate.of(LocalDate.now().getYear() - 2, 1, 1)))
 					.forEach(a -> assertTrue(ablesungenResult.contains(a)));
-			;
+
 		}
 	}
 

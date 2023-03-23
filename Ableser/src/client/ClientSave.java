@@ -1,5 +1,6 @@
 package client;
 
+import java.awt.FileDialog;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -9,6 +10,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+
+import javax.swing.JFrame;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -28,10 +31,7 @@ import lombok.Getter;
 @Getter
 public class ClientSave {
 	private static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-	private static final String FILE = "target/Ablesewerte.json";
-	private static final String XMLFILE = "target/Ablesewerte.xml";
-	private static final String CSVFILE = "target/Ablesewerte.csv";
-
+	
 	private ArrayList<Kunde> kundenListe;
 
 	private ArrayList<Zaehlerart> zaehlerArtListe;
@@ -67,12 +67,17 @@ public class ClientSave {
 	}
 
 	public void exportJson() {
+		String file=this.pickFile("*.json");
+		if (file.length()==0) {
+			Util.errorMessage("Export fehlgeschlagen");
+			return;
+		}
 		try {
 			ObjectMapper obMap = new ObjectMapper();
 			obMap.registerModule(new JavaTimeModule());
 			obMap.setDateFormat(df);
-			obMap.writerWithDefaultPrettyPrinter().writeValue(new File(FILE), this);
-			System.out.format("Datei %s erzeugt\n", FILE);
+			obMap.writerWithDefaultPrettyPrinter().writeValue(new File(file), this);
+			System.out.format("Datei %s erzeugt\n", file);
 		} catch (final Exception e) {
 			e.printStackTrace();
 			Util.errorMessage("Export fehlgeschlagen");
@@ -81,12 +86,17 @@ public class ClientSave {
 	}
 
 	public void exportXML() {
+		String file=this.pickFile("*.xml");
+		if (file.length()==0) {
+			Util.errorMessage("Export fehlgeschlagen");
+			return;
+		}
 		try {
 			XmlMapper xmlMapper = new XmlMapper();
 			xmlMapper.registerModule(new JavaTimeModule());
 			xmlMapper.setDateFormat(df);
-			xmlMapper.writerWithDefaultPrettyPrinter().writeValue(new File(XMLFILE), this);
-			System.out.format("Datei %s erzeugt\n", XMLFILE);
+			xmlMapper.writerWithDefaultPrettyPrinter().writeValue(new File(file), this);
+			System.out.format("Datei %s erzeugt\n", file);
 		} catch (final Exception e) {
 			e.printStackTrace();
 			Util.errorMessage("Export fehlgeschlagen");
@@ -95,8 +105,13 @@ public class ClientSave {
 	}
 
 	public void exportCSV() {
+		String file=this.pickFile("*.csv");
+		if (file.length()==0) {
+			Util.errorMessage("Export fehlgeschlagen");
+			return;
+		}
 		try {
-			final BufferedWriter out = new BufferedWriter(new FileWriter(CSVFILE, StandardCharsets.UTF_8));
+			final BufferedWriter out = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8));
 
 			out.write("kundenListe\n");
 			out.write("id;name;vorname\n");
@@ -147,7 +162,7 @@ public class ClientSave {
 				out.write("\n");
 			}
 			out.close();
-			System.out.format("Datei %s erzeugt\n", CSVFILE);
+			System.out.format("Datei %s erzeugt\n", file);
 		} catch (final IOException e) {
 			e.printStackTrace();
 			Util.errorMessage("Export fehlgeschlagen");
@@ -160,16 +175,18 @@ public class ClientSave {
 	 * @return AbleseList
 	 */
 	public static AbleseList importJson(Service service) {
-		final File f = new File(FILE);
+		FileDialog d = new FileDialog(new JFrame(),"Speicherort",FileDialog.LOAD);
+		d.setVisible(true);
+		final File f = new File(d.getDirectory()+d.getFile());
 		if (f.exists()) {
 			try {
 				ObjectMapper obMap = new ObjectMapper();
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				obMap.setDateFormat(df);
 
-				AbleseList list = obMap.readValue(new File(FILE), AbleseList.class);
+				AbleseList list = obMap.readValue(f, AbleseList.class);
 
-				System.out.format("Datei %s gelesen\n", FILE);
+				System.out.format("Datei %s gelesen\n", f.getName());
 				return list;
 
 			} catch (final Exception e) {
@@ -180,4 +197,15 @@ public class ClientSave {
 		return new AbleseList(null,null);
 	}
 
+	public String pickFile(String start) {
+		FileDialog d = new FileDialog(new JFrame(),"Speicherort",FileDialog.SAVE);
+		d.setFile(start);
+		d.setVisible(true);
+		if (d.getFile()==null) {
+			return "";
+		}
+		return d.getDirectory()+d.getFile();
+		
+				
+	}
 }

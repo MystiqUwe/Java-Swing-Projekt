@@ -110,6 +110,7 @@ public class Ablesebogen extends JFrame {
 
 		openPage(ABLESUNG_IN);
 		this.setVisible(true);
+		
 	}
 
 	public void loadData(ArrayList<String[]> filter) {

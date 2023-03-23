@@ -55,7 +55,7 @@ public class ClientSave {
 		this(kList, zList, aList);
 		if (filter!=null) {
 			this.kundenListe=new ArrayList<>(kList.stream().filter(e -> e.getId().toString().startsWith(filter)).collect(Collectors.toList()));
-			this.zaehlerArtListe=zList.getListe();//TODO
+			this.zaehlerArtListe=zList.getListe();
 			this.ablesungListe=new ArrayList<>(aList.stream().filter(e -> {
 				if (e.getKundenNummer()!=null) {
 					return e.getKundenNummer().toString().startsWith(filter);

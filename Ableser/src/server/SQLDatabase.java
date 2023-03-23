@@ -160,7 +160,7 @@ public class SQLDatabase extends AbstractDatabase{
 		Ablesung abl=new Ablesung(
     			UUID.fromString(rs.getString(1+off)),
     			rs.getString(2+off),
-    			rs.getDate(3+off).toLocalDate(),
+    			rs.getDate(3+off)!=null ? rs.getDate(3+off).toLocalDate():null,
     			null, //Kunde
     			rs.getString(4+off),
     			rs.getBoolean(5+off),

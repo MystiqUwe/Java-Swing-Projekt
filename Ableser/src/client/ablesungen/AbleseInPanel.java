@@ -217,6 +217,7 @@ public class AbleseInPanel extends JAblesebogenPanel {
 		//kundenNummer.requestFocusInWindow();
 		if (eOpts instanceof AbleseEntry) {
 			loadWithValue((AbleseEntry) eOpts);
+			return true;
 		} else if (eOpts instanceof Kunde) {
 			kundenNummer.setSelectedItem( eOpts);
 			zaelerArt.setSelectedItem(null);
@@ -231,8 +232,8 @@ public class AbleseInPanel extends JAblesebogenPanel {
 				kundenNummer.setSelectedItem(null);
 			}
 			zaelerArt.setSelectedItem(null);
-			clear();
 		}
+		clear();
 		return true;
 	}
 
